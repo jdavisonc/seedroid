@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">droidEasy</string>
+    <string name="download">Download!</string>
+    <string name="main_no_items">No items to download</string>
+</resources>

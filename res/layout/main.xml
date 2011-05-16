@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+    
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:orientation="vertical"
+   android:layout_width="fill_parent"
+   android:layout_height="fill_parent"
+   >
+<ListView
+    android:id="@+id/android:list"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    />
+<TextView
+    android:id="@+id/android:empty"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:text="@string/main_no_items"/>
+</LinearLayout>
+    
+    <!-- <CheckBox android:text="CheckBox" android:id="@+id/checkBox1" android:layout_height="wrap_content" android:layout_width="match_parent"></CheckBox>
+    <CheckBox android:text="CheckBox" android:id="@+id/checkBox2" android:layout_height="wrap_content" android:layout_width="match_parent"></CheckBox>
+	
+	
+	<Button android:id="@+id/button1" android:layout_height="wrap_content" android:text="@string/download"
+		android:onClick="myClickHandler" android:layout_width="match_parent"></Button> -->
+		
+		
+</LinearLayout>
