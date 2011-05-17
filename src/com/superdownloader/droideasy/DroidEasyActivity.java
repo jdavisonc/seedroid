@@ -30,7 +30,7 @@ public class DroidEasyActivity extends ListActivity {
         super.onCreate(savedInstanceState);
 
         // Initialize
-        wsclient = new SuperdownloaderWSClientImpl("harley", null);
+        wsclient = new SuperdownloaderWSClientImpl("harley", "p2prulz",null);
 
         // Set adapter
         adapter = new ItemsAdapter(DroidEasyActivity.this, R.layout.row, new ArrayList<Item>());

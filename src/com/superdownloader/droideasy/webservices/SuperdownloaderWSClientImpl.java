@@ -20,10 +20,12 @@ public class SuperdownloaderWSClientImpl implements SuperdownloaderWSClient {
 	private static final String PUT_DOWNLOAD_WS = "putdownload.php";
 
 	private final String username;
+	private final String password;
 	private final String server;
 
-	public SuperdownloaderWSClientImpl(String username, String server) {
+	public SuperdownloaderWSClientImpl(String username, String password, String server) {
 		this.username = username;
+		this.password = password;
 		if (server != null) {
 			this.server = server;
 		} else {
@@ -34,6 +36,7 @@ public class SuperdownloaderWSClientImpl implements SuperdownloaderWSClient {
 	@Override
 	public List<Item> getItemsAvaibleForDownload() throws Exception {
 		RestClient client = new RestClient(this.server + LIST_WS);
+		client.AddHeader("Authorization", "Basic aGFybGV5OnAycHJ1bHo=");
 		client.AddParam("user", username);
 
 		try {
