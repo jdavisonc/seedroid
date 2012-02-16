@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.superdownloader.droideasy.types.Item;
@@ -97,9 +96,9 @@ public class DroidEasyActivity extends ListActivity {
 
 			TextView label = (TextView) row.findViewById(R.id.weekofday);
 			label.setText(getItem(position).getName());
-			ImageView icon = (ImageView) row.findViewById(R.id.icon);
+			//ImageView icon = (ImageView) row.findViewById(R.id.icon);
 
-			icon.setImageResource(R.drawable.icon);
+			//icon.setImageResource(R.drawable.icon);
 
 			return row;
 		}
