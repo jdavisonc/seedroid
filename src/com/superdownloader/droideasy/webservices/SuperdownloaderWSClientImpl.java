@@ -13,11 +13,11 @@ import com.superdownloader.droideasy.types.Item;
 
 public class SuperdownloaderWSClientImpl implements SuperdownloaderWSClient {
 
-	private static final String DEFAULT_SERVER_URL = "http://ks27242.kimsufi.com/ws/";
-	private static final String LIST_WS = "list.php";
-	private static final String PAUSE_WS = "pause.php";
-	private static final String RESUME_WS = "resume.php";
-	private static final String PUT_DOWNLOAD_WS = "putdownload.php";
+	private static final String DEFAULT_SERVER_URL = "http://ks313077.kimsufi.com:8080/proEasy-1.0/webservices/";
+	private static final String LIST_WS = "list";
+	private static final String PAUSE_WS = "pause";
+	private static final String RESUME_WS = "resume";
+	private static final String PUT_DOWNLOAD_WS = "putdownload";
 
 	private final String username;
 	private final String password;
@@ -36,8 +36,8 @@ public class SuperdownloaderWSClientImpl implements SuperdownloaderWSClient {
 	@Override
 	public List<Item> getItemsAvaibleForDownload() throws Exception {
 		RestClient client = new RestClient(this.server + LIST_WS);
-		client.AddHeader("Authorization", "Basic aGFybGV5OnAycHJ1bHo=");
-		client.AddParam("user", username);
+		//client.AddHeader("Authorization", "Basic aGFybGV5OnAycHJ1bHo=");
+		//client.AddParam("user", username);
 
 		try {
 			client.Execute(RequestMethod.GET);
@@ -55,7 +55,7 @@ public class SuperdownloaderWSClientImpl implements SuperdownloaderWSClient {
 			for (int i = 0; i < list.getLength(); i++) {
 				Element e = (Element) list.item(i);
 				Item item = new Item();
-				item.setName(XMLfunctions.getAttributeValue(e, "value"));
+				item.setName(XMLfunctions.getElementValue(e.getChildNodes().item(1))); // name
 				items.add(item);
 			}
 			return items;
