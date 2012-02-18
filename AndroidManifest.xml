@@ -5,12 +5,9 @@
     android:versionName="1.0" >
 
     <!-- SDK Version -->
-    <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="14" />
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="14" />
 
     <!-- ** Permissions ** -->
-    
-    <!-- Internet -->
-    <uses-permission android:name="android.permission.INTERNET" />
     
     <!-- Only this application can receive the messages and registration result -->
     <permission android:name="com.superdownloader.droideasy.permission.C2D_MESSAGE" android:protectionLevel="signature" />
@@ -18,6 +15,9 @@
 
     <!-- This app has permission to register and receive message -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    
+    <!-- Internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
     
     <!-- ** Application ** -->
 
@@ -32,18 +32,16 @@
         </activity>
         
         <!-- Only C2DM servers can send messages for the app. If permission is not set -any other app can generate it -->
-        <receiver android:name=".MyC2dmReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
+        <receiver android:name=".c2dm.C2DMReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
 
             <!-- Receive the actual message -->
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-
                 <category android:name="com.superdownloader.droideasy" />
             </intent-filter>
             <!-- Receive the registration id -->
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-
                 <category android:name="com.superdownloader.droideasy" />
             </intent-filter>
         </receiver>

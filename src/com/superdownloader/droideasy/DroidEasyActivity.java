@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +29,7 @@ public class DroidEasyActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        registerC2DM();
 
         // Initialize
         wsclient = new SuperdownloaderWSClientImpl("harley", "p2prulz",null);
@@ -102,6 +105,14 @@ public class DroidEasyActivity extends ListActivity {
 
 			return row;
 		}
+	}
+
+	private void registerC2DM() {
+		Log.w("C2DM", "start registration process");
+		Intent intent = new Intent("com.google.android.c2dm.intent.REGISTER");
+		intent.putExtra("app",PendingIntent.getBroadcast(this, 0, new Intent(), 0));
+		intent.putExtra("sender", "jdavisonc@gmail.com");
+		startService(intent);
 	}
 
 }
