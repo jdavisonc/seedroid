@@ -128,7 +128,7 @@ public class StatusActivity extends ListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
-	        case R.id.menu_save:
+	        case R.id.menu_list:
 	            startActivity(new Intent(this, DroidEasyActivity.class));
 	            return true;
 	        case R.id.menu_preferences:
