@@ -7,7 +7,9 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,8 +24,11 @@ import android.widget.TextView;
 import com.superdownloader.droideasy.types.Item;
 import com.superdownloader.droideasy.webservices.SuperdownloaderWSClient;
 import com.superdownloader.droideasy.webservices.SuperdownloaderWSClientImpl;
+import com.superdownloader.droideasy.webservices.SuperdownloaderWSFactory;
 
 public class StatusActivity extends ListActivity {
+	
+	private static final String DEFAULT_SERVER_URL = "http://ks313077.kimsufi.com:8080/proEasy-1.0/webservices/";
 
 	private ItemsAdapter adapter;
 	private ProgressDialog m_ProgressDialog = null;
@@ -35,7 +40,7 @@ public class StatusActivity extends ListActivity {
         setContentView(R.layout.status);
 
         // Initialize
-        wsclient = new SuperdownloaderWSClientImpl("harley", "p2prulz",null);
+        wsclient = SuperdownloaderWSFactory.getClient(this);
 
         // Set adapter
         adapter = new ItemsAdapter(StatusActivity.this, R.layout.status_row, new ArrayList<Item>());
@@ -43,7 +48,6 @@ public class StatusActivity extends ListActivity {
 
 		// Create thread for get data
 		Thread thread = new Thread(null, new Runnable() {
-			@Override
 			public void run() {
 				try {
 					// Calling Web Service
@@ -51,7 +55,6 @@ public class StatusActivity extends ListActivity {
 
 					// Render Items
 					runOnUiThread(new Runnable() {
-						@Override
 						public void run() {
 							renderItems(items);
 							m_ProgressDialog.dismiss();
@@ -126,9 +129,10 @@ public class StatusActivity extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	        case R.id.menu_save:
-	            // app icon in action bar clicked; go home
-	            Intent intent = new Intent(this, DroidEasyActivity.class);
-	            startActivity(intent);
+	            startActivity(new Intent(this, DroidEasyActivity.class));
+	            return true;
+	        case R.id.menu_preferences:
+	            startActivity(new Intent(this, Preferences.class));
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);

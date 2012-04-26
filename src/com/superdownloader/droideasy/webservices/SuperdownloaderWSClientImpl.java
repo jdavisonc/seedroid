@@ -12,8 +12,7 @@ import com.superdownloader.droideasy.tools.XMLfunctions;
 import com.superdownloader.droideasy.types.Item;
 
 public class SuperdownloaderWSClientImpl implements SuperdownloaderWSClient {
-
-	private static final String DEFAULT_SERVER_URL = "http://ks313077.kimsufi.com:8080/proEasy-1.0/webservices/";
+	
 	private static final String LIST_WS = "list";
 	private static final String STATUS_WS = "status";
 	private static final String PAUSE_WS = "pause";
@@ -27,14 +26,9 @@ public class SuperdownloaderWSClientImpl implements SuperdownloaderWSClient {
 	public SuperdownloaderWSClientImpl(String username, String password, String server) {
 		this.username = username;
 		this.password = password;
-		if (server != null) {
-			this.server = server;
-		} else {
-			this.server = DEFAULT_SERVER_URL;
-		}
+		this.server = server;
 	}
 
-	@Override
 	public List<Item> getItemsAvaibleForDownload() throws Exception {
 		String response = executeRESTWS(LIST_WS);
 
@@ -55,27 +49,21 @@ public class SuperdownloaderWSClientImpl implements SuperdownloaderWSClient {
 		}
 	}
 
-
-
-	@Override
 	public boolean putToDownload(List<Item> toDownload) throws Exception {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean pauseAll() throws Exception {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean resumeAll() throws Exception {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public List<Item> getStatusOfDownloads() throws Exception {
 		String response = executeRESTWS(STATUS_WS);
 

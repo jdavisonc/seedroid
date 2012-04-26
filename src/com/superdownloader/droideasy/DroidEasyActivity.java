@@ -8,7 +8,9 @@ import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 import com.superdownloader.droideasy.types.Item;
 import com.superdownloader.droideasy.webservices.SuperdownloaderWSClient;
 import com.superdownloader.droideasy.webservices.SuperdownloaderWSClientImpl;
+import com.superdownloader.droideasy.webservices.SuperdownloaderWSFactory;
 
 public class DroidEasyActivity extends ListActivity {
 
@@ -31,10 +34,10 @@ public class DroidEasyActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        registerC2DM();
-
+        //registerC2DM();
+        
         // Initialize
-        wsclient = new SuperdownloaderWSClientImpl("harley", "p2prulz",null);
+        wsclient = SuperdownloaderWSFactory.getClient(this);
 
         // Set adapter
         adapter = new ItemsAdapter(DroidEasyActivity.this, R.layout.row, new ArrayList<Item>());
@@ -42,7 +45,6 @@ public class DroidEasyActivity extends ListActivity {
 
 		// Create thread for get data
 		Thread thread = new Thread(null, new Runnable() {
-			@Override
 			public void run() {
 				try {
 					// Calling Web Service
@@ -50,7 +52,6 @@ public class DroidEasyActivity extends ListActivity {
 
 					// Render Items
 					runOnUiThread(new Runnable() {
-						@Override
 						public void run() {
 							renderItems(items);
 							m_ProgressDialog.dismiss();
