@@ -12,9 +12,9 @@ public class SuperdownloaderWSFactory {
 		if (client == null) {
 	        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 	        
-	        String username = sharedPrefs.getString("prorasy_username", "");
-	        String password = sharedPrefs.getString("prorasy_password", "");
-	        String serverUrl = sharedPrefs.getString("prorasy_server", "");
+	        String username = sharedPrefs.getString("proeasy_username", "");
+	        String password = sharedPrefs.getString("proeasy_password", "");
+	        String serverUrl = sharedPrefs.getString("proeasy_server", "");
 	
 	        // Initialize
 	        client = new SuperdownloaderWSClientImpl(username, password, serverUrl);

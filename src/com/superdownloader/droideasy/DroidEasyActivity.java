@@ -34,7 +34,7 @@ public class DroidEasyActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //registerC2DM();
+        registerC2DM();
         
         // Initialize
         wsclient = SuperdownloaderWSFactory.getClient(this);
