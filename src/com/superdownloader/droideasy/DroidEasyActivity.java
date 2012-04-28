@@ -3,6 +3,7 @@ package com.superdownloader.droideasy;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -12,12 +13,24 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.util.SparseBooleanArray;
+import android.view.ActionMode;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView.MultiChoiceModeListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.superdownloader.droideasy.types.Item;
@@ -25,11 +38,13 @@ import com.superdownloader.droideasy.webservices.SuperdownloaderWSClient;
 import com.superdownloader.droideasy.webservices.SuperdownloaderWSClientImpl;
 import com.superdownloader.droideasy.webservices.SuperdownloaderWSFactory;
 
-public class DroidEasyActivity extends ListActivity {
+public class DroidEasyActivity extends ListActivity implements OnItemClickListener {
 
-	private ItemsAdapter adapter;
+	private ArrayAdapter<Item> adapter;
 	private ProgressDialog m_ProgressDialog = null;
 	private SuperdownloaderWSClient wsclient = null;
+	private ActionMode mActionMode;
+	private int selectedItem = -1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,9 +55,15 @@ public class DroidEasyActivity extends ListActivity {
         wsclient = SuperdownloaderWSFactory.getClient(this);
 
         // Set adapter
-        adapter = new ItemsAdapter(DroidEasyActivity.this, R.layout.row, new ArrayList<Item>());
+        //adapter = new InteractiveArrayAdapter(this, new ArrayList<Item>());
+        adapter = new ArrayAdapter<Item>(this, R.layout.rowbuttonlayout, new ArrayList<Item>());
 		setListAdapter(adapter);
-
+        
+		mActionMode = null;
+        getListView().setItemsCanFocus(false);
+        getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        getListView().setOnItemClickListener(this);
+		
 		// Create thread for get data
 		Thread thread = new Thread(null, new Runnable() {
 			public void run() {
@@ -66,7 +87,25 @@ public class DroidEasyActivity extends ListActivity {
 		thread.start();
 		m_ProgressDialog = ProgressDialog.show(DroidEasyActivity.this, "Please wait...", "Retrieving data ...", true);
     }
-
+    
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.main_menu, menu);
+	    return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	        case R.id.menu_preferences:
+	            startActivity(new Intent(this, Preferences.class));
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
+    
     /**
      * Method for add items to adapter and render it
      * @param items
@@ -80,31 +119,9 @@ public class DroidEasyActivity extends ListActivity {
     	}
     }
 
-    /**
-     * Custom Adapter for render item
-     * @author harley
-     *
-     */
-	public class ItemsAdapter extends ArrayAdapter<Item> {
-
-		public ItemsAdapter(Context context, int textViewResourceId, List<Item> items) {
-			super(context, textViewResourceId, items);
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			View row = convertView;
-
-			if (row == null) {
-				LayoutInflater inflater = getLayoutInflater();
-				row = inflater.inflate(R.layout.row, parent, false);
-			}
-
-			TextView label = (TextView) row.findViewById(R.id.weekofday);
-			label.setText(getItem(position).getName());
-
-			return row;
-		}
+	protected void download() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void registerC2DM() {
@@ -114,12 +131,63 @@ public class DroidEasyActivity extends ListActivity {
 		intent.putExtra("sender", "jdavisonc@gmail.com");
 		startService(intent);
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.main_menu, menu);
-	    return true;
-	}
+	
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        // Notice how the ListView api is lame
+        // You can use mListView.getCheckedItemIds() if the adapter
+        // has stable ids, e.g you're using a CursorAdaptor
+        SparseBooleanArray checked = getListView().getCheckedItemPositions();
+        boolean hasCheckedElement = false;
+        for (int i = 0 ; i < checked.size() && ! hasCheckedElement ; i++) {
+            hasCheckedElement = checked.valueAt(i);
+        }
+ 
+        if (hasCheckedElement) {
+            if (mActionMode == null) {
+            	mActionMode = startActionMode(new ModeCallback());
+            }
+        } else {
+            if (mActionMode != null) {
+            	mActionMode.finish();
+            }
+        }
+    };
+ 
+    private final class ModeCallback implements ActionMode.Callback {
+ 
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            // Create the menu from the xml file
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.rowselection, menu);
+            return true;
+        }
+ 
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            // Here, you can checked selected items to adapt available actions
+            return false;
+        }
+ 
+        public void onDestroyActionMode(ActionMode mode) {
+            // Destroying action mode, let's unselect all items
+            for (int i = 0; i < getListView().getAdapter().getCount(); i++)
+            	getListView().setItemChecked(i, false);
+ 
+            if (mode == mActionMode) {
+                mActionMode = null;
+            }
+        }
+ 
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            long[] selected = getListView().getCheckedItemIds();
+            if (selected.length > 0) {
+                for (long id: selected) {
+                    // Do something with the selected item
+                }
+            }
+            mode.finish();
+            return true;
+        }
+    };
+	
 
 }

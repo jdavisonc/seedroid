@@ -128,15 +128,16 @@ public class StatusActivity extends ListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
-	        case R.id.menu_list:
-	            startActivity(new Intent(this, DroidEasyActivity.class));
-	            return true;
 	        case R.id.menu_preferences:
 	            startActivity(new Intent(this, Preferences.class));
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
+	}
+	
+	public void listForDownloadHandler(View view) {
+		startActivity(new Intent(this, DroidEasyActivity.class));
 	}
 
 }

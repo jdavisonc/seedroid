@@ -7,6 +7,8 @@ public class Item {
 	private long size;
 
 	private long transferred;
+	
+	private boolean selected;
 
 	public Item() { }
 
@@ -38,6 +40,19 @@ public class Item {
 
 	public void setTransferred(long transferred) {
 		this.transferred = transferred;
+	}
+	
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
+	
+	public boolean isSelected() {
+		return selected;
+	}
+	
+	@Override
+	public String toString() {
+		return name;
 	}
 
 }
