@@ -18,29 +18,33 @@ public class C2DMReceiver extends BroadcastReceiver {
 		Log.w("C2DM", "Message Receiver called");
 
 		if ("com.google.android.c2dm.intent.RECEIVE".equals(action)) {
-			Log.w("C2DM", "Received message");
-			final String payload = intent.getStringExtra("payload");
-			Log.d("C2DM", "dmControl: payload = " + payload);
-			// Send this to my application server
+			handleMessage(context, intent);
 		} else if ("com.google.android.c2dm.intent.REGISTRATION".equals(action)) {
-			Log.w("C2DM", "Received registration ID");
-			final String registrationId = intent.getStringExtra("registration_id");
-			String error = intent.getStringExtra("error");
-
-			String deviceId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
-			Log.d("C2DM", "dmControl: registrationId = " + registrationId + " deviceId = " + deviceId + ", error = " + error);
-
-			sendRegistrationIdToServer(context, deviceId, registrationId);
+			handleRegistration(context, intent);
 		}
 	}
 
-	private void sendRegistrationIdToServer(Context context, String deviceId, String registrationId) {
-		GUIFunctions.createNotification(context, "Registration Successful","Successfully registered" + registrationId + " " + deviceId);
+	private void handleMessage(Context context, Intent intent) {
+		String payload = intent.getStringExtra("payload");
+		Log.d("C2DM", "dmControl: payload = " + payload);
+		String[] values = payload.split(";");
+		if ("OK".equals(values[0])) {
+			GUIFunctions.createNotification(context, "Upload completed", values[1]);
+		} else {
+			GUIFunctions.createNotification(context, "Upload failed", values[1]);
+		}
+	}
+
+	private void handleRegistration(Context context, Intent intent) {
+		String registrationId = intent.getStringExtra("registration_id");
+		String deviceId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
+		Log.d("C2DM", "dmControl: registrationId = " + registrationId + " deviceId = " + deviceId );
 		try {
 			SuperdownloaderWSClient client = SuperdownloaderWSFactory.getClient(context);
 			client.registerDevice(deviceId, registrationId);
+			GUIFunctions.createNotification(context, "Registration Successful","Successfully registered" + registrationId + " " + deviceId);
 		} catch (Exception e) {
-
+			GUIFunctions.createNotification(context, "Registration failed","");
 		}
 	}
 
