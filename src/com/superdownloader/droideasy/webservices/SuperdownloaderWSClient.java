@@ -12,8 +12,6 @@ public interface SuperdownloaderWSClient {
 
 	public boolean putToDownload(List<Item> toDownload) throws Exception;
 
-	public boolean pauseAll() throws Exception;
-
-	public boolean resumeAll() throws Exception;
+	public boolean registerDevice(String deviceId, String registrationId) throws Exception;
 
 }

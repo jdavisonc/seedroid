@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,29 +20,29 @@ import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.superdownloader.droideasy.tools.GUIFunctions;
 import com.superdownloader.droideasy.types.Item;
 import com.superdownloader.droideasy.webservices.SuperdownloaderWSClient;
-import com.superdownloader.droideasy.webservices.SuperdownloaderWSClientImpl;
 import com.superdownloader.droideasy.webservices.SuperdownloaderWSFactory;
 
 public class StatusActivity extends ListActivity {
-	
-	private static final String DEFAULT_SERVER_URL = "http://ks313077.kimsufi.com:8080/proEasy-1.0/webservices/";
 
 	private ItemsAdapter adapter;
 	private ProgressDialog m_ProgressDialog = null;
 	private SuperdownloaderWSClient wsclient = null;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.status);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		registerC2DM();
 
-        // Initialize
-        wsclient = SuperdownloaderWSFactory.getClient(this);
+		setContentView(R.layout.status);
 
-        // Set adapter
-        adapter = new ItemsAdapter(StatusActivity.this, R.layout.status_row, new ArrayList<Item>());
+		// Initialize
+		wsclient = SuperdownloaderWSFactory.getClient(this);
+
+		// Set adapter
+		adapter = new ItemsAdapter(StatusActivity.this, R.layout.status_row, new ArrayList<Item>());
 		setListAdapter(adapter);
 
 		// Create thread for get data
@@ -62,32 +61,42 @@ public class StatusActivity extends ListActivity {
 					});
 				} catch (Exception e) {
 					Log.e("droidEasy", e.getMessage());
+					m_ProgressDialog.dismiss();
+					GUIFunctions.showError("Error communicating with proEasy.", StatusActivity.this);
 				}
 			}
 		}, "MagentoBackground");
 
 		thread.start();
 		m_ProgressDialog = ProgressDialog.show(StatusActivity.this, "Please wait...", "Retrieving data ...", true);
-    }
+	}
 
-    /**
-     * Method for add items to adapter and render it
-     * @param items
-     */
-    private void renderItems(List<Item> items) {
-    	if (items != null) {
-	    	for (Item item : items) {
+	private void registerC2DM() {
+		Log.w("C2DM", "start registration process");
+		Intent intent = new Intent("com.google.android.c2dm.intent.REGISTER");
+		intent.putExtra("app",PendingIntent.getBroadcast(this, 0, new Intent(), 0));
+		intent.putExtra("sender", "jdavisonc@gmail.com");
+		startService(intent);
+	}
+
+	/**
+	 * Method for add items to adapter and render it
+	 * @param items
+	 */
+	private void renderItems(List<Item> items) {
+		if (items != null) {
+			for (Item item : items) {
 				adapter.add(item);
 			}
-	    	adapter.notifyDataSetChanged();
-    	}
-    }
+			adapter.notifyDataSetChanged();
+		}
+	}
 
-    /**
-     * Custom Adapter for render item
-     * @author harley
-     *
-     */
+	/**
+	 * Custom Adapter for render item
+	 * @author harley
+	 *
+	 */
 	public class ItemsAdapter extends ArrayAdapter<Item> {
 
 		public ItemsAdapter(Context context, int textViewResourceId, List<Item> items) {
@@ -120,22 +129,22 @@ public class StatusActivity extends ListActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.main_menu, menu);
-	    return true;
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_menu, menu);
+		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    switch (item.getItemId()) {
-	        case R.id.menu_preferences:
-	            startActivity(new Intent(this, Preferences.class));
-	            return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
+		switch (item.getItemId()) {
+		case R.id.menu_preferences:
+			startActivity(new Intent(this, Preferences.class));
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
-	
+
 	public void listForDownloadHandler(View view) {
 		startActivity(new Intent(this, DroidEasyActivity.class));
 	}

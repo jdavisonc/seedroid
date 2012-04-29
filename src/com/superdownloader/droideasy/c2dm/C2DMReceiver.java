@@ -1,14 +1,14 @@
 package com.superdownloader.droideasy.c2dm;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings.Secure;
 import android.util.Log;
 
-import com.superdownloader.droideasy.R;
+import com.superdownloader.droideasy.tools.GUIFunctions;
+import com.superdownloader.droideasy.webservices.SuperdownloaderWSClient;
+import com.superdownloader.droideasy.webservices.SuperdownloaderWSFactory;
 
 public class C2DMReceiver extends BroadcastReceiver {
 
@@ -30,28 +30,18 @@ public class C2DMReceiver extends BroadcastReceiver {
 			String deviceId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
 			Log.d("C2DM", "dmControl: registrationId = " + registrationId + " deviceId = " + deviceId + ", error = " + error);
 
-			createNotification(context, registrationId, deviceId);
-			sendRegistrationIdToServer(deviceId, registrationId);
+			sendRegistrationIdToServer(context, deviceId, registrationId);
 		}
 	}
 
-	private void sendRegistrationIdToServer(String deviceId, String registrationId) {
-		// TODO Auto-generated method stub
+	private void sendRegistrationIdToServer(Context context, String deviceId, String registrationId) {
+		GUIFunctions.createNotification(context, "Registration Successful","Successfully registered" + registrationId + " " + deviceId);
+		try {
+			SuperdownloaderWSClient client = SuperdownloaderWSFactory.getClient(context);
+			client.registerDevice(deviceId, registrationId);
+		} catch (Exception e) {
 
+		}
 	}
 
-	private void createNotification(Context context, String registrationId, String deviceId) {
-		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		Notification notification = new Notification(R.drawable.bittorrent, "Registration successful", System.currentTimeMillis());
-
-		// Hide the notification after its selected
-		notification.flags |= Notification.FLAG_AUTO_CANCEL;
-
-		//Intent intent = new Intent(context, RegistrationResultActivity.class);
-		//intent.putExtra("registration_id", registrationId);
-		//PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-		//notification.setLatestEventInfo(context, "Registration", "Successfully registered", pendingIntent);
-		notification.setLatestEventInfo(context, "Registration", "Successfully registered" + registrationId + " " + deviceId, null);
-		notificationManager.notify(0, notification);
-	}
 }
