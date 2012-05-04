@@ -118,4 +118,10 @@ public class SuperdownloaderWSClientImpl implements SuperdownloaderWSClient {
 		return false;
 	}
 
+	public boolean unregisterDevice(String deviceId, String registrationId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

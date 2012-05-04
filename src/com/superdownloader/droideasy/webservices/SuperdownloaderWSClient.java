@@ -14,4 +14,6 @@ public interface SuperdownloaderWSClient {
 
 	public boolean registerDevice(String deviceId, String registrationId) throws Exception;
 
+	public boolean unregisterDevice(String deviceId, String registrationId) throws Exception;
+
 }

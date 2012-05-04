@@ -19,7 +19,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.superdownloader.droideasy.tools.GUIFunctions;
+import com.superdownloader.droideasy.tools.LauncherUtils;
 import com.superdownloader.droideasy.types.Item;
 import com.superdownloader.droideasy.webservices.SuperdownloaderWSClient;
 import com.superdownloader.droideasy.webservices.SuperdownloaderWSFactory;
@@ -28,15 +28,11 @@ public class DroidEasyActivity extends ListActivity implements OnItemClickListen
 
 	private ArrayAdapter<Item> adapter;
 	private ProgressDialog m_ProgressDialog = null;
-	private SuperdownloaderWSClient wsclient = null;
 	private ActionMode mActionMode;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		// Initialize
-		wsclient = SuperdownloaderWSFactory.getClient(this);
 
 		// Set adapter
 		adapter = new ArrayAdapter<Item>(this, R.layout.rowbuttonlayout, new ArrayList<Item>());
@@ -47,11 +43,14 @@ public class DroidEasyActivity extends ListActivity implements OnItemClickListen
 		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		getListView().setOnItemClickListener(this);
 
+		m_ProgressDialog = ProgressDialog.show(DroidEasyActivity.this, "Please wait...", "Retrieving data ...", true);
+
 		// Create thread for get data
-		Thread thread = new Thread(null, new Runnable() {
+		new Thread(new Runnable() {
 			public void run() {
 				try {
 					// Calling Web Service
+					SuperdownloaderWSClient wsclient = SuperdownloaderWSFactory.getClient(DroidEasyActivity.this);
 					final List<Item> items = wsclient.getItemsAvaibleForDownload();
 
 					// Render Items
@@ -64,13 +63,10 @@ public class DroidEasyActivity extends ListActivity implements OnItemClickListen
 				} catch (Exception e) {
 					Log.e("droidEasy", e.getMessage());
 					m_ProgressDialog.dismiss();
-					GUIFunctions.showError("Error communicating with proEasy.", DroidEasyActivity.this);
+					LauncherUtils.showError("Error communicating with proEasy.", DroidEasyActivity.this);
 				}
 			}
-		}, "MagentoBackground");
-
-		thread.start();
-		m_ProgressDialog = ProgressDialog.show(DroidEasyActivity.this, "Please wait...", "Retrieving data ...", true);
+		}, "MagentoBackground").start();
 	}
 
 	@Override
@@ -110,7 +106,7 @@ public class DroidEasyActivity extends ListActivity implements OnItemClickListen
 			client.putToDownload(toDownload);
 			// Show success action
 		}catch (Exception e) {
-			GUIFunctions.showError("Error at putting file to download.", this);
+			LauncherUtils.showError("Error at putting file to download.", this);
 		}
 	}
 
