@@ -19,7 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.superdownloader.droideasy.c2dm.C2DMManager;
 import com.superdownloader.droideasy.tools.LauncherUtils;
 import com.superdownloader.droideasy.types.Item;
 import com.superdownloader.droideasy.webservices.SuperdownloaderWSClient;
@@ -33,9 +32,6 @@ public class StatusActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		// Register for C2DM if it is necessary
-		C2DMManager.verifyRegistration(this);
 
 		setContentView(R.layout.status);
 
@@ -57,13 +53,13 @@ public class StatusActivity extends ListActivity {
 					runOnUiThread(new Runnable() {
 						public void run() {
 							renderItems(items);
-							m_ProgressDialog.dismiss();
 						}
 					});
 				} catch (Exception e) {
-					Log.e("droidEasy", e.getMessage());
-					m_ProgressDialog.dismiss();
+					Log.e("droidEasy", "Error communicating with proEasy.");
 					LauncherUtils.showError("Error communicating with proEasy.", StatusActivity.this);
+				} finally {
+					m_ProgressDialog.dismiss();
 				}
 			}
 		}, "MagentoBackground").start();

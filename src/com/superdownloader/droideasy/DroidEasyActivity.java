@@ -57,13 +57,13 @@ public class DroidEasyActivity extends ListActivity implements OnItemClickListen
 					runOnUiThread(new Runnable() {
 						public void run() {
 							renderItems(items);
-							m_ProgressDialog.dismiss();
 						}
 					});
 				} catch (Exception e) {
-					Log.e("droidEasy", e.getMessage());
-					m_ProgressDialog.dismiss();
+					Log.e("droidEasy", "Error communicating with proEasy.");
 					LauncherUtils.showError("Error communicating with proEasy.", DroidEasyActivity.this);
+				} finally {
+					m_ProgressDialog.dismiss();
 				}
 			}
 		}, "MagentoBackground").start();

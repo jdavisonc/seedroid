@@ -1,12 +1,10 @@
 package com.superdownloader.droideasy.c2dm;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.provider.Settings.Secure;
 import android.util.Log;
 
 import com.google.android.c2dm.C2DMessaging;
-import com.superdownloader.droideasy.tools.Prefs;
 import com.superdownloader.droideasy.webservices.SuperdownloaderWSClient;
 import com.superdownloader.droideasy.webservices.SuperdownloaderWSFactory;
 
@@ -27,6 +25,8 @@ public class C2DMManager {
 		String registrationId = C2DMessaging.getRegistrationId(context);
 		if(registrationId != null && !"".equals(registrationId)){
 			Log.i("GenericNotifier", "Already registered. registrationId is " + registrationId);
+			// If it was intentionally verified, register to server again
+			registerWithServer(context, registrationId);
 		}else{
 			Log.i("GenericNotifier", "No existing registrationId. Registering..");
 			C2DMessaging.register(context, APP_C2DM_ID);
@@ -44,12 +44,7 @@ public class C2DMManager {
 					String deviceId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
 					SuperdownloaderWSClient client = SuperdownloaderWSFactory.getClient(context);
 					boolean success = client.registerDevice(deviceId, deviceRegistrationID);
-					if (success) {
-						SharedPreferences settings = Prefs.get(context);
-						SharedPreferences.Editor editor = settings.edit();
-						editor.putString("deviceRegistrationID", deviceRegistrationID);
-						editor.commit();
-					} else {
+					if (!success) {
 						Log.w("C2DMManager", "Registration error: Wrong answer from server");
 					}
 				} catch (Exception e) {
@@ -68,15 +63,12 @@ public class C2DMManager {
 				try {
 					String deviceId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
 					SuperdownloaderWSClient client = SuperdownloaderWSFactory.getClient(context);
-					client.unregisterDevice(deviceId, deviceRegistrationID);
+					boolean success = client.unregisterDevice(deviceId, deviceRegistrationID);
+					if (!success) {
+						Log.w("C2DMManager", "Unregistration error: Wrong answer from server");
+					}
 				} catch (Exception e) {
 					Log.w("C2DMManager", "Unregistration error " + e.getMessage());
-				} finally {
-					SharedPreferences settings = Prefs.get(context);
-					SharedPreferences.Editor editor = settings.edit();
-					editor.remove("deviceRegistrationID");
-					editor.remove("accountName");
-					editor.commit();
 				}
 			}
 		}).start();

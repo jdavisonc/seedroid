@@ -23,4 +23,8 @@ public class SuperdownloaderWSFactory {
 		return client;
 	}
 
+	public static void changePreferences() {
+		client = null;
+	}
+
 }

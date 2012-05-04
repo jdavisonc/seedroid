@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2008 The Android Open Source Project
+<!--
+     Copyright (C) 2008 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -15,33 +16,29 @@
 -->
 
 <!-- This is a primitive example showing the different types of preferences available. -->
-<PreferenceScreen
-        xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-
-    <PreferenceCategory
-            android:title="@string/preferences">
-
+    <PreferenceCategory android:title="@string/preferences" >
         <EditTextPreference
-                android:key="proeasy_username"
-                android:title="@string/title_proeasy_username"
-                android:summary="@string/summary_proeasy_username"
-                android:dialogTitle="@string/dialog_title_proeasy_username" />
-        
+            android:defaultValue="@string/default_proeasy_username"
+            android:dialogTitle="@string/dialog_title_proeasy_username"
+            android:key="proeasy_username"
+            android:summary="@string/summary_proeasy_username"
+            android:title="@string/title_proeasy_username" />
         <EditTextPreference
-                android:key="proeasy_password"
-                android:title="@string/title_proeasy_password"
-                android:summary="@string/summary_proeasy_password"
-                android:dialogTitle="@string/dialog_title_proeasy_password" />
-        
+            android:dialogTitle="@string/dialog_title_proeasy_password"
+            android:key="proeasy_password"
+            android:summary="@string/summary_proeasy_password"
+            android:title="@string/title_proeasy_password" />
         <EditTextPreference
-                android:key="proeasy_server"
-                android:title="@string/title_proeasy_server"
-                android:summary="@string/summary_proeasy_server"
-                android:dialogTitle="@string/dialog_title_proeasy_server" 
-                android:defaultValue="@string/default_proeasy_server"/>
-
+            android:defaultValue="@string/default_proeasy_server"
+            android:dialogTitle="@string/dialog_title_proeasy_server"
+            android:key="proeasy_server"
+            android:summary="@string/summary_proeasy_server"
+            android:title="@string/title_proeasy_server" />
     </PreferenceCategory>
-
+    
+    <PreferenceCategory android:title="@string/preferences_c2dm" >
+    </PreferenceCategory>
 
 </PreferenceScreen>
