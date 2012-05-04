@@ -5,6 +5,7 @@ package com.superdownloader.droideasy.tools;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 /**
  * @author harley
@@ -13,8 +14,7 @@ import android.content.SharedPreferences;
 public final class Prefs {
 
 	public static SharedPreferences get(Context context) {
-		//return PreferenceManager.getDefaultSharedPreferences(context);
-		return context.getSharedPreferences("hola", 0);
+		return PreferenceManager.getDefaultSharedPreferences(context);
 	}
 
 }
