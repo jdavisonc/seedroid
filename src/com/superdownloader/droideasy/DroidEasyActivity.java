@@ -100,14 +100,26 @@ public class DroidEasyActivity extends ListActivity implements OnItemClickListen
 		}
 	}
 
-	protected void download(List<Item> toDownload) {
-		try {
-			SuperdownloaderWSClient client = SuperdownloaderWSFactory.getClient(this);
-			client.putToDownload(toDownload);
-			// Show success action
-		}catch (Exception e) {
-			LauncherUtils.showError("Error at putting file to download.", this);
-		}
+	protected void download(final List<Item> toDownload) {
+
+		m_ProgressDialog = ProgressDialog.show(DroidEasyActivity.this, "Please wait...", "Setting files to download ...", true);
+
+		// Create thread for get data
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					// Calling Web Service
+					SuperdownloaderWSClient client = SuperdownloaderWSFactory.getClient(DroidEasyActivity.this);
+					client.putToDownload(toDownload);
+
+				} catch (Exception e) {
+					Log.e("droidEasy", "Error communicating with proEasy.");
+					LauncherUtils.showError("Error communicating with proEasy.", DroidEasyActivity.this);
+				} finally {
+					m_ProgressDialog.dismiss();
+				}
+			}
+		}, "MagentoBackground").start();
 	}
 
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -159,11 +171,11 @@ public class DroidEasyActivity extends ListActivity implements OnItemClickListen
 
 			switch (item.getItemId()) {
 			case R.id.menu_download:
-				long[] selected = getListView().getCheckedItemIds();
-				if (selected.length > 0) {
+				SparseBooleanArray selected = getListView().getCheckedItemPositions();
+				if (selected.size() > 0) {
 					List<Item> toDownload = new ArrayList<Item>();
-					for (long id: selected) {
-						Item it = (Item) getListView().getItemAtPosition((int)id);
+					for (int i = 0; i < selected.size(); i++) {
+						Item it = (Item) getListView().getItemAtPosition(selected.keyAt(i));
 						toDownload.add(it);
 					}
 					download(toDownload);

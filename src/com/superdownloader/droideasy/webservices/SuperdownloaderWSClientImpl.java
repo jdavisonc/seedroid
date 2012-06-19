@@ -16,10 +16,11 @@ import com.superdownloader.droideasy.types.Item;
 
 public class SuperdownloaderWSClientImpl implements SuperdownloaderWSClient {
 
-	private static final String LIST_WS = "list";
+	private static final String RESPONSE_OK = "<response><status>OK</status></response>";
+	private static final String LIST_WS = "downloads/list";
 	private static final String STATUS_WS = "status";
 	private static final String REGISTER_DEVICE_WS = "registerDevice";
-	private static final String PUT_DOWNLOAD_WS = "putdownload";
+	private static final String PUT_DOWNLOAD_WS = "downloads/put";
 
 	private final String username;
 	private final String password;
@@ -53,12 +54,14 @@ public class SuperdownloaderWSClientImpl implements SuperdownloaderWSClient {
 
 	public boolean putToDownload(List<Item> toDownload) throws Exception {
 		Map<String, String> params = new HashMap<String, String>();
-		for (Item item : toDownload) {
+		/*for (Item item : toDownload) {
 			params.put("download[]", item.getName());
-		}
+		}*/
+		params.put("name", toDownload.get(0).getName());
+
 		String response = executeRESTWS(PUT_DOWNLOAD_WS, params);
 
-		if ("<response>OK</response>".equals(response)) {
+		if (RESPONSE_OK.equals(response)) {
 			return true;
 		}
 		return false;
@@ -112,7 +115,7 @@ public class SuperdownloaderWSClientImpl implements SuperdownloaderWSClient {
 		params.put("registrationId", registrationId);
 		String response = executeRESTWS(REGISTER_DEVICE_WS, params);
 
-		if ("<response>OK</response>".equals(response)) {
+		if (RESPONSE_OK.equals(response)) {
 			return true;
 		}
 		return false;
