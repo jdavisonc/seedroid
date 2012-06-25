@@ -7,7 +7,7 @@
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="470dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical" >
 
         <TextView
@@ -21,22 +21,6 @@
             android:id="@+id/android:list"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </LinearLayout>
-
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="bottom"
-        android:orientation="vertical" >
-
-        <Button
-            android:id="@+id/listForDownload"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="listForDownloadHandler"
-            android:text="@string/listForDownload" >
-        </Button>
     </LinearLayout>
 
 </LinearLayout>

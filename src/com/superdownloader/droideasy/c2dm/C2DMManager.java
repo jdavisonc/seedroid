@@ -33,6 +33,11 @@ public class C2DMManager {
 		}
 	}
 
+	public static boolean isRegistered(Context context) {
+		String registrationId = C2DMessaging.getRegistrationId(context);
+		return registrationId != null && !"".equals(registrationId);
+	}
+
 	public static void registerWithServer(final Context context,
 			final String deviceRegistrationID) {
 		Log.i("C2DMManager", "Registered and got key: " + deviceRegistrationID);

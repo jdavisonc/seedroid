@@ -9,6 +9,14 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
     
+   <TextView
+        android:id="@+id/c2dm_status"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:textStyle="bold" 
+        android:text="@string/downloading" />
+    
     <Button
         android:id="@+id/register_c2dm"
         android:layout_width="match_parent"

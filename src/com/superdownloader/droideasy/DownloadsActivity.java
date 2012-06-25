@@ -3,8 +3,10 @@ package com.superdownloader.droideasy;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ActionBar;
 import android.app.ListActivity;
-import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,25 +16,29 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 
 import com.superdownloader.droideasy.tools.LauncherUtils;
 import com.superdownloader.droideasy.types.Item;
 import com.superdownloader.droideasy.webservices.SuperdownloaderWSClient;
 import com.superdownloader.droideasy.webservices.SuperdownloaderWSFactory;
 
-public class DroidEasyActivity extends ListActivity implements OnItemClickListener {
+public class DownloadsActivity extends ListActivity implements OnItemClickListener {
 
 	private ArrayAdapter<Item> adapter;
-	private ProgressDialog m_ProgressDialog = null;
 	private ActionMode mActionMode;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
 		// Set adapter
 		adapter = new ArrayAdapter<Item>(this, R.layout.rowbuttonlayout, new ArrayList<Item>());
@@ -43,14 +49,22 @@ public class DroidEasyActivity extends ListActivity implements OnItemClickListen
 		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		getListView().setOnItemClickListener(this);
 
-		m_ProgressDialog = ProgressDialog.show(DroidEasyActivity.this, "Please wait...", "Retrieving data ...", true);
+		getAndFillDownloadsList();
+		setHomeIcon();
+	}
 
-		// Create thread for get data
+	private void setHomeIcon() {
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+	}
+
+	private void getAndFillDownloadsList() {
+		startProgressBar();
 		new Thread(new Runnable() {
 			public void run() {
 				try {
 					// Calling Web Service
-					SuperdownloaderWSClient wsclient = SuperdownloaderWSFactory.getClient(DroidEasyActivity.this);
+					SuperdownloaderWSClient wsclient = SuperdownloaderWSFactory.getClient(DownloadsActivity.this);
 					final List<Item> items = wsclient.getItemsAvaibleForDownload();
 
 					// Render Items
@@ -61,19 +75,56 @@ public class DroidEasyActivity extends ListActivity implements OnItemClickListen
 					});
 				} catch (Exception e) {
 					Log.e("droidEasy", "Error communicating with proEasy.");
-					LauncherUtils.showError("Error communicating with proEasy.", DroidEasyActivity.this);
+					LauncherUtils.showError("Error communicating with proEasy.", DownloadsActivity.this);
 				} finally {
-					m_ProgressDialog.dismiss();
+					runOnUiThread(new Runnable() {
+						public void run() {
+							stopProgressBar();
+						}
+					});
 				}
 			}
 		}, "MagentoBackground").start();
 	}
 
+	private void startProgressBar() {
+		setProgressBarIndeterminateVisibility(true);
+	}
+
+	private void stopProgressBar() {
+		setProgressBarIndeterminateVisibility(false);
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.main_menu, menu);
-		return true;
+		inflater.inflate(R.menu.downloads_menu, menu);
+
+		createFilteredMenu(menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	/**
+	 * Get the SearchView and set the searchable configuration
+	 * @param menu
+	 */
+	private void createFilteredMenu(Menu menu) {
+		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+		searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+		searchView.setOnQueryTextListener(new OnQueryTextListener() {
+
+			public boolean onQueryTextSubmit(String query) {
+				adapter.getFilter().filter(query);
+				return true;
+			}
+
+			public boolean onQueryTextChange(String newText) {
+				adapter.getFilter().filter(newText);
+				return true;
+			}
+		});
 	}
 
 	@Override
@@ -81,6 +132,11 @@ public class DroidEasyActivity extends ListActivity implements OnItemClickListen
 		switch (item.getItemId()) {
 		case R.id.menu_preferences:
 			startActivity(new Intent(this, Preferences.class));
+			return true;
+		case android.R.id.home:
+			Intent intent = new Intent(this, StatusActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -101,22 +157,22 @@ public class DroidEasyActivity extends ListActivity implements OnItemClickListen
 	}
 
 	protected void download(final List<Item> toDownload) {
-
-		m_ProgressDialog = ProgressDialog.show(DroidEasyActivity.this, "Please wait...", "Setting files to download ...", true);
-
-		// Create thread for get data
+		setProgressBarIndeterminateVisibility(true);
 		new Thread(new Runnable() {
 			public void run() {
 				try {
-					// Calling Web Service
-					SuperdownloaderWSClient client = SuperdownloaderWSFactory.getClient(DroidEasyActivity.this);
+					SuperdownloaderWSClient client = SuperdownloaderWSFactory.getClient(DownloadsActivity.this);
 					client.putToDownload(toDownload);
 
 				} catch (Exception e) {
 					Log.e("droidEasy", "Error communicating with proEasy.");
-					LauncherUtils.showError("Error communicating with proEasy.", DroidEasyActivity.this);
+					LauncherUtils.showError("Error communicating with proEasy.", DownloadsActivity.this);
 				} finally {
-					m_ProgressDialog.dismiss();
+					runOnUiThread(new Runnable() {
+						public void run() {
+							stopProgressBar();
+						}
+					});
 				}
 			}
 		}, "MagentoBackground").start();
@@ -172,11 +228,13 @@ public class DroidEasyActivity extends ListActivity implements OnItemClickListen
 			switch (item.getItemId()) {
 			case R.id.menu_download:
 				SparseBooleanArray selected = getListView().getCheckedItemPositions();
-				if (selected.size() > 0) {
+				if (selected != null && selected.size() > 0) {
 					List<Item> toDownload = new ArrayList<Item>();
 					for (int i = 0; i < selected.size(); i++) {
-						Item it = (Item) getListView().getItemAtPosition(selected.keyAt(i));
-						toDownload.add(it);
+						if (selected.valueAt(i)) {
+							Item it = (Item) getListView().getItemAtPosition(selected.keyAt(i));
+							toDownload.add(it);
+						}
 					}
 					download(toDownload);
 				}
@@ -187,7 +245,6 @@ public class DroidEasyActivity extends ListActivity implements OnItemClickListen
 
 			return true;
 		}
-	};
-
+	}
 
 }

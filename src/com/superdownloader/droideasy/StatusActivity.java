@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -27,11 +27,11 @@ import com.superdownloader.droideasy.webservices.SuperdownloaderWSFactory;
 public class StatusActivity extends ListActivity {
 
 	private ItemsAdapter adapter;
-	private ProgressDialog m_ProgressDialog = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
 		setContentView(R.layout.status);
 
@@ -39,9 +39,11 @@ public class StatusActivity extends ListActivity {
 		adapter = new ItemsAdapter(StatusActivity.this, R.layout.status_row, new ArrayList<Item>());
 		setListAdapter(adapter);
 
-		m_ProgressDialog = ProgressDialog.show(StatusActivity.this, "Please wait...", "Retrieving data ...", true);
+		processStatusList();
+	}
 
-		// Create thread for get data
+	private void processStatusList() {
+		startProgressBar();
 		new Thread(new Runnable() {
 			public void run() {
 				try {
@@ -59,10 +61,22 @@ public class StatusActivity extends ListActivity {
 					Log.e("droidEasy", "Error communicating with proEasy.");
 					LauncherUtils.showError("Error communicating with proEasy.", StatusActivity.this);
 				} finally {
-					m_ProgressDialog.dismiss();
+					runOnUiThread(new Runnable() {
+						public void run() {
+							stopProgressBar();
+						}
+					});
 				}
 			}
 		}, "MagentoBackground").start();
+	}
+
+	private void startProgressBar() {
+		setProgressBarIndeterminateVisibility(true);
+	}
+
+	private void stopProgressBar() {
+		setProgressBarIndeterminateVisibility(false);
 	}
 
 	/**
@@ -71,6 +85,7 @@ public class StatusActivity extends ListActivity {
 	 */
 	private void renderItems(List<Item> items) {
 		if (items != null) {
+			adapter.clear();
 			for (Item item : items) {
 				adapter.add(item);
 			}
@@ -126,13 +141,15 @@ public class StatusActivity extends ListActivity {
 		case R.id.menu_preferences:
 			startActivity(new Intent(this, Preferences.class));
 			return true;
+		case R.id.menu_downloads:
+			startActivity(new Intent(this, DownloadsActivity.class));
+			return true;
+		case R.id.menu_refresh:
+			processStatusList();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-	}
-
-	public void listForDownloadHandler(View view) {
-		startActivity(new Intent(this, DroidEasyActivity.class));
 	}
 
 }

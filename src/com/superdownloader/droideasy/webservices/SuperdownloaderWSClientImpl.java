@@ -1,6 +1,7 @@
 package com.superdownloader.droideasy.webservices;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +34,7 @@ public class SuperdownloaderWSClientImpl implements SuperdownloaderWSClient {
 	}
 
 	public List<Item> getItemsAvaibleForDownload() throws Exception {
-		String response = executeRESTWS(LIST_WS, Collections.<String, String> emptyMap());
+		String response = executeRESTWS(LIST_WS, Collections.<String, Object> emptyMap());
 
 		if (response == null) {
 			return null;
@@ -53,14 +54,14 @@ public class SuperdownloaderWSClientImpl implements SuperdownloaderWSClient {
 	}
 
 	public boolean putToDownload(List<Item> toDownload) throws Exception {
-		Map<String, String> params = new HashMap<String, String>();
-		/*for (Item item : toDownload) {
-			params.put("download[]", item.getName());
-		}*/
-		params.put("name", toDownload.get(0).getName());
+		Map<String, Object> params = new HashMap<String, Object>();
+		List<String> fileNames = new ArrayList<String>();
+		for (Item item : toDownload) {
+			fileNames.add(item.getName());
+		}
+		params.put("fileName", fileNames);
 
 		String response = executeRESTWS(PUT_DOWNLOAD_WS, params);
-
 		if (RESPONSE_OK.equals(response)) {
 			return true;
 		}
@@ -68,7 +69,7 @@ public class SuperdownloaderWSClientImpl implements SuperdownloaderWSClient {
 	}
 
 	public List<Item> getStatusOfDownloads() throws Exception {
-		String response = executeRESTWS(STATUS_WS, Collections.<String, String> emptyMap());
+		String response = executeRESTWS(STATUS_WS, Collections.<String, Object> emptyMap());
 
 		if (response == null) {
 			return null;
@@ -91,12 +92,12 @@ public class SuperdownloaderWSClientImpl implements SuperdownloaderWSClient {
 		}
 	}
 
-	private String executeRESTWS(String type, Map<String, String> params) throws Exception {
+	private String executeRESTWS(String type, Map<String, Object> params) throws Exception {
 		RestClient client = new RestClient(server + type);
 
 		client.AddParam("username", username);
-		for (Map.Entry<String, String> entry : params.entrySet()) {
-			client.AddParam(entry.getKey(), entry.getValue());
+		for (Map.Entry<String, Object> entry : params.entrySet()) {
+			addParam(client, entry);
 		}
 		//client.AddHeader("Authorization", "Basic aGFybGV5OnAycHJ1bHo=");
 
@@ -108,9 +109,20 @@ public class SuperdownloaderWSClientImpl implements SuperdownloaderWSClient {
 		}
 	}
 
+	private void addParam(RestClient client, Map.Entry<String, Object> entry) {
+		Object value = entry.getValue();
+		if (value instanceof Collection<?>) {
+			for (Object item : (Collection<?>)value) {
+				client.AddParam(entry.getKey(), item.toString());
+			}
+		} else {
+			client.AddParam(entry.getKey(), value.toString());
+		}
+	}
+
 	public boolean registerDevice(String deviceId, String registrationId)
 			throws Exception {
-		Map<String, String> params = new HashMap<String, String>();
+		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("deviceId", deviceId);
 		params.put("registrationId", registrationId);
 		String response = executeRESTWS(REGISTER_DEVICE_WS, params);
