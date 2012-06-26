@@ -9,20 +9,21 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="1mm" />
+        android:layout_margin="1mm"
+        android:layout_marginTop="2mm"/>
 
     <GridLayout
         android:id="@+id/gridLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="0mm"
         android:columnCount="2" >
 
         <ProgressBar
             android:id="@+id/progressbar"
             style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="300dip"
+            android:layout_width="310dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="1mm"
             android:layout_marginLeft="1mm" 
             android:layout_column="0"
             android:layout_gravity="left"
@@ -32,10 +33,10 @@
             android:id="@+id/percentage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="1mm" 
             android:layout_column="1"
             android:layout_row="0"
-            android:layout_marginBottom="1mm"
-            android:layout_marginRight="1mm" 
+            android:layout_marginRight="2mm" 
             android:text="80%" />
     </GridLayout>
 

@@ -162,8 +162,11 @@ public class DownloadsActivity extends ListActivity implements OnItemClickListen
 			public void run() {
 				try {
 					SuperdownloaderWSClient client = SuperdownloaderWSFactory.getClient(DownloadsActivity.this);
-					client.putToDownload(toDownload);
-
+					if (client.putToDownload(toDownload)) {
+						LauncherUtils.showToast("Downloads are in the queue now!", DownloadsActivity.this);
+					} else {
+						LauncherUtils.showError("There was a problem when enqueuing downloads.", DownloadsActivity.this);
+					}
 				} catch (Exception e) {
 					Log.e("droidEasy", "Error communicating with proEasy.");
 					LauncherUtils.showError("Error communicating with proEasy.", DownloadsActivity.this);

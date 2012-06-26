@@ -11,6 +11,7 @@ import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.widget.Toast;
 
 import com.superdownloader.droideasy.R;
 
@@ -28,6 +29,15 @@ public class LauncherUtils {
 				});
 				AlertDialog alert = builder.create();
 				alert.show();
+			}
+		});
+	}
+
+	public static void showToast(final String notification, final Activity activity) {
+		final int duration = Toast.LENGTH_SHORT;
+		activity.runOnUiThread(new Runnable() {
+			public void run() {
+				Toast.makeText(activity, notification, duration).show();
 			}
 		});
 	}
