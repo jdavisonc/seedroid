@@ -11,16 +11,32 @@
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/downloading_text"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:paddingLeft="8dp"
             android:text="@string/downloading"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/darker_gray"
+            android:background="@color/grey_dark"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <ListView
             android:id="@+id/android:list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"/>
+        
+        <TextView
+            android:id="@+id/in_queue_text"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:paddingLeft="8dp"
+            android:text="@string/in_queue"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/darker_gray"
+            android:background="@color/grey_dark"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
 
 </LinearLayout>

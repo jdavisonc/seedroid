@@ -28,7 +28,7 @@
 
     <application android:icon="@drawable/bittorrent" android:label="@string/app_name" >
         
-        <activity android:name=".StatusActivity" android:label="@string/app_name" >
+        <activity android:name=".StatusActivity" android:label="@string/app_name" android:theme="@style/droidEasyTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,9 +36,9 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".DownloadsActivity" android:label="@string/app_name" />
+        <activity android:name=".DownloadsActivity" android:label="@string/app_name" android:theme="@style/droidEasyTheme"/>
         
-        <activity android:name=".Preferences" android:label="@string/app_name" />
+        <activity android:name=".Preferences" android:label="@string/app_name" android:theme="@style/droidEasyTheme"/>
         
         <service android:name=".c2dm.C2DMReceiver" />
         

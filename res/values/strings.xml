@@ -27,4 +27,5 @@
     <string name="menu_search">Search downloads</string>
     <string name="menu_downloads">Downloads</string>
     <string name="menu_refresh">Refresh</string>
+    <string name="in_queue">In Queue</string>
 </resources>
