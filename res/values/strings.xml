@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">droidEasy</string>
+    <string name="download">Download!</string>
+    <string name="main_no_items">No items to download</string>
+    <string name="menu_save">Save</string>
+    <string name="title_proeasy_username">Username</string>
+    <string name="summary_proeasy_username"></string>
+    <string name="dialog_title_proeasy_username">Set the proEasy username</string>
+    <string name="title_proeasy_password">Password</string>
+    <string name="summary_proeasy_password"></string>
+    <string name="dialog_title_proeasy_password">Set the proEasy password</string>
+    <string name="title_proeasy_server">Server</string>
+    <string name="summary_proeasy_server"></string>
+    <string name="dialog_title_proeasy_server">Set the proEasy server url</string>
+    <string name="preferences">Preferences</string>
+    <string name="menu_preferences">Preferences</string>
+    <string name="wait">Please wait...</string>
+    <string name="retrieving">Retrieving data ...</string>
+    <string name="default_proeasy_server">http://server/webservices/</string>
+    <string name="default_proeasy_username">harley</string>
+    <string name="listForDownload">Files Download</string>
+    <string name="downloading">Downloading</string>
+    <string name="menu_download">Download</string>
+    <string name="preferences_c2dm">C2DM</string>
+    <string name="register_c2dm">Register</string>
+    <string name="menu_search">Search downloads</string>
+    <string name="menu_downloads">Downloads</string>
+    <string name="menu_refresh">Refresh</string>
+    <string name="in_queue">In Queue</string>
+</resources>
