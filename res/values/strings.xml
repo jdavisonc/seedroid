@@ -17,7 +17,7 @@
     <string name="menu_preferences">Preferences</string>
     <string name="wait">Please wait...</string>
     <string name="retrieving">Retrieving data ...</string>
-    <string name="default_proeasy_server">http://ks313077.kimsufi.com:8080/proEasy/webservices/</string>
+    <string name="default_proeasy_server">http://server/webservices/</string>
     <string name="default_proeasy_username">harley</string>
     <string name="listForDownload">Files Download</string>
     <string name="downloading">Downloading</string>

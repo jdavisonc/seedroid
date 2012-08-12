@@ -5,8 +5,8 @@ import android.provider.Settings.Secure;
 import android.util.Log;
 
 import com.google.android.c2dm.C2DMessaging;
-import com.superdownloader.droideasy.webservices.SuperdownloaderWSClient;
-import com.superdownloader.droideasy.webservices.SuperdownloaderWSFactory;
+import com.superdownloader.droideasy.ws.SeedBoxerWSClient;
+import com.superdownloader.droideasy.ws.SeedBoxerWSFactory;
 
 /**
  * @author harley
@@ -47,7 +47,7 @@ public class C2DMManager {
 				// TODO: Add while with exponential backoff for when the server is offline or was a network issue
 				try {
 					String deviceId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
-					SuperdownloaderWSClient client = SuperdownloaderWSFactory.getClient(context);
+					SeedBoxerWSClient client = SeedBoxerWSFactory.getClient(context);
 					boolean success = client.registerDevice(deviceId, deviceRegistrationID);
 					if (!success) {
 						Log.w("C2DMManager", "Registration error: Wrong answer from server");
@@ -67,7 +67,7 @@ public class C2DMManager {
 				// TODO: Add while with exponential backoff for when the server is offline or was a network issue
 				try {
 					String deviceId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
-					SuperdownloaderWSClient client = SuperdownloaderWSFactory.getClient(context);
+					SeedBoxerWSClient client = SeedBoxerWSFactory.getClient(context);
 					boolean success = client.unregisterDevice(deviceId, deviceRegistrationID);
 					if (!success) {
 						Log.w("C2DMManager", "Unregistration error: Wrong answer from server");

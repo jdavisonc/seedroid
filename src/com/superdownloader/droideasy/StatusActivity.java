@@ -21,8 +21,8 @@ import android.widget.TextView;
 
 import com.superdownloader.droideasy.tools.LauncherUtils;
 import com.superdownloader.droideasy.types.Item;
-import com.superdownloader.droideasy.webservices.SuperdownloaderWSClient;
-import com.superdownloader.droideasy.webservices.SuperdownloaderWSFactory;
+import com.superdownloader.droideasy.ws.SeedBoxerWSClient;
+import com.superdownloader.droideasy.ws.SeedBoxerWSFactory;
 
 public class StatusActivity extends ListActivity {
 
@@ -49,7 +49,7 @@ public class StatusActivity extends ListActivity {
 			public void run() {
 				try {
 					// Calling Web Service
-					SuperdownloaderWSClient wsclient = SuperdownloaderWSFactory.getClient(StatusActivity.this);
+					SeedBoxerWSClient wsclient = SeedBoxerWSFactory.getClient(StatusActivity.this);
 					final List<Item> items = wsclient.getStatusOfDownloads();
 
 					// Render Items

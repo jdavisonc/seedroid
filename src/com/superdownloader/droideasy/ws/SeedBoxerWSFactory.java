@@ -1,15 +1,15 @@
-package com.superdownloader.droideasy.webservices;
+package com.superdownloader.droideasy.ws;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.superdownloader.droideasy.tools.Prefs;
 
-public class SuperdownloaderWSFactory {
+public class SeedBoxerWSFactory {
 
-	private static SuperdownloaderWSClient client = null;
+	private static SeedBoxerWSClient client = null;
 
-	public static SuperdownloaderWSClient getClient(Context context) {
+	public static SeedBoxerWSClient getClient(Context context) {
 		if (client == null) {
 			SharedPreferences sharedPrefs = Prefs.get(context);
 
@@ -18,7 +18,7 @@ public class SuperdownloaderWSFactory {
 			String serverUrl = sharedPrefs.getString("proeasy_server", "");
 
 			// Initialize
-			client = new SuperdownloaderWSClientImpl(username, password, serverUrl);
+			client = new SeedBoxerWSClientImpl(username, password, serverUrl);
 		}
 		return client;
 	}

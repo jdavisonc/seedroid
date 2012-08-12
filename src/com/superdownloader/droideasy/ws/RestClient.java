@@ -1,4 +1,4 @@
-package com.superdownloader.droideasy.webservices;
+package com.superdownloader.droideasy.ws;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -13,10 +13,11 @@ import android.widget.TextView;
 
 import com.superdownloader.droideasy.c2dm.C2DMManager;
 import com.superdownloader.droideasy.tools.Prefs;
-import com.superdownloader.droideasy.webservices.SuperdownloaderWSFactory;
+import com.superdownloader.droideasy.ws.SeedBoxerWSFactory;
 
 public class Preferences extends PreferenceActivity {
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -58,7 +59,7 @@ public class Preferences extends PreferenceActivity {
 
 	OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = new OnSharedPreferenceChangeListener() {
 		public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-			SuperdownloaderWSFactory.changePreferences();
+			SeedBoxerWSFactory.changePreferences();
 		}
 	};
 

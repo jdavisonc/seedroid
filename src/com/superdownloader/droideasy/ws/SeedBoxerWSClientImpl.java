@@ -1,4 +1,5 @@
-package com.superdownloader.droideasy.webservices;
+package com.superdownloader.droideasy.ws;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,9 +16,9 @@ import org.w3c.dom.NodeList;
 import com.superdownloader.droideasy.tools.XMLfunctions;
 import com.superdownloader.droideasy.types.Item;
 
-public class SuperdownloaderWSClientImpl implements SuperdownloaderWSClient {
+public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 
-	private static final String RESPONSE_OK = "<response><status>OK</status></response>";
+	private static final String RESPONSE_OK = "<response>\n<status>OK</status>\n</response>";
 	private static final String LIST_WS = "downloads/list";
 	private static final String STATUS_WS = "status";
 	private static final String REGISTER_DEVICE_WS = "registerDevice";
@@ -27,7 +28,7 @@ public class SuperdownloaderWSClientImpl implements SuperdownloaderWSClient {
 	private final String password;
 	private final String server;
 
-	public SuperdownloaderWSClientImpl(String username, String password, String server) {
+	public SeedBoxerWSClientImpl(String username, String password, String server) {
 		this.username = username;
 		this.password = password;
 		this.server = server;
@@ -75,7 +76,7 @@ public class SuperdownloaderWSClientImpl implements SuperdownloaderWSClient {
 			return null;
 		} else {
 			Document doc = XMLfunctions.XMLfromString(response);
-			Node nodes = doc.getElementsByTagName("uploads").item(0);
+			Node nodes = doc.getElementsByTagName("downloads").item(0);
 			NodeList list = nodes.getChildNodes();
 			List<Item> items = new ArrayList<Item>();
 			for (int i = 0; i < list.getLength(); i++) {

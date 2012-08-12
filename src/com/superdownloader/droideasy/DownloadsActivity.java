@@ -26,8 +26,8 @@ import android.widget.SearchView.OnQueryTextListener;
 
 import com.superdownloader.droideasy.tools.LauncherUtils;
 import com.superdownloader.droideasy.types.Item;
-import com.superdownloader.droideasy.webservices.SuperdownloaderWSClient;
-import com.superdownloader.droideasy.webservices.SuperdownloaderWSFactory;
+import com.superdownloader.droideasy.ws.SeedBoxerWSClient;
+import com.superdownloader.droideasy.ws.SeedBoxerWSFactory;
 
 public class DownloadsActivity extends ListActivity implements OnItemClickListener {
 
@@ -64,7 +64,7 @@ public class DownloadsActivity extends ListActivity implements OnItemClickListen
 			public void run() {
 				try {
 					// Calling Web Service
-					SuperdownloaderWSClient wsclient = SuperdownloaderWSFactory.getClient(DownloadsActivity.this);
+					SeedBoxerWSClient wsclient = SeedBoxerWSFactory.getClient(DownloadsActivity.this);
 					final List<Item> items = wsclient.getItemsAvaibleForDownload();
 
 					// Render Items
@@ -161,7 +161,7 @@ public class DownloadsActivity extends ListActivity implements OnItemClickListen
 		new Thread(new Runnable() {
 			public void run() {
 				try {
-					SuperdownloaderWSClient client = SuperdownloaderWSFactory.getClient(DownloadsActivity.this);
+					SeedBoxerWSClient client = SeedBoxerWSFactory.getClient(DownloadsActivity.this);
 					if (client.putToDownload(toDownload)) {
 						LauncherUtils.showToast("Downloads are in the queue now!", DownloadsActivity.this);
 					} else {

@@ -1,10 +1,10 @@
-package com.superdownloader.droideasy.webservices;
+package com.superdownloader.droideasy.ws;
 
 import java.util.List;
 
 import com.superdownloader.droideasy.types.Item;
 
-public interface SuperdownloaderWSClient {
+public interface SeedBoxerWSClient {
 
 	public List<Item> getItemsAvaibleForDownload() throws Exception;
 
