@@ -1,4 +1,2 @@
-seedroid
+Seedroid
 ========
-
-seedroid

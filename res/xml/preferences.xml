@@ -1,28 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- This is a primitive example showing the different types of preferences available. -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <PreferenceCategory android:title="@string/preferences" >
-        <EditTextPreference
-            android:defaultValue="@string/default_proeasy_username"
-            android:dialogTitle="@string/dialog_title_proeasy_username"
-            android:key="proeasy_username"
-            android:summary="@string/summary_proeasy_username"
-            android:title="@string/title_proeasy_username" />
-        <EditTextPreference
-            android:dialogTitle="@string/dialog_title_proeasy_password"
-            android:key="proeasy_password"
-            android:summary="@string/summary_proeasy_password"
-            android:title="@string/title_proeasy_password" />
-        <EditTextPreference
-            android:defaultValue="@string/default_proeasy_server"
-            android:dialogTitle="@string/dialog_title_proeasy_server"
-            android:key="proeasy_server"
-            android:summary="@string/summary_proeasy_server"
-            android:title="@string/title_proeasy_server" />
-    </PreferenceCategory>
-    
-    <PreferenceCategory android:title="@string/preferences_c2dm" >
-    </PreferenceCategory>
-
-</PreferenceScreen>
+<!--
+  preferences.xml
+  
+  Copyright (c) 2012 SeedBoxer Team.
+  
+  This file is part of Seedroid.
+  
+  Seedroid is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  
+  Seedroid is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
+-->
