@@ -18,15 +18,15 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.superdownloader.droideasy.c2dm;
+package com.seedboxer.seedroid.c2dm;
 
 import android.content.Context;
 import android.provider.Settings.Secure;
 import android.util.Log;
 
 import com.google.android.c2dm.C2DMessaging;
-import com.superdownloader.droideasy.ws.SeedBoxerWSClient;
-import com.superdownloader.droideasy.ws.SeedBoxerWSFactory;
+import com.seedboxer.seedroid.ws.SeedBoxerWSClient;
+import com.seedboxer.seedroid.ws.SeedBoxerWSFactory;
 
 /**
  * @author harley

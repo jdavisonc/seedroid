@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.superdownloader.droideasy.tools;
+package com.seedboxer.seedroid.tools;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -33,7 +33,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.widget.Toast;
 
-import com.superdownloader.droideasy.R;
+import com.seedboxer.seedroid.R;
 
 public class LauncherUtils {
 

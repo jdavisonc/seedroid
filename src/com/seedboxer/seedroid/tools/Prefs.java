@@ -1,5 +1,5 @@
 /*******************************************************************************
- * SeedBoxerWSClient.java
+ * Prefs.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -18,22 +18,23 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.superdownloader.droideasy.ws;
+/**
+ * 
+ */
+package com.seedboxer.seedroid.tools;
 
-import java.util.List;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
-import com.superdownloader.droideasy.types.Item;
+/**
+ * @author harley
+ *
+ */
+public final class Prefs {
 
-public interface SeedBoxerWSClient {
-
-	public List<Item> getItemsAvaibleForDownload() throws Exception;
-
-	public List<Item> getStatusOfDownloads() throws Exception;
-
-	public boolean putToDownload(List<Item> toDownload) throws Exception;
-
-	public boolean registerDevice(String deviceId, String registrationId) throws Exception;
-
-	public boolean unregisterDevice(String deviceId, String registrationId) throws Exception;
+	public static SharedPreferences get(Context context) {
+		return PreferenceManager.getDefaultSharedPreferences(context);
+	}
 
 }
