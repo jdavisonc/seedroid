@@ -20,7 +20,7 @@
   along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.superdownloader.droideasy"
+    package="com.seedboxer.seedroid"
     android:versionCode="3"
     android:versionName="1.6" >
 
@@ -30,8 +30,8 @@
     <!-- ** Permissions ** -->
     
     <!-- Only this application can receive the messages and registration result -->
-    <permission android:name="com.superdownloader.droideasy.permission.C2D_MESSAGE" android:protectionLevel="signature" />
-    <uses-permission android:name="com.superdownloader.droideasy.permission.C2D_MESSAGE" />
+    <permission android:name="com.seedboxer.seedroid.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <uses-permission android:name="com.seedboxer.seedroid.permission.C2D_MESSAGE" />
 
     <!-- This app has permission to register and receive message -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -48,7 +48,7 @@
 
     <application android:icon="@drawable/bittorrent" android:label="@string/app_name" >
         
-        <activity android:name=".StatusActivity" android:label="@string/app_name" android:theme="@style/droidEasyTheme">
+        <activity android:name=".StatusActivity" android:label="@string/app_name" android:theme="@style/seedroidTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,9 +56,9 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".DownloadsActivity" android:label="@string/app_name" android:theme="@style/droidEasyTheme"/>
+        <activity android:name=".DownloadsActivity" android:label="@string/app_name" android:theme="@style/seedroidTheme"/>
         
-        <activity android:name=".Preferences" android:label="@string/app_name" android:theme="@style/droidEasyTheme"/>
+        <activity android:name=".Preferences" android:label="@string/app_name" android:theme="@style/seedroidTheme"/>
         
         <service android:name=".c2dm.C2DMReceiver" />
         
@@ -69,12 +69,12 @@
             <!-- Receive the actual message -->
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="com.superdownloader.droideasy" />
+                <category android:name="com.seedboxer.seedroid" />
             </intent-filter>
             <!-- Receive the registration id -->
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="com.superdownloader.droideasy" />
+                <category android:name="com.seedboxer.seedroid" />
             </intent-filter>
         </receiver>
         

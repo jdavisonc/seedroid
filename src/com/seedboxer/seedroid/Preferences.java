@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.superdownloader.droideasy;
+package com.seedboxer.seedroid;
 
 import android.app.ActionBar;
 import android.content.Intent;
@@ -31,9 +31,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.superdownloader.droideasy.c2dm.C2DMManager;
-import com.superdownloader.droideasy.tools.Prefs;
-import com.superdownloader.droideasy.ws.SeedBoxerWSFactory;
+import com.seedboxer.seedroid.c2dm.C2DMManager;
+import com.seedboxer.seedroid.tools.Prefs;
+import com.seedboxer.seedroid.ws.SeedBoxerWSFactory;
 
 public class Preferences extends PreferenceActivity {
 

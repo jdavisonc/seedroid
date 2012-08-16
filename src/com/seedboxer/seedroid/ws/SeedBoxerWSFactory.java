@@ -18,12 +18,12 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.superdownloader.droideasy.ws;
+package com.seedboxer.seedroid.ws;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.superdownloader.droideasy.tools.Prefs;
+import com.seedboxer.seedroid.tools.Prefs;
 
 public class SeedBoxerWSFactory {
 

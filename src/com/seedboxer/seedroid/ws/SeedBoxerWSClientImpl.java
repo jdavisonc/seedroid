@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.superdownloader.droideasy.ws;
+package com.seedboxer.seedroid.ws;
 
 
 import java.util.ArrayList;
@@ -33,8 +33,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.superdownloader.droideasy.tools.XMLfunctions;
-import com.superdownloader.droideasy.types.Item;
+import com.seedboxer.seedroid.tools.XMLfunctions;
+import com.seedboxer.seedroid.types.Item;
 
 public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 

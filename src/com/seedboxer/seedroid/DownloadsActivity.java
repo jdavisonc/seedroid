@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.superdownloader.droideasy;
+package com.seedboxer.seedroid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,10 +44,10 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
-import com.superdownloader.droideasy.tools.LauncherUtils;
-import com.superdownloader.droideasy.types.Item;
-import com.superdownloader.droideasy.ws.SeedBoxerWSClient;
-import com.superdownloader.droideasy.ws.SeedBoxerWSFactory;
+import com.seedboxer.seedroid.tools.LauncherUtils;
+import com.seedboxer.seedroid.types.Item;
+import com.seedboxer.seedroid.ws.SeedBoxerWSClient;
+import com.seedboxer.seedroid.ws.SeedBoxerWSFactory;
 
 public class DownloadsActivity extends ListActivity implements OnItemClickListener {
 

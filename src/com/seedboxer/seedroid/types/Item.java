@@ -1,5 +1,5 @@
 /*******************************************************************************
- * RequestMethod.java
+ * Item.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -18,10 +18,61 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.superdownloader.droideasy.ws;
+package com.seedboxer.seedroid.types;
 
-public enum RequestMethod {
+public class Item {
 
-	GET, POST;
+	private String name;
+
+	private long size;
+
+	private long transferred;
+	
+	private boolean selected;
+
+	public Item() { }
+
+	public Item(String name, long size, long transferred) {
+		this.name = name;
+		this.size = size;
+		this.transferred = transferred;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public long getSize() {
+		return size;
+	}
+
+	public void setSize(long size) {
+		this.size = size;
+	}
+
+	public long getTransferred() {
+		return transferred;
+	}
+
+	public void setTransferred(long transferred) {
+		this.transferred = transferred;
+	}
+	
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
+	
+	public boolean isSelected() {
+		return selected;
+	}
+	
+	@Override
+	public String toString() {
+		return name;
+	}
 
 }

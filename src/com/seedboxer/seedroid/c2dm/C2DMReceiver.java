@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.superdownloader.droideasy.c2dm;
+package com.seedboxer.seedroid.c2dm;
 
 import java.io.IOException;
 
@@ -29,8 +29,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.c2dm.C2DMBaseReceiver;
-import com.superdownloader.droideasy.tools.LauncherUtils;
-import com.superdownloader.droideasy.tools.Prefs;
+import com.seedboxer.seedroid.tools.LauncherUtils;
+import com.seedboxer.seedroid.tools.Prefs;
 
 public class C2DMReceiver extends C2DMBaseReceiver {
 

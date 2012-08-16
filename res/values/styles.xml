@@ -20,7 +20,7 @@
   along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
 -->
 <resources>
-	<style name="droidEasyTheme" parent="@android:style/Theme.Holo">
+	<style name="seedroidTheme" parent="@android:style/Theme.Holo">
 	    <item name="android:actionBarStyle">@style/ActionBarIPS</item>
 	</style>
 	

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Item.java
+ * SeedBoxerWSClient.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -18,61 +18,22 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.superdownloader.droideasy.types;
+package com.seedboxer.seedroid.ws;
 
-public class Item {
+import java.util.List;
 
-	private String name;
+import com.seedboxer.seedroid.types.Item;
 
-	private long size;
+public interface SeedBoxerWSClient {
 
-	private long transferred;
-	
-	private boolean selected;
+	public List<Item> getItemsAvaibleForDownload() throws Exception;
 
-	public Item() { }
+	public List<Item> getStatusOfDownloads() throws Exception;
 
-	public Item(String name, long size, long transferred) {
-		this.name = name;
-		this.size = size;
-		this.transferred = transferred;
-	}
+	public boolean putToDownload(List<Item> toDownload) throws Exception;
 
-	public String getName() {
-		return name;
-	}
+	public boolean registerDevice(String deviceId, String registrationId) throws Exception;
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public long getSize() {
-		return size;
-	}
-
-	public void setSize(long size) {
-		this.size = size;
-	}
-
-	public long getTransferred() {
-		return transferred;
-	}
-
-	public void setTransferred(long transferred) {
-		this.transferred = transferred;
-	}
-	
-	public void setSelected(boolean selected) {
-		this.selected = selected;
-	}
-	
-	public boolean isSelected() {
-		return selected;
-	}
-	
-	@Override
-	public String toString() {
-		return name;
-	}
+	public boolean unregisterDevice(String deviceId, String registrationId) throws Exception;
 
 }

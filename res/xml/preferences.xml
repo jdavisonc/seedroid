@@ -19,3 +19,29 @@
   You should have received a copy of the GNU General Public License
   along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
 -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/preferences" >
+        <EditTextPreference
+            android:defaultValue="@string/default_seedroid_username"
+            android:dialogTitle="@string/dialog_title_seedroid_username"
+            android:key="seedroid_username"
+            android:summary="@string/summary_seedroid_username"
+            android:title="@string/title_seedroid_username" />
+        <EditTextPreference
+            android:dialogTitle="@string/dialog_title_seedroid_password"
+            android:key="seedroid_password"
+            android:summary="@string/summary_seedroid_password"
+            android:title="@string/title_seedroid_password" />
+        <EditTextPreference
+            android:defaultValue="@string/default_seedroid_server"
+            android:dialogTitle="@string/dialog_title_seedroid_server"
+            android:key="seedroid_server"
+            android:summary="@string/summary_seedroid_server"
+            android:title="@string/title_seedroid_server" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/preferences_c2dm" >
+    </PreferenceCategory>
+
+</PreferenceScreen>
