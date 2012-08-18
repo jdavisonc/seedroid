@@ -38,7 +38,8 @@ import com.seedboxer.seedroid.types.Item;
 
 public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 
-	private static final String RESPONSE_OK = "<response>\n<status>OK</status>\n</response>";
+	private static final String RESPONSE_OK = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
+			"<response>\n<status>OK</status>\n</response>";
 	private static final String WS_PREFIX = "webservices/";
 	private static final String LIST_WS = WS_PREFIX + "downloads/list";
 	private static final String STATUS_WS = WS_PREFIX + "status";
