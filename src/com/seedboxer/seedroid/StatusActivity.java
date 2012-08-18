@@ -79,8 +79,8 @@ public class StatusActivity extends ListActivity {
 						}
 					});
 				} catch (Exception e) {
-					Log.e("droidEasy", "Error communicating with proEasy.");
-					LauncherUtils.showError("Error communicating with proEasy.", StatusActivity.this);
+					Log.e("seedroid", "Error communicating with SeedBoxer.");
+					LauncherUtils.showError("Error communicating with SeedBoxer.", StatusActivity.this);
 				} finally {
 					runOnUiThread(new Runnable() {
 						public void run() {

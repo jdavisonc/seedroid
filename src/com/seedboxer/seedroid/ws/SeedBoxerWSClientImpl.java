@@ -39,19 +39,23 @@ import com.seedboxer.seedroid.types.Item;
 public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 
 	private static final String RESPONSE_OK = "<response>\n<status>OK</status>\n</response>";
-	private static final String LIST_WS = "downloads/list";
-	private static final String STATUS_WS = "status";
-	private static final String REGISTER_DEVICE_WS = "registerDevice";
-	private static final String PUT_DOWNLOAD_WS = "downloads/put";
+	private static final String WS_PREFIX = "webservices/";
+	private static final String LIST_WS = WS_PREFIX + "downloads/list";
+	private static final String STATUS_WS = WS_PREFIX + "status";
+	private static final String REGISTER_DEVICE_WS = WS_PREFIX + "registerDevice";
+	private static final String PUT_DOWNLOAD_WS = WS_PREFIX + "downloads/put";
 
-	private final String username;
-	private final String password;
-	private final String server;
+	private String username;
+	private String password;
+	private String server;
 
 	public SeedBoxerWSClientImpl(String username, String password, String server) {
 		this.username = username;
 		this.password = password;
 		this.server = server;
+		if (!server.endsWith("/")) {
+			this.server = this.server + "/";
+		}
 	}
 
 	public List<Item> getItemsAvaibleForDownload() throws Exception {

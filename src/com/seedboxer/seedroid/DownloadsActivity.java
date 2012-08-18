@@ -94,8 +94,8 @@ public class DownloadsActivity extends ListActivity implements OnItemClickListen
 						}
 					});
 				} catch (Exception e) {
-					Log.e("droidEasy", "Error communicating with proEasy.");
-					LauncherUtils.showError("Error communicating with proEasy.", DownloadsActivity.this);
+					Log.e("seedroid", "Error communicating with SeedBoxer.");
+					LauncherUtils.showError("Error communicating with SeedBoxer.", DownloadsActivity.this);
 				} finally {
 					runOnUiThread(new Runnable() {
 						public void run() {
@@ -188,8 +188,8 @@ public class DownloadsActivity extends ListActivity implements OnItemClickListen
 						LauncherUtils.showError("There was a problem when enqueuing downloads.", DownloadsActivity.this);
 					}
 				} catch (Exception e) {
-					Log.e("droidEasy", "Error communicating with proEasy.");
-					LauncherUtils.showError("Error communicating with proEasy.", DownloadsActivity.this);
+					Log.e("seedroid", "Error communicating with SeedBoxer.");
+					LauncherUtils.showError("Error communicating with SeedBoxer.", DownloadsActivity.this);
 				} finally {
 					runOnUiThread(new Runnable() {
 						public void run() {

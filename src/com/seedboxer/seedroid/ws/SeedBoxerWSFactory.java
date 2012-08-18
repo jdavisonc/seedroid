@@ -33,9 +33,9 @@ public class SeedBoxerWSFactory {
 		if (client == null) {
 			SharedPreferences sharedPrefs = Prefs.get(context);
 
-			String username = sharedPrefs.getString("proeasy_username", "");
-			String password = sharedPrefs.getString("proeasy_password", "");
-			String serverUrl = sharedPrefs.getString("proeasy_server", "");
+			String username = sharedPrefs.getString("seedroid_username", "");
+			String password = sharedPrefs.getString("seedroid_password", "");
+			String serverUrl = sharedPrefs.getString("seedroid_server", "");
 
 			// Initialize
 			client = new SeedBoxerWSClientImpl(username, password, serverUrl);
