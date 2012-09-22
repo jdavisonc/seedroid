@@ -32,6 +32,10 @@ public interface SeedBoxerWSClient {
 
 	public boolean putToDownload(List<Item> toDownload) throws Exception;
 
+	public List<Item> getQueue() throws Exception;
+
+	public boolean removeFromQueue(long id) throws Exception;
+
 	public boolean registerDevice(String deviceId, String registrationId) throws Exception;
 
 	public boolean unregisterDevice(String deviceId, String registrationId) throws Exception;

@@ -23,7 +23,8 @@ package com.seedboxer.seedroid;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.ListActivity;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -44,9 +46,11 @@ import com.seedboxer.seedroid.types.Item;
 import com.seedboxer.seedroid.ws.SeedBoxerWSClient;
 import com.seedboxer.seedroid.ws.SeedBoxerWSFactory;
 
-public class StatusActivity extends ListActivity {
+public class StatusActivity extends Activity {
 
-	private ItemsAdapter adapter;
+	private ItemsAdapter statusItemsAdapter;
+
+	private InQueueItemsAdapter inQueueItemsAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -57,25 +61,32 @@ public class StatusActivity extends ListActivity {
 		setContentView(R.layout.status);
 
 		// Set adapter
-		adapter = new ItemsAdapter(StatusActivity.this, R.layout.status_row, new ArrayList<Item>());
-		setListAdapter(adapter);
+		ListView statusList = (ListView) findViewById(R.id.status_list);
+		statusItemsAdapter = new ItemsAdapter(StatusActivity.this, R.layout.status_row, new ArrayList<Item>());
+		statusList.setAdapter(statusItemsAdapter);
 
-		processStatusList();
+		ListView inQueueList = (ListView) findViewById(R.id.in_queue_list);
+		inQueueItemsAdapter = new InQueueItemsAdapter(StatusActivity.this, R.layout.queue_row, new ArrayList<Item>());
+		inQueueList.setAdapter(inQueueItemsAdapter);
+
+		processLists();
 	}
 
-	private void processStatusList() {
+	private void processLists() {
 		startProgressBar();
 		new Thread(new Runnable() {
 			public void run() {
 				try {
 					// Calling Web Service
 					SeedBoxerWSClient wsclient = SeedBoxerWSFactory.getClient(StatusActivity.this);
-					final List<Item> items = wsclient.getStatusOfDownloads();
+					final List<Item> statusItems = wsclient.getStatusOfDownloads();
+					final List<Item> inQueueItems = wsclient.getQueue();
 
 					// Render Items
 					runOnUiThread(new Runnable() {
 						public void run() {
-							renderItems(items);
+							renderList(statusItemsAdapter, statusItems);
+							renderList(inQueueItemsAdapter, inQueueItems);
 						}
 					});
 				} catch (Exception e) {
@@ -104,12 +115,11 @@ public class StatusActivity extends ListActivity {
 	 * Method for add items to adapter and render it
 	 * @param items
 	 */
-	private void renderItems(List<Item> items) {
+	@TargetApi(11)
+	private void renderList(ArrayAdapter<Item> adapter, List<Item> items) {
 		if (items != null) {
 			adapter.clear();
-			for (Item item : items) {
-				adapter.add(item);
-			}
+			adapter.addAll(items);
 			adapter.notifyDataSetChanged();
 		}
 	}
@@ -149,6 +159,32 @@ public class StatusActivity extends ListActivity {
 		}
 	}
 
+	/**
+	 * Custom Adapter for render in queue item
+	 * @author harley
+	 *
+	 */
+	public class InQueueItemsAdapter extends ArrayAdapter<Item> {
+
+		public InQueueItemsAdapter(Context context, int textViewResourceId, List<Item> items) {
+			super(context, textViewResourceId, items);
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View row = convertView;
+			if (row == null) {
+				LayoutInflater inflater = getLayoutInflater();
+				row = inflater.inflate(R.layout.queue_row, parent, false);
+			}
+
+			Item item = getItem(position);
+			TextView label = (TextView) row.findViewById(R.id.name);
+			label.setText(item.getName());
+			return row;
+		}
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -166,7 +202,7 @@ public class StatusActivity extends ListActivity {
 			startActivity(new Intent(this, DownloadsActivity.class));
 			return true;
 		case R.id.menu_refresh:
-			processStatusList();
+			processLists();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

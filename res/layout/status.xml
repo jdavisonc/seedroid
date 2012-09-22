@@ -42,9 +42,9 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <ListView
-            android:id="@+id/android:list"
+            android:id="@+id/status_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:layout_marginBottom="8dp"/>
         
         <TextView
@@ -57,6 +57,13 @@
             android:textColor="@android:color/darker_gray"
             android:background="@color/grey_dark"
             android:textAppearance="?android:attr/textAppearanceLarge" />
+        
+        <ListView
+            android:id="@+id/in_queue_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"/>
+        
     </LinearLayout>
 
 </LinearLayout>

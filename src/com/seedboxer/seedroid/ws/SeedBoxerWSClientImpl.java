@@ -40,10 +40,12 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 
 	private static final String RESPONSE_OK = "<status>OK</status>";
 	private static final String WS_PREFIX = "webservices/";
-	private static final String LIST_WS = WS_PREFIX + "downloads/list";
+	private static final String LIST_DOWNLOAD_WS = WS_PREFIX + "downloads/list";
+	private static final String DOWNLOADS_PUT_WS = WS_PREFIX + "downloads/put";
+	private static final String DOWNLOADS_DELETE_WS = WS_PREFIX + "downloads/delete";
+	private static final String DOWNLOADS_QUEUE_WS = WS_PREFIX + "downloads/queue";
 	private static final String STATUS_WS = WS_PREFIX + "status";
 	private static final String REGISTER_DEVICE_WS = WS_PREFIX + "registerDevice";
-	private static final String PUT_DOWNLOAD_WS = WS_PREFIX + "downloads/put";
 
 	private String username;
 	private String password;
@@ -59,23 +61,30 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 	}
 
 	public List<Item> getItemsAvaibleForDownload() throws Exception {
-		String response = executeRESTWS(LIST_WS, Collections.<String, Object> emptyMap());
+		String response = executeRESTWS(LIST_DOWNLOAD_WS, Collections.<String, Object> emptyMap());
 
 		if (response == null) {
 			return null;
 		} else {
-			Document doc = XMLfunctions.XMLfromString(response);
-			Node nodes = doc.getElementsByTagName("files").item(0);
-			NodeList list = nodes.getChildNodes();
-			List<Item> items = new ArrayList<Item>();
-			for (int i = 0; i < list.getLength(); i++) {
-				Element e = (Element) list.item(i);
-				Item item = new Item();
-				item.setName(XMLfunctions.getElementValue(e.getChildNodes().item(1))); // name
-				items.add(item);
-			}
-			return items;
+			return parseFilesValue(response);
 		}
+	}
+
+	private List<Item> parseFilesValue(String response) {
+		Document doc = XMLfunctions.XMLfromString(response);
+		Node nodes = doc.getElementsByTagName("files").item(0);
+		NodeList list = nodes.getChildNodes();
+		List<Item> items = new ArrayList<Item>();
+		for (int i = 0; i < list.getLength(); i++) {
+			Element e = (Element) list.item(i);
+			NodeList childNodes = e.getChildNodes();
+
+			boolean downloaded = Boolean.parseBoolean(XMLfunctions.getElementValue(childNodes.item(0)));
+			String name = XMLfunctions.getElementValue(childNodes.item(1)); // name
+			long queueId = Long.parseLong(XMLfunctions.getElementValue(childNodes.item(2))); // name
+			items.add(new Item(name, queueId, downloaded));
+		}
+		return items;
 	}
 
 	public boolean putToDownload(List<Item> toDownload) throws Exception {
@@ -86,7 +95,7 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 		}
 		params.put("fileName", fileNames);
 
-		String response = executeRESTWS(PUT_DOWNLOAD_WS, params);
+		String response = executeRESTWS(DOWNLOADS_PUT_WS, params);
 		if (response != null && response.contains(RESPONSE_OK)) {
 			return true;
 		}
@@ -161,6 +170,25 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 	public boolean unregisterDevice(String deviceId, String registrationId)
 			throws Exception {
 		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public List<Item> getQueue() throws Exception {
+		String response = executeRESTWS(DOWNLOADS_QUEUE_WS, Collections.<String, Object> emptyMap());
+
+		if (response == null) {
+			return null;
+		} else {
+			return parseFilesValue(response);
+		}
+	}
+
+	public boolean removeFromQueue(long queueId) throws Exception {
+		String response = executeRESTWS(DOWNLOADS_DELETE_WS, Collections.singletonMap("downloadId", (Object)queueId));
+
+		if (response != null && response.contains(RESPONSE_OK)) {
+			return true;
+		}
 		return false;
 	}
 
