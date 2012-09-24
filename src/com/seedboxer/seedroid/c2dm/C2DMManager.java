@@ -25,6 +25,7 @@ import android.provider.Settings.Secure;
 import android.util.Log;
 
 import com.google.android.c2dm.C2DMessaging;
+import com.seedboxer.seedroid.tools.Prefs;
 import com.seedboxer.seedroid.ws.SeedBoxerWSClient;
 import com.seedboxer.seedroid.ws.SeedBoxerWSFactory;
 
@@ -39,17 +40,23 @@ public class C2DMManager {
 	public static final int AUTH_ERROR_STATUS = 2;
 	public static final int UNREGISTERED_STATUS = 3;
 	public static final int ERROR_STATUS = 4;
-	private static final String APP_C2DM_ID = "superdownloaderserver@gmail.com";
 
 	public static void verifyRegistration(Context context) {
 		String registrationId = C2DMessaging.getRegistrationId(context);
+
 		if(registrationId != null && !"".equals(registrationId)){
 			Log.i("GenericNotifier", "Already registered. registrationId is " + registrationId);
 			// If it was intentionally verified, register to server again
 			registerWithServer(context, registrationId);
-		}else{
-			Log.i("GenericNotifier", "No existing registrationId. Registering..");
-			C2DMessaging.register(context, APP_C2DM_ID);
+		} else {
+			String projectId = Prefs.get(context).getString(Prefs.PROJECT_ID, "");;
+			if (!projectId.isEmpty()) {
+				Log.i("GenericNotifier", "No existing registrationId. Registering...");
+				C2DMessaging.register(context, projectId);
+			} else {
+				Log.e("GenericNotifier", "There is not a project ID set.");
+				throw new IllegalArgumentException("There is not a project ID set.");
+			}
 		}
 	}
 

@@ -63,24 +63,18 @@ public class LauncherUtils {
 	}
 
 	public static void generateNotification(Context context, String title, String message) {
-		int icon = R.drawable.bittorrent;
-		long when = System.currentTimeMillis();
-		Notification notification = new Notification(icon, title, when);
-
-		// Hide the notification after its selected
-		notification.flags |= Notification.FLAG_AUTO_CANCEL;
-
-		//Intent intent = new Intent(context, RegistrationResultActivity.class);
-		//intent.putExtra("registration_id", registrationId);
-		//PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-		//notification.setLatestEventInfo(context, "Registration", "Successfully registered", pendingIntent);
-		notification.setLatestEventInfo(context, title, message, null);
+		Notification.Builder builder = new Notification.Builder(context);
+		builder.setSmallIcon(R.drawable.bittorrent);
+		builder.setContentTitle(title);
+		builder.setContentText(message);
+		builder.setWhen(System.currentTimeMillis());
+		builder.setAutoCancel(true);
 
 		SharedPreferences settings = Prefs.get(context);
 		int notificatonID = settings.getInt("notificationID", 0);
 
 		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		notificationManager.notify(notificatonID, notification);
+		notificationManager.notify(notificatonID, builder.getNotification());
 		playNotificationSound(context);
 
 		SharedPreferences.Editor editor = settings.edit();
