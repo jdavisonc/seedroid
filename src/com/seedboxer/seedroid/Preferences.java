@@ -32,6 +32,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.seedboxer.seedroid.c2dm.C2DMManager;
+import com.seedboxer.seedroid.tools.LauncherUtils;
 import com.seedboxer.seedroid.tools.Prefs;
 import com.seedboxer.seedroid.ws.SeedBoxerWSFactory;
 
@@ -67,11 +68,13 @@ public class Preferences extends PreferenceActivity {
 	}
 
 	public void registerC2DMHandler(View view) {
-		C2DMManager.verifyRegistration(this);
 		try {
+			C2DMManager.verifyRegistration(this);
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			;
+		} catch (IllegalArgumentException e) {
+			LauncherUtils.showError(e.getMessage(), this);
 		} finally {
 			showC2DMStatusText();
 		}

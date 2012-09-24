@@ -23,12 +23,13 @@ package com.seedboxer.seedroid;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,6 +37,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -68,21 +70,33 @@ public class StatusActivity extends Activity {
 		ListView inQueueList = (ListView) findViewById(R.id.in_queue_list);
 		inQueueItemsAdapter = new InQueueItemsAdapter(StatusActivity.this, R.layout.queue_row, new ArrayList<Item>());
 		inQueueList.setAdapter(inQueueItemsAdapter);
+		registerForContextMenu(inQueueList);
 
 		processLists();
+
+	}
+
+	private void runOnThread(Runnable runnable) {
+		try {
+			startProgressBar();
+			new Thread(runnable, "MagentoBackground").start();
+		} finally {
+			runOnUiThread(new Runnable() {
+				public void run() {
+					stopProgressBar();
+				}
+			});
+		}
 	}
 
 	private void processLists() {
-		startProgressBar();
-		new Thread(new Runnable() {
+		runOnThread(new Runnable() {
 			public void run() {
 				try {
-					// Calling Web Service
 					SeedBoxerWSClient wsclient = SeedBoxerWSFactory.getClient(StatusActivity.this);
 					final List<Item> statusItems = wsclient.getStatusOfDownloads();
 					final List<Item> inQueueItems = wsclient.getQueue();
 
-					// Render Items
 					runOnUiThread(new Runnable() {
 						public void run() {
 							renderList(statusItemsAdapter, statusItems);
@@ -92,15 +106,9 @@ public class StatusActivity extends Activity {
 				} catch (Exception e) {
 					Log.e("seedroid", "Error communicating with SeedBoxer.");
 					LauncherUtils.showError("Error communicating with SeedBoxer.", StatusActivity.this);
-				} finally {
-					runOnUiThread(new Runnable() {
-						public void run() {
-							stopProgressBar();
-						}
-					});
 				}
 			}
-		}, "MagentoBackground").start();
+		});
 	}
 
 	private void startProgressBar() {
@@ -111,11 +119,6 @@ public class StatusActivity extends Activity {
 		setProgressBarIndeterminateVisibility(false);
 	}
 
-	/**
-	 * Method for add items to adapter and render it
-	 * @param items
-	 */
-	@TargetApi(11)
 	private void renderList(ArrayAdapter<Item> adapter, List<Item> items) {
 		if (items != null) {
 			adapter.clear();
@@ -124,11 +127,6 @@ public class StatusActivity extends Activity {
 		}
 	}
 
-	/**
-	 * Custom Adapter for render item
-	 * @author harley
-	 *
-	 */
 	public class ItemsAdapter extends ArrayAdapter<Item> {
 
 		public ItemsAdapter(Context context, int textViewResourceId, List<Item> items) {
@@ -159,11 +157,6 @@ public class StatusActivity extends Activity {
 		}
 	}
 
-	/**
-	 * Custom Adapter for render in queue item
-	 * @author harley
-	 *
-	 */
 	public class InQueueItemsAdapter extends ArrayAdapter<Item> {
 
 		public InQueueItemsAdapter(Context context, int textViewResourceId, List<Item> items) {
@@ -182,6 +175,25 @@ public class StatusActivity extends Activity {
 			TextView label = (TextView) row.findViewById(R.id.name);
 			label.setText(item.getName());
 			return row;
+		}
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.in_queue_menu, menu);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		switch (item.getItemId()) {
+		case R.id.menu_delete:
+			deleteInQueueItem(info.position);
+			return true;
+		default:
+			return super.onContextItemSelected(item);
 		}
 	}
 
@@ -207,6 +219,27 @@ public class StatusActivity extends Activity {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	private void deleteInQueueItem(final int position) {
+		runOnThread(new Runnable() {
+			public void run() {
+				try {
+					ListView inQueueList = (ListView) findViewById(R.id.in_queue_list);
+					final Item itemToRemove = (Item) inQueueList.getAdapter().getItem(position);
+
+					SeedBoxerWSClient wsclient = SeedBoxerWSFactory.getClient(StatusActivity.this);
+					if (wsclient.removeFromQueue(itemToRemove.getQueueId())) {
+						LauncherUtils.showToast("Item remove from queue.", StatusActivity.this);
+					} else {
+						LauncherUtils.showToast("Error removing item from queue.", StatusActivity.this);
+					}
+				} catch (Exception e) {
+					Log.e("seedroid", "Error communicating with SeedBoxer.");
+					LauncherUtils.showError("Error communicating with SeedBoxer.", StatusActivity.this);
+				}
+			}
+		});
 	}
 
 }

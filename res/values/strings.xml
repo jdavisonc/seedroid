@@ -33,12 +33,16 @@
     <string name="title_seedroid_server">Server</string>
     <string name="summary_seedroid_server"></string>
     <string name="dialog_title_seedroid_server">Set the Seedroid server url</string>
+    <string name="title_seedroid_project_id">Project ID</string>
+    <string name="summary_seedroid_project_id"></string>
+    <string name="dialog_title_seedroid_project_id">Set the Seedroid project ID</string>
     <string name="preferences">Preferences</string>
     <string name="menu_preferences">Preferences</string>
-    <string name="wait">Please wait...</string>
-    <string name="retrieving">Retrieving data ...</string>
-    <string name="default_seedroid_server">http://server/webservices/</string>
-    <string name="default_seedroid_username">harley</string>
+    <string name="wait">Please wait…</string>
+    <string name="retrieving">Retrieving data …</string>
+    <string name="default_seedroid_server">http://server</string>
+    <string name="default_seedroid_username"></string>
+    <string name="default_seedroid_project_id"></string>
     <string name="listForDownload">Files Download</string>
     <string name="downloading">Downloading</string>
     <string name="menu_download">Download</string>
@@ -47,5 +51,6 @@
     <string name="menu_search">Search downloads</string>
     <string name="menu_downloads">Downloads</string>
     <string name="menu_refresh">Refresh</string>
+    <string name="menu_delete">Delete</string>
     <string name="in_queue">In Queue</string>
 </resources>
