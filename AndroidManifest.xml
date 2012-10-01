@@ -21,8 +21,8 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.seedboxer.seedroid"
-    android:versionCode="4"
-    android:versionName="2.1" >
+    android:versionCode="5"
+    android:versionName="2.1.1" >
 
     <!-- SDK Version -->
     <uses-sdk android:minSdkVersion="11" android:targetSdkVersion="15" />

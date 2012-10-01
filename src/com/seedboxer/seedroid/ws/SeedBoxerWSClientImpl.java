@@ -81,7 +81,11 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 
 			boolean downloaded = Boolean.parseBoolean(XMLfunctions.getElementValue(childNodes.item(0)));
 			String name = XMLfunctions.getElementValue(childNodes.item(1)); // name
-			long queueId = Long.parseLong(XMLfunctions.getElementValue(childNodes.item(2))); // name
+			String queueIdVal = XMLfunctions.getElementValue(childNodes.item(2));
+			long queueId = 0;
+			if (queueIdVal != null && !queueIdVal.isEmpty()) {
+				queueId = Long.parseLong(queueIdVal); // queueId
+			}
 			items.add(new Item(name, queueId, downloaded));
 		}
 		return items;

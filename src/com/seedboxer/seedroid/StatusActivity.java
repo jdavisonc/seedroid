@@ -59,7 +59,6 @@ public class StatusActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
-
 		setContentView(R.layout.status);
 
 		// Set adapter
@@ -73,20 +72,23 @@ public class StatusActivity extends Activity {
 		registerForContextMenu(inQueueList);
 
 		processLists();
-
 	}
 
-	private void runOnThread(Runnable runnable) {
-		try {
-			startProgressBar();
-			new Thread(runnable, "MagentoBackground").start();
-		} finally {
-			runOnUiThread(new Runnable() {
-				public void run() {
-					stopProgressBar();
+	private void runOnThread(final Runnable runnable) {
+		startProgressBar();
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					runnable.run();
+				} finally {
+					runOnUiThread(new Runnable() {
+						public void run() {
+							stopProgressBar();
+						}
+					});
 				}
-			});
-		}
+			}
+		}, "MagentoBackground").start();
 	}
 
 	private void processLists() {
@@ -191,6 +193,7 @@ public class StatusActivity extends Activity {
 		switch (item.getItemId()) {
 		case R.id.menu_delete:
 			deleteInQueueItem(info.position);
+			processLists();
 			return true;
 		default:
 			return super.onContextItemSelected(item);
