@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Prefs.java
+ * SeedBoxerWSClient.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -18,25 +18,29 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.seedboxer.seedroid.tools;
+package net.seedboxer.seedroid.ws;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import java.util.List;
 
-/**
- * @author harley
- *
- */
-public final class Prefs {
+import net.seedboxer.seedroid.types.Item;
 
-	public static final String PROJECT_ID = "seedroid_project_id";
-	public static final String USERNAME = "seedroid_username";
-	public static final String PASSWORD = "seedroid_password";
-	public static final String SERVER = "seedroid_server";
 
-	public static SharedPreferences get(Context context) {
-		return PreferenceManager.getDefaultSharedPreferences(context);
-	}
+public interface SeedBoxerWSClient {
+
+	List<Item> getItemsAvaibleForDownload() throws Exception;
+
+	List<Item> getStatusOfDownloads() throws Exception;
+
+	boolean putToDownload(List<Item> toDownload) throws Exception;
+
+	List<Item> getQueue() throws Exception;
+
+	boolean removeFromQueue(long id) throws Exception;
+
+	boolean registerDevice(String deviceId, String registrationId) throws Exception;
+
+	boolean unregisterDevice(String deviceId, String registrationId) throws Exception;
+	
+	String getApikey(String username, String password) throws Exception;
 
 }

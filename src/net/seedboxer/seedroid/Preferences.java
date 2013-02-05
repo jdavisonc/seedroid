@@ -18,8 +18,12 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.seedboxer.seedroid;
+package net.seedboxer.seedroid;
 
+import net.seedboxer.seedroid.c2dm.C2DMManager;
+import net.seedboxer.seedroid.tools.LauncherUtils;
+import net.seedboxer.seedroid.tools.Prefs;
+import net.seedboxer.seedroid.ws.SeedBoxerWSFactory;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,10 +35,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.seedboxer.seedroid.c2dm.C2DMManager;
-import com.seedboxer.seedroid.tools.LauncherUtils;
-import com.seedboxer.seedroid.tools.Prefs;
-import com.seedboxer.seedroid.ws.SeedBoxerWSFactory;
 
 public class Preferences extends PreferenceActivity {
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * SeedBoxerWSClient.java
+ * RequestMethod.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -18,26 +18,10 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.seedboxer.seedroid.ws;
+package net.seedboxer.seedroid.ws;
 
-import java.util.List;
+public enum RequestMethod {
 
-import com.seedboxer.seedroid.types.Item;
-
-public interface SeedBoxerWSClient {
-
-	public List<Item> getItemsAvaibleForDownload() throws Exception;
-
-	public List<Item> getStatusOfDownloads() throws Exception;
-
-	public boolean putToDownload(List<Item> toDownload) throws Exception;
-
-	public List<Item> getQueue() throws Exception;
-
-	public boolean removeFromQueue(long id) throws Exception;
-
-	public boolean registerDevice(String deviceId, String registrationId) throws Exception;
-
-	public boolean unregisterDevice(String deviceId, String registrationId) throws Exception;
+	GET, POST;
 
 }

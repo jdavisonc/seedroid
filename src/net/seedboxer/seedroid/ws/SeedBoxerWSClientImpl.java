@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.seedboxer.seedroid.ws;
+package net.seedboxer.seedroid.ws;
 
 
 import java.util.ArrayList;
@@ -27,16 +27,21 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import net.seedboxer.seedroid.tools.XMLfunctions;
+import net.seedboxer.seedroid.types.Item;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.seedboxer.seedroid.tools.XMLfunctions;
-import com.seedboxer.seedroid.types.Item;
 
 public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
+	
+	private static final Pattern apikey_pattern = Pattern.compile("<response><apiKey>(*)</apiKey></response>");
 
 	private static final String RESPONSE_OK = "<status>OK</status>";
 	private static final String WS_PREFIX = "webservices/";
@@ -47,17 +52,19 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 	private static final String STATUS_WS = WS_PREFIX + "status";
 	private static final String REGISTER_DEVICE_WS = WS_PREFIX + "registerDevice";
 
-	private String username;
-	private String password;
+	private String apikey;
 	private String server;
 
-	public SeedBoxerWSClientImpl(String username, String password, String server) {
-		this.username = username;
-		this.password = password;
+	public SeedBoxerWSClientImpl(String apikey, String server) {
+		this.apikey = apikey;
 		this.server = server;
 		if (!server.endsWith("/")) {
 			this.server = this.server + "/";
 		}
+	}
+	
+	public void setApikey(String apikey) {
+		this.apikey = apikey;
 	}
 
 	public List<Item> getItemsAvaibleForDownload() throws Exception {
@@ -131,13 +138,18 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 	}
 
 	private String executeRESTWS(String type, Map<String, Object> params) throws Exception {
+		return executeRESTWS(type, params, null, null);
+	}
+	
+	private String executeRESTWS(String type, Map<String, Object> params, String username, String password) throws Exception {
 		RestClient client = new RestClient(server + type);
 
-		client.AddParam("username", username);
 		for (Map.Entry<String, Object> entry : params.entrySet()) {
 			addParam(client, entry);
 		}
-		//client.AddHeader("Authorization", "Basic aGFybGV5OnAycHJ1bHo=");
+		if (username != null && password != null) {
+			client.AddBasicAuthentication(username, password);
+		}
 
 		try {
 			client.Execute(RequestMethod.GET);
@@ -194,6 +206,16 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 			return true;
 		}
 		return false;
+	}
+	
+	public String getApikey(String username, String password) throws Exception {
+		String response = executeRESTWS(DOWNLOADS_DELETE_WS, Collections.<String, Object> emptyMap(), username, password);
+		
+		Matcher m = apikey_pattern.matcher(response);
+		if (response != null && m.matches()) {
+			return m.group(1);
+		}
+		return null;
 	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * SeedBoxerWSFactory.java
+ * Prefs.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -18,33 +18,24 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.seedboxer.seedroid.ws;
+package net.seedboxer.seedroid.tools;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
-import com.seedboxer.seedroid.tools.Prefs;
+/**
+ * @author harley
+ *
+ */
+public final class Prefs {
 
-public class SeedBoxerWSFactory {
+	public static final String PROJECT_ID = "seedroid_project_id";
+	public static final String SERVER = "seedroid_server";
+	public static final String APIKEY = "seedroid_apikey";
 
-	private static SeedBoxerWSClient client = null;
-
-	public static SeedBoxerWSClient getClient(Context context) {
-		if (client == null) {
-			SharedPreferences sharedPrefs = Prefs.get(context);
-
-			String username = sharedPrefs.getString(Prefs.USERNAME, "");
-			String password = sharedPrefs.getString(Prefs.PASSWORD, "");
-			String serverUrl = sharedPrefs.getString(Prefs.SERVER, "");
-
-			// Initialize
-			client = new SeedBoxerWSClientImpl(username, password, serverUrl);
-		}
-		return client;
-	}
-
-	public static void changePreferences() {
-		client = null;
+	public static SharedPreferences get(Context context) {
+		return PreferenceManager.getDefaultSharedPreferences(context);
 	}
 
 }

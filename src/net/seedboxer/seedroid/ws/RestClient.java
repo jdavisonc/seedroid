@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.seedboxer.seedroid.ws;
+package net.seedboxer.seedroid.ws;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,12 +30,15 @@ import java.util.ArrayList;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
@@ -44,6 +47,7 @@ public class RestClient {
 
 	private final ArrayList<NameValuePair> params;
 	private final ArrayList<NameValuePair> headers;
+	private CredentialsProvider credProvider = null;
 
 	private final String url;
 
@@ -71,14 +75,18 @@ public class RestClient {
 		headers = new ArrayList<NameValuePair>();
 	}
 
-	public void AddParam(String name, String value)
-	{
+	public void AddParam(String name, String value) {
 		params.add(new BasicNameValuePair(name, value));
 	}
 
-	public void AddHeader(String name, String value)
-	{
+	public void AddHeader(String name, String value) {
 		headers.add(new BasicNameValuePair(name, value));
+	}
+	
+	public void AddBasicAuthentication(String username, String password) {
+		credProvider = new BasicCredentialsProvider();
+	    credProvider.setCredentials(new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT),
+	        new UsernamePasswordCredentials(username, password));
 	}
 
 	public void Execute(RequestMethod method) throws Exception
@@ -135,9 +143,11 @@ public class RestClient {
 		}
 	}
 
-	private void executeRequest(HttpUriRequest request, String url)
-	{
-		HttpClient client = new DefaultHttpClient();
+	private void executeRequest(HttpUriRequest request, String url) {
+		DefaultHttpClient client = new DefaultHttpClient();
+		if (credProvider != null) {
+			client.setCredentialsProvider(credProvider);
+		}
 
 		HttpResponse httpResponse;
 

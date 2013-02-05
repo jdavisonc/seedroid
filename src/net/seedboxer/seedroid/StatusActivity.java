@@ -18,11 +18,15 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.seedboxer.seedroid;
+package net.seedboxer.seedroid;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import net.seedboxer.seedroid.tools.LauncherUtils;
+import net.seedboxer.seedroid.types.Item;
+import net.seedboxer.seedroid.ws.SeedBoxerWSClient;
+import net.seedboxer.seedroid.ws.SeedBoxerWSFactory;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -42,11 +46,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.seedboxer.seedroid.tools.LauncherUtils;
-import com.seedboxer.seedroid.types.Item;
-import com.seedboxer.seedroid.ws.SeedBoxerWSClient;
-import com.seedboxer.seedroid.ws.SeedBoxerWSFactory;
 
 public class StatusActivity extends Activity {
 
