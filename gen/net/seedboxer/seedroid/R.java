@@ -33,8 +33,10 @@ public final class R {
         public static final int gridLayout1=0x7f09000e;
         public static final int icon=0x7f090012;
         public static final int in_queue_list=0x7f090000;
-        public static final int menu_preferences=0x7f090018;
-        public static final int menu_refresh=0x7f090017;
+        public static final int menu_delete=0x7f090017;
+        public static final int menu_download=0x7f09001a;
+        public static final int menu_preferences=0x7f090019;
+        public static final int menu_refresh=0x7f090018;
         public static final int menu_search=0x7f090016;
         public static final int message=0x7f090001;
         public static final int message_bottom=0x7f090005;
@@ -65,7 +67,9 @@ public final class R {
     }
     public static final class menu {
         public static final int downloads_menu=0x7f080000;
-        public static final int main_menu=0x7f080001;
+        public static final int in_queue_menu=0x7f080001;
+        public static final int main_menu=0x7f080002;
+        public static final int rowselection=0x7f080003;
     }
     public static final class string {
         public static final int apikey=0x7f060020;
