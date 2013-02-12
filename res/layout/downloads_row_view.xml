@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  downloads_menu.xml
+  rowbuttonlayout.xml
   
   Copyright (c) 2012 SeedBoxer Team.
   
@@ -19,12 +19,13 @@
   You should have received a copy of the GNU General Public License
   along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    
-    <item android:id="@+id/menu_search"
-          android:title="@string/menu_search"
-          android:icon="@drawable/ic_menu_search_holo_dark"
-          android:showAsAction="ifRoom|collapseActionView"
-          android:actionViewClass="android.widget.SearchView" />
-
-</menu>
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:textSize="15dp"
+    android:gravity="center_vertical"
+    android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+    android:paddingLeft="8dip"
+    android:paddingRight="8dip"
+/>

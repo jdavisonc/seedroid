@@ -24,21 +24,8 @@
     <string name="download">Download!</string>
     <string name="main_no_items">No items to download</string>
     <string name="menu_save">Save</string>
-    <string name="title_seedroid_username">Username</string>
-    <string name="summary_seedroid_username"></string>
-    <string name="dialog_title_seedroid_username">Set the Seedroid username</string>
-    <string name="title_seedroid_password">Password</string>
-    <string name="summary_seedroid_password"></string>
-    <string name="dialog_title_seedroid_password">Set the Seedroid password</string>
-    <string name="title_seedroid_server">Server</string>
-    <string name="summary_seedroid_server"></string>
-    <string name="dialog_title_seedroid_server">Set the Seedroid server url</string>
-    <string name="title_seedroid_project_id">Project ID</string>
-    <string name="summary_seedroid_project_id"></string>
-    <string name="dialog_title_seedroid_project_id">Set the Seedroid project ID</string>
-    <string name="preferences">Preferences</string>
-    <string name="menu_preferences">Preferences</string>
     <string name="wait">Please wait…</string>
+    <string name="menu_preferences">Settings</string>
     <string name="retrieving">Retrieving data …</string>
     <string name="default_seedroid_server">http://server</string>
     <string name="default_seedroid_username"></string>
@@ -46,11 +33,28 @@
     <string name="listForDownload">Files Download</string>
     <string name="downloading">Downloading</string>
     <string name="menu_download">Download</string>
-    <string name="preferences_c2dm">C2DM</string>
-    <string name="register_c2dm">Register</string>
     <string name="menu_search">Search downloads</string>
     <string name="menu_downloads">Downloads</string>
     <string name="menu_refresh">Refresh</string>
     <string name="menu_delete">Delete</string>
     <string name="in_queue">In Queue</string>
+    
+    
+    <!-- Preferences -->
+    
+    <string name="title_seedroid_server">Server</string>
+    <string name="title_seedroid_project_id">Project ID</string>
+    <string name="preferences_c2dm">C2DM</string>
+    <string name="register_c2dm">Register</string>
+    <string name="get_apikey">Retrieve ApiKey</string>
+    <string name="server_preferences">Server preferences</string>
+    <string name="user_preferences">User preferences</string>
+    <string name="summary_seedroid_server">SeedBoxer server url</string>
+    <string name="dialog_title_seedroid_server">Set the SeedBoxer server url</string>
+    <string name="summary_seedroid_project_id">SeedBoxer C2DM project identifier</string>
+    <string name="dialog_title_seedroid_project_id">Set the C2DM project ID</string>
+    <string name="login_username_label">Username</string>
+    <string name="login_password_label">Password</string>
+    <string name="login_ok_button">Login</string>
+    <string name="apikey">ApiKey</string>
 </resources>

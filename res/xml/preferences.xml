@@ -21,18 +21,7 @@
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory android:title="@string/preferences" >
-        <EditTextPreference
-            android:defaultValue="@string/default_seedroid_username"
-            android:dialogTitle="@string/dialog_title_seedroid_username"
-            android:key="seedroid_username"
-            android:summary="@string/summary_seedroid_username"
-            android:title="@string/title_seedroid_username" />
-        <EditTextPreference
-            android:dialogTitle="@string/dialog_title_seedroid_password"
-            android:key="seedroid_password"
-            android:summary="@string/summary_seedroid_password"
-            android:title="@string/title_seedroid_password" />
+    <PreferenceCategory android:title="@string/server_preferences" >
         <EditTextPreference
             android:defaultValue="@string/default_seedroid_server"
             android:dialogTitle="@string/dialog_title_seedroid_server"
@@ -47,7 +36,7 @@
             android:title="@string/title_seedroid_project_id" />
     </PreferenceCategory>
     
-    <PreferenceCategory android:title="@string/preferences_c2dm" >
+    <PreferenceCategory android:title="@string/user_preferences">
     </PreferenceCategory>
 
 </PreferenceScreen>

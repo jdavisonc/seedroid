@@ -21,9 +21,9 @@
 package net.seedboxer.seedroid;
 
 import net.seedboxer.seedroid.c2dm.C2DMManager;
+import net.seedboxer.seedroid.services.seedboxer.SeedBoxerWSFactory;
 import net.seedboxer.seedroid.tools.LauncherUtils;
 import net.seedboxer.seedroid.tools.Prefs;
-import net.seedboxer.seedroid.ws.SeedBoxerWSFactory;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,6 +38,8 @@ import android.widget.TextView;
 
 public class Preferences extends PreferenceActivity {
 
+	private static final int APIKEY_REQUEST = 0;
+
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,7 @@ public class Preferences extends PreferenceActivity {
 		addPreferencesFromResource(R.xml.preferences);
 		setContentView(R.layout.preferences_layout);
 
-		showC2DMStatusText();
+		showAuthStatusText();
 		setHomeIcon();
 	}
 
@@ -55,30 +57,41 @@ public class Preferences extends PreferenceActivity {
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
-
-	private void showC2DMStatusText() {
-		TextView c2dmStatus = (TextView) findViewById(R.id.c2dm_status);
-		if (C2DMManager.isRegistered(this)) {
-			c2dmStatus.setText("Registered");
+	
+	private void showAuthStatusText() {
+		TextView c2dmStatus = (TextView) findViewById(R.id.apikey_status);
+		String apikey = Prefs.get(this).getString(Prefs.APIKEY, null);
+		if (apikey != null) {
+			c2dmStatus.setText(apikey);
 			c2dmStatus.setTextColor(Color.GREEN);
 		} else {
-			c2dmStatus.setText("NOT Registered");
+			c2dmStatus.setText("Missing ApiKey");
 			c2dmStatus.setTextColor(Color.RED);
 		}
 	}
 
-	public void registerC2DMHandler(View view) {
+	public void registerC2DMHandler() {
 		try {
 			C2DMManager.verifyRegistration(this);
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			;
 		} catch (IllegalArgumentException e) {
-			LauncherUtils.showError(e.getMessage(), this);
-		} finally {
-			showC2DMStatusText();
+			LauncherUtils.showError("Error in registration to receive notifications: " + e.getMessage(), this);
 		}
 	}
+	
+	public void getApikeyHandler(View view) {
+		startActivityForResult(new Intent(this, LoginActivity.class), APIKEY_REQUEST);
+	}
+	
+    @Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == APIKEY_REQUEST) {
+            if (resultCode == RESULT_OK) {
+            	SeedBoxerWSFactory.changePreferences();
+            	registerC2DMHandler();
+            	showAuthStatusText();
+            }
+        }
+    }
 
 	OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = new OnSharedPreferenceChangeListener() {
 		public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {

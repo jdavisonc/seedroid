@@ -18,35 +18,18 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.seedroid.types;
+package net.seedboxer.seedroid.services.seedboxer.types;
 
-public class Item {
+import com.google.gson.annotations.SerializedName;
 
+public class Download {
+
+	@SerializedName("fileName")
 	private String name;
 
 	private long size;
 
 	private long transferred;
-
-	private boolean selected;
-
-	private long queueId;
-
-	private boolean downloaded;
-
-	public Item() { }
-
-	public Item(String name, long size, long transferred) {
-		this.name = name;
-		this.size = size;
-		this.transferred = transferred;
-	}
-
-	public Item(String name, long queueId, boolean downloaded) {
-		this.name = name;
-		this.queueId = queueId;
-		this.downloaded = downloaded;
-	}
 
 	public String getName() {
 		return name;
@@ -70,30 +53,6 @@ public class Item {
 
 	public void setTransferred(long transferred) {
 		this.transferred = transferred;
-	}
-
-	public void setSelected(boolean selected) {
-		this.selected = selected;
-	}
-
-	public boolean isSelected() {
-		return selected;
-	}
-
-	public long getQueueId() {
-		return queueId;
-	}
-
-	public void setQueueId(long queueId) {
-		this.queueId = queueId;
-	}
-
-	public boolean isDownloaded() {
-		return downloaded;
-	}
-
-	public void setDownloaded(boolean downloaded) {
-		this.downloaded = downloaded;
 	}
 
 	@Override

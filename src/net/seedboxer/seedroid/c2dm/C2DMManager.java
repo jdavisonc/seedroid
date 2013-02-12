@@ -20,9 +20,9 @@
  ******************************************************************************/
 package net.seedboxer.seedroid.c2dm;
 
+import net.seedboxer.seedroid.services.seedboxer.SeedBoxerWSClient;
+import net.seedboxer.seedroid.services.seedboxer.SeedBoxerWSFactory;
 import net.seedboxer.seedroid.tools.Prefs;
-import net.seedboxer.seedroid.ws.SeedBoxerWSClient;
-import net.seedboxer.seedroid.ws.SeedBoxerWSFactory;
 import android.content.Context;
 import android.provider.Settings.Secure;
 import android.util.Log;

@@ -21,12 +21,13 @@
 package net.seedboxer.seedroid;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import net.seedboxer.seedroid.services.seedboxer.SeedBoxerWSClient;
+import net.seedboxer.seedroid.services.seedboxer.SeedBoxerWSFactory;
+import net.seedboxer.seedroid.services.seedboxer.types.Download;
 import net.seedboxer.seedroid.tools.LauncherUtils;
-import net.seedboxer.seedroid.types.Item;
-import net.seedboxer.seedroid.ws.SeedBoxerWSClient;
-import net.seedboxer.seedroid.ws.SeedBoxerWSFactory;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -58,18 +59,16 @@ public class StatusActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
-		setContentView(R.layout.status);
-
 		// Set adapter
-		ListView statusList = (ListView) findViewById(R.id.status_list);
-		statusItemsAdapter = new ItemsAdapter(StatusActivity.this, R.layout.status_row, new ArrayList<Item>());
-		statusList.setAdapter(statusItemsAdapter);
+		//ListView statusList = (ListView) findViewById(R.id.status_list);
+		statusItemsAdapter = new ItemsAdapter(StatusActivity.this, R.layout.status_row, new ArrayList<Download>());
+		//statusList.setAdapter(statusItemsAdapter);
 
 		ListView inQueueList = (ListView) findViewById(R.id.in_queue_list);
-		inQueueItemsAdapter = new InQueueItemsAdapter(StatusActivity.this, R.layout.queue_row, new ArrayList<Item>());
+		inQueueItemsAdapter = new InQueueItemsAdapter(StatusActivity.this, R.layout.queue_row, new ArrayList<Download>());
 		inQueueList.setAdapter(inQueueItemsAdapter);
 		registerForContextMenu(inQueueList);
-
+		
 		processLists();
 	}
 
@@ -92,16 +91,18 @@ public class StatusActivity extends Activity {
 
 	private void processLists() {
 		runOnThread(new Runnable() {
+			@SuppressWarnings("unchecked")
 			public void run() {
 				try {
 					SeedBoxerWSClient wsclient = SeedBoxerWSFactory.getClient(StatusActivity.this);
-					final List<Item> statusItems = wsclient.getStatusOfDownloads();
-					final List<Item> inQueueItems = wsclient.getQueue();
+					//Download statusOfDownloads = wsclient.getStatusOfDownloads();
+					final List<Download> statusItems = Collections.emptyList();
+					//final List<Download> inQueueItems = wsclient.getQueue();
 
 					runOnUiThread(new Runnable() {
 						public void run() {
 							renderList(statusItemsAdapter, statusItems);
-							renderList(inQueueItemsAdapter, inQueueItems);
+							//renderList(inQueueItemsAdapter, inQueueItems);
 						}
 					});
 				} catch (Exception e) {
@@ -120,7 +121,7 @@ public class StatusActivity extends Activity {
 		setProgressBarIndeterminateVisibility(false);
 	}
 
-	private void renderList(ArrayAdapter<Item> adapter, List<Item> items) {
+	private void renderList(ArrayAdapter<Download> adapter, List<Download> items) {
 		if (items != null) {
 			adapter.clear();
 			adapter.addAll(items);
@@ -128,9 +129,9 @@ public class StatusActivity extends Activity {
 		}
 	}
 
-	public class ItemsAdapter extends ArrayAdapter<Item> {
+	public class ItemsAdapter extends ArrayAdapter<Download> {
 
-		public ItemsAdapter(Context context, int textViewResourceId, List<Item> items) {
+		public ItemsAdapter(Context context, int textViewResourceId, List<Download> items) {
 			super(context, textViewResourceId, items);
 		}
 
@@ -143,7 +144,7 @@ public class StatusActivity extends Activity {
 				row = inflater.inflate(R.layout.status_row, parent, false);
 			}
 
-			Item item = getItem(position);
+			Download item = getItem(position);
 			TextView label = (TextView) row.findViewById(R.id.name);
 			label.setText(item.getName());
 
@@ -158,9 +159,9 @@ public class StatusActivity extends Activity {
 		}
 	}
 
-	public class InQueueItemsAdapter extends ArrayAdapter<Item> {
+	public class InQueueItemsAdapter extends ArrayAdapter<Download> {
 
-		public InQueueItemsAdapter(Context context, int textViewResourceId, List<Item> items) {
+		public InQueueItemsAdapter(Context context, int textViewResourceId, List<Download> items) {
 			super(context, textViewResourceId, items);
 		}
 
@@ -172,7 +173,7 @@ public class StatusActivity extends Activity {
 				row = inflater.inflate(R.layout.queue_row, parent, false);
 			}
 
-			Item item = getItem(position);
+			Download item = getItem(position);
 			TextView label = (TextView) row.findViewById(R.id.name);
 			label.setText(item.getName());
 			return row;
@@ -212,9 +213,6 @@ public class StatusActivity extends Activity {
 		case R.id.menu_preferences:
 			startActivity(new Intent(this, Preferences.class));
 			return true;
-		case R.id.menu_downloads:
-			startActivity(new Intent(this, DownloadsActivity.class));
-			return true;
 		case R.id.menu_refresh:
 			processLists();
 			return true;
@@ -228,14 +226,14 @@ public class StatusActivity extends Activity {
 			public void run() {
 				try {
 					ListView inQueueList = (ListView) findViewById(R.id.in_queue_list);
-					final Item itemToRemove = (Item) inQueueList.getAdapter().getItem(position);
+					final Download itemToRemove = (Download) inQueueList.getAdapter().getItem(position);
 
 					SeedBoxerWSClient wsclient = SeedBoxerWSFactory.getClient(StatusActivity.this);
-					if (wsclient.removeFromQueue(itemToRemove.getQueueId())) {
+					/*if (wsclient.removeFromQueue(itemToRemove.getQueueId())) {
 						LauncherUtils.showToast("Item remove from queue.", StatusActivity.this);
 					} else {
 						LauncherUtils.showToast("Error removing item from queue.", StatusActivity.this);
-					}
+					}*/
 				} catch (Exception e) {
 					Log.e("seedroid", "Error communicating with SeedBoxer.");
 					LauncherUtils.showError("Error communicating with SeedBoxer.", StatusActivity.this);

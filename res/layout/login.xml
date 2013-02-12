@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
-  preferences_layout.xml
+  login.xml
   
   Copyright (c) 2012 SeedBoxer Team.
   
@@ -19,16 +19,11 @@
   You should have received a copy of the GNU General Public License
   along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-    
+    android:layout_height="wrap_content">
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="0dip"
@@ -37,11 +32,12 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingTop="5dip"
             android:paddingBottom="13dip"
             android:paddingLeft="20dip"
             android:paddingRight="20dip">
             <TextView
-                android:id="@+id/apikey_message"
+                android:id="@+id/message"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -51,32 +47,63 @@
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/apikey" />
+                android:text="@string/login_username_label" />
             <EditText
-                android:id="@+id/apikey_status"
+                android:id="@+id/username_edit"
                 android:singleLine="true"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:minWidth="250dip"
                 android:scrollHorizontally="true"
-                android:inputType="none"
-                android:focusable="false" />
+                android:inputType="textEmailAddress" />
             <TextView
-                android:id="@+id/get_apikey_fixed"
+                android:id="@+id/username_fixed"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:singleLine="true"
                 android:layout_marginTop="2dip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+            <TextView
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:layout_marginTop="2dip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_password_label" />
+            <EditText
+                android:id="@+id/password_edit"
+                android:singleLine="true"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:minWidth="250dip"
+                android:scrollHorizontally="true"
+                android:inputType="textPassword" />
+            <TextView
+                android:id="@+id/message_bottom"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dip" />
+        </LinearLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/grey_dark"
+        android:minHeight="54dip"
+        android:paddingLeft="2dip"
+        android:paddingRight="2dip"
+        android:paddingTop="4dip" >
+
         <Button
-            android:id="@+id/get_apikey"
+            android:id="@+id/ok_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:minWidth="100dip"
-            android:text="@string/get_apikey"
-            android:onClick="getApikeyHandler" />
-        </LinearLayout>
-    </ScrollView>
-
+            android:text="@string/login_ok_button"
+            android:onClick="handleLogin" />
+    </FrameLayout>
 </LinearLayout>

@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.seedroid.ws;
+package net.seedboxer.seedroid.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;

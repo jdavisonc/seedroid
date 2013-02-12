@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  in_queue_menu.xml
+  main_activity_view.xml
   
   Copyright (c) 2012 SeedBoxer Team.
   
@@ -19,10 +19,8 @@
   You should have received a copy of the GNU General Public License
   along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item
-        android:id="@+id/menu_delete"
-        android:title="@string/menu_delete"/>
-
-</menu>
+<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />

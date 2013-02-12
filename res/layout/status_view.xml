@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  status.xml
+  
+  Copyright (c) 2012 SeedBoxer Team.
+  
+  This file is part of Seedroid.
+  
+  Seedroid is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  
+  Seedroid is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    
+	<RelativeLayout
+	    android:id="@+id/relative_layout"
+	    android:layout_width="fill_parent"
+	    android:layout_height="80dp"
+	    android:padding="6dip"
+	    android:layout_marginTop="10dp"
+	    android:visibility="gone">
+	    
+	    <ImageView
+	        android:id="@+id/icon"
+	        android:layout_width="48dp"
+	        android:layout_height="48dp"
+	        android:layout_alignParentTop="true"
+	        android:layout_alignParentBottom="false"
+	        android:layout_marginRight="6dip"
+	        android:src="@drawable/movie_icon"  
+	        android:contentDescription="TODO"/>
+
+	    
+       <LinearLayout
+	        android:id="@+id/secondLine"
+	        android:layout_width="fill_parent"
+	        android:layout_height="26dip" 
+	        android:layout_toRightOf="@id/icon"
+	        android:layout_alignParentBottom="true"
+	        android:layout_alignParentRight="true"
+	        android:singleLine="true"
+	        android:ellipsize="marquee">
+	
+	        <ProgressBar
+	            android:id="@+id/progressbar"
+	            style="?android:attr/progressBarStyleHorizontal"
+	            android:layout_weight="0.12"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:padding="5dp"
+	            android:layout_gravity="left"/>
+	
+	        <TextView
+	            android:id="@+id/percentage"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:padding="2dp" 
+	            android:text="80%" />
+	    </LinearLayout>
+	    
+	    
+	
+	    <TextView
+	        android:id="@id/name"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/icon"
+	        android:layout_alignParentRight="true"
+	        android:layout_alignParentTop="true"
+	        android:layout_above="@id/secondLine"
+	        android:layout_alignWithParentIfMissing="true"
+	        android:gravity="top"
+	        android:text="Total.Recall.2012.EXTENDED.DC.720p.BluRay.DTS.x264-PublicHD" />
+	
+	</RelativeLayout>
+	
+	<RelativeLayout
+	    android:id="@+id/relative_layout_no_download"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_marginTop="10dp"
+	    android:padding="20dip"
+	    android:visibility="gone" >
+
+	    <TextView
+	        android:id="@+id/textView2"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_above="@id/secondLine"
+	        android:layout_alignParentRight="true"
+	        android:layout_alignParentTop="true"
+	        android:layout_alignWithParentIfMissing="true"
+	        android:layout_toRightOf="@id/icon"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:gravity="center_vertical|center_horizontal"
+	        android:text="Ups... nothing is downloading. 
+	        
+Put something right now!" />
+
+	</RelativeLayout>
+
+</LinearLayout>

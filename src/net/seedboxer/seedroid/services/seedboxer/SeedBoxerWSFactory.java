@@ -18,9 +18,10 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.seedroid.ws;
+package net.seedboxer.seedroid.services.seedboxer;
 
 import net.seedboxer.seedroid.tools.Prefs;
+import net.seedboxer.seedroid.utils.RestClientFactory;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -37,7 +38,7 @@ public class SeedBoxerWSFactory {
 			String serverUrl = sharedPrefs.getString(Prefs.SERVER, "");
 
 			// Initialize
-			client = new SeedBoxerWSClientImpl(apikey, serverUrl);
+			client = new SeedBoxerWSClientImpl(new RestClientFactory(), apikey, serverUrl);
 		}
 		return client;
 	}

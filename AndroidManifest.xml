@@ -25,7 +25,7 @@
     android:versionName="2.1.1" >
 
     <!-- SDK Version -->
-    <uses-sdk android:minSdkVersion="11" android:targetSdkVersion="17" />
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="17" />
 
     <!-- ** Permissions ** -->
     
@@ -46,9 +46,9 @@
     
     <!-- ** Application ** -->
 
-    <application android:icon="@drawable/bittorrent" android:label="@string/app_name" >
+    <application android:icon="@drawable/bittorrent" android:label="@string/app_name" android:allowBackup="true">
         
-        <activity android:name=".StatusActivity" android:label="@string/app_name" android:theme="@style/seedroidTheme">
+        <activity android:name=".activities.MainActivity" android:label="@string/app_name" android:theme="@style/seedroidTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,9 +56,9 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".DownloadsActivity" android:label="@string/app_name" android:theme="@style/seedroidTheme"/>
-        
         <activity android:name=".Preferences" android:label="@string/app_name" android:theme="@style/seedroidTheme"/>
+        
+        <activity android:name=".LoginActivity" android:label="@string/app_name" android:theme="@style/seedroidTheme"/>
         
         <service android:name=".c2dm.C2DMReceiver" />
         

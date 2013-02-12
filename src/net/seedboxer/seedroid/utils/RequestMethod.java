@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Prefs.java
+ * RequestMethod.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
@@ -18,31 +18,10 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.seedroid.tools;
+package net.seedboxer.seedroid.utils;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.preference.PreferenceManager;
+public enum RequestMethod {
 
-/**
- * @author harley
- *
- */
-public final class Prefs {
-
-	public static final String PROJECT_ID = "seedroid_project_id";
-	public static final String SERVER = "seedroid_server";
-	public static final String APIKEY = "seedroid_apikey";
-
-	public static SharedPreferences get(Context context) {
-		return PreferenceManager.getDefaultSharedPreferences(context);
-	}
-	
-	public static void setString(Context context, String key, String value) {
-		Editor editor = get(context).edit();
-		editor.putString(key, value);
-		editor.commit();
-	}
+	GET, POST;
 
 }

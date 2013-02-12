@@ -18,30 +18,34 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.seedroid.ws;
+package net.seedboxer.seedroid.services.seedboxer;
 
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.seedboxer.seedroid.tools.XMLfunctions;
-import net.seedboxer.seedroid.types.Item;
+import net.seedboxer.seedroid.services.seedboxer.types.APIResponse;
+import net.seedboxer.seedroid.services.seedboxer.types.APIResponse.ResponseStatus;
+import net.seedboxer.seedroid.services.seedboxer.types.FileValue;
+import net.seedboxer.seedroid.services.seedboxer.types.UserAPIKeyResponse;
+import net.seedboxer.seedroid.services.seedboxer.types.UserStatusAPIResponse;
+import net.seedboxer.seedroid.utils.RequestMethod;
+import net.seedboxer.seedroid.utils.RestClient;
+import net.seedboxer.seedroid.utils.RestClientFactory;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 
 public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 	
-	private static final Pattern apikey_pattern = Pattern.compile("<response><apiKey>(*)</apiKey></response>");
+	private static final Pattern apikey_pattern = Pattern.compile("<response><apiKey>\\(*\\)</apiKey></response>");
 
 	private static final String RESPONSE_OK = "<status>OK</status>";
 	private static final String WS_PREFIX = "webservices/";
@@ -51,23 +55,23 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 	private static final String DOWNLOADS_QUEUE_WS = WS_PREFIX + "downloads/queue";
 	private static final String STATUS_WS = WS_PREFIX + "status";
 	private static final String REGISTER_DEVICE_WS = WS_PREFIX + "registerDevice";
+	private static final String APIKEY_WS = WS_PREFIX + "apikey";
 
-	private String apikey;
+	private final String apikey;
 	private String server;
+	private final Gson gson = new Gson();
+	private final RestClientFactory restClientFactory;
 
-	public SeedBoxerWSClientImpl(String apikey, String server) {
+	public SeedBoxerWSClientImpl(RestClientFactory restClientFactory, String apikey, String server) {
+		this.restClientFactory = restClientFactory;
 		this.apikey = apikey;
 		this.server = server;
 		if (!server.endsWith("/")) {
 			this.server = this.server + "/";
 		}
 	}
-	
-	public void setApikey(String apikey) {
-		this.apikey = apikey;
-	}
 
-	public List<Item> getItemsAvaibleForDownload() throws Exception {
+	public List<FileValue> getItemsAvaibleForDownload() throws Exception {
 		String response = executeRESTWS(LIST_DOWNLOAD_WS, Collections.<String, Object> emptyMap());
 
 		if (response == null) {
@@ -77,63 +81,31 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 		}
 	}
 
-	private List<Item> parseFilesValue(String response) {
-		Document doc = XMLfunctions.XMLfromString(response);
-		Node nodes = doc.getElementsByTagName("files").item(0);
-		NodeList list = nodes.getChildNodes();
-		List<Item> items = new ArrayList<Item>();
-		for (int i = 0; i < list.getLength(); i++) {
-			Element e = (Element) list.item(i);
-			NodeList childNodes = e.getChildNodes();
-
-			boolean downloaded = Boolean.parseBoolean(XMLfunctions.getElementValue(childNodes.item(0)));
-			String name = XMLfunctions.getElementValue(childNodes.item(1)); // name
-			String queueIdVal = XMLfunctions.getElementValue(childNodes.item(2));
-			long queueId = 0;
-			if (queueIdVal != null && !queueIdVal.isEmpty()) {
-				queueId = Long.parseLong(queueIdVal); // queueId
-			}
-			items.add(new Item(name, queueId, downloaded));
-		}
-		return items;
+	private List<FileValue> parseFilesValue(String response) {
+		Type listType = new TypeToken<ArrayList<FileValue>>() { }.getType();		
+		return gson.fromJson(response, listType);
 	}
 
-	public boolean putToDownload(List<Item> toDownload) throws Exception {
+	public boolean putToDownload(List<FileValue> toDownload) throws Exception {
 		Map<String, Object> params = new HashMap<String, Object>();
 		List<String> fileNames = new ArrayList<String>();
-		for (Item item : toDownload) {
+		for (FileValue item : toDownload) {
 			fileNames.add(item.getName());
 		}
 		params.put("fileName", fileNames);
 
 		String response = executeRESTWS(DOWNLOADS_PUT_WS, params);
-		if (response != null && response.contains(RESPONSE_OK)) {
-			return true;
-		}
-		return false;
+		APIResponse apiResponse = gson.fromJson(response, APIResponse.class);
+		return apiResponse != null && apiResponse.getStatus() == ResponseStatus.SUCCESS ;
 	}
 
-	public List<Item> getStatusOfDownloads() throws Exception {
+	public UserStatusAPIResponse getStatusOfDownloads() throws Exception {
 		String response = executeRESTWS(STATUS_WS, Collections.<String, Object> emptyMap());
 
 		if (response == null) {
 			return null;
 		} else {
-			Document doc = XMLfunctions.XMLfromString(response);
-			Node nodes = doc.getElementsByTagName("downloads").item(0);
-			NodeList list = nodes.getChildNodes();
-			List<Item> items = new ArrayList<Item>();
-			for (int i = 0; i < list.getLength(); i++) {
-				Element e = (Element) list.item(i);
-
-				String name = XMLfunctions.getElementValue(e.getChildNodes().item(0));
-				String size = XMLfunctions.getElementValue(e.getChildNodes().item(1));
-				String transferred = XMLfunctions.getElementValue(e.getChildNodes().item(2));
-
-				Item item = new Item(name, Long.parseLong(size), Long.parseLong(transferred));
-				items.add(item);
-			}
-			return items;
+			return gson.fromJson(response, UserStatusAPIResponse.class);
 		}
 	}
 
@@ -142,14 +114,18 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 	}
 	
 	private String executeRESTWS(String type, Map<String, Object> params, String username, String password) throws Exception {
-		RestClient client = new RestClient(server + type);
+		RestClient client = restClientFactory.getClient(server + type);
 
 		for (Map.Entry<String, Object> entry : params.entrySet()) {
 			addParam(client, entry);
 		}
 		if (username != null && password != null) {
 			client.AddBasicAuthentication(username, password);
+		} else if (apikey != null) {
+			client.AddParam("apikey", apikey);
 		}
+		client.AddHeader("Content-Type", "application/json");
+		client.AddHeader("Accept", "application/json");
 
 		try {
 			client.Execute(RequestMethod.GET);
@@ -177,10 +153,8 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 		params.put("registrationId", registrationId);
 		String response = executeRESTWS(REGISTER_DEVICE_WS, params);
 
-		if (response != null && response.contains(RESPONSE_OK)) {
-			return true;
-		}
-		return false;
+		APIResponse apiResponse = gson.fromJson(response, APIResponse.class);
+		return apiResponse != null && apiResponse.getStatus() == ResponseStatus.SUCCESS ;
 	}
 
 	public boolean unregisterDevice(String deviceId, String registrationId)
@@ -189,7 +163,7 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 		return false;
 	}
 
-	public List<Item> getQueue() throws Exception {
+	public List<FileValue> getQueue() throws Exception {
 		String response = executeRESTWS(DOWNLOADS_QUEUE_WS, Collections.<String, Object> emptyMap());
 
 		if (response == null) {
@@ -202,20 +176,20 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 	public boolean removeFromQueue(long queueId) throws Exception {
 		String response = executeRESTWS(DOWNLOADS_DELETE_WS, Collections.singletonMap("downloadId", (Object)queueId));
 
-		if (response != null && response.contains(RESPONSE_OK)) {
-			return true;
-		}
-		return false;
+		APIResponse apiResponse = gson.fromJson(response, APIResponse.class);
+		return apiResponse != null && apiResponse.getStatus() == ResponseStatus.SUCCESS ;
 	}
 	
 	public String getApikey(String username, String password) throws Exception {
-		String response = executeRESTWS(DOWNLOADS_DELETE_WS, Collections.<String, Object> emptyMap(), username, password);
+		String response = executeRESTWS(APIKEY_WS, Collections.<String, Object> emptyMap(), username, password);
 		
-		Matcher m = apikey_pattern.matcher(response);
-		if (response != null && m.matches()) {
-			return m.group(1);
+		UserAPIKeyResponse apikey = gson.fromJson(response, UserAPIKeyResponse.class);
+		
+		if (apikey != null) {
+			return apikey.getApiKey();
+		} else {
+			return null;
 		}
-		return null;
 	}
 
 }

@@ -18,22 +18,23 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.seedroid.ws;
+package net.seedboxer.seedroid.services.seedboxer;
 
 import java.util.List;
 
-import net.seedboxer.seedroid.types.Item;
+import net.seedboxer.seedroid.services.seedboxer.types.FileValue;
+import net.seedboxer.seedroid.services.seedboxer.types.UserStatusAPIResponse;
 
 
 public interface SeedBoxerWSClient {
 
-	List<Item> getItemsAvaibleForDownload() throws Exception;
+	List<FileValue> getItemsAvaibleForDownload() throws Exception;
 
-	List<Item> getStatusOfDownloads() throws Exception;
+	UserStatusAPIResponse getStatusOfDownloads() throws Exception;
 
-	boolean putToDownload(List<Item> toDownload) throws Exception;
+	boolean putToDownload(List<FileValue> toDownload) throws Exception;
 
-	List<Item> getQueue() throws Exception;
+	List<FileValue> getQueue() throws Exception;
 
 	boolean removeFromQueue(long id) throws Exception;
 

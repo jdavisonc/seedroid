@@ -1,46 +1,47 @@
 /*******************************************************************************
- * DownloadsActivity.java
+ * DownloadsFragment.java
  * 
  * Copyright (c) 2012 SeedBoxer Team.
  * 
- * This file is part of Seedroid.
+ * This file is part of SeedBoxer.
  * 
- * Seedroid is free software: you can redistribute it and/or modify
+ * SeedBoxer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
- * Seedroid is distributed in the hope that it will be useful,
+ * SeedBoxer is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
+ * along with SeedBoxer.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.seedroid;
+package net.seedboxer.seedroid.activities.fragments;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import net.seedboxer.seedroid.R;
+import net.seedboxer.seedroid.services.seedboxer.SeedBoxerWSClient;
+import net.seedboxer.seedroid.services.seedboxer.SeedBoxerWSFactory;
+import net.seedboxer.seedroid.services.seedboxer.types.FileValue;
 import net.seedboxer.seedroid.tools.LauncherUtils;
-import net.seedboxer.seedroid.types.Item;
-import net.seedboxer.seedroid.ws.SeedBoxerWSClient;
-import net.seedboxer.seedroid.ws.SeedBoxerWSFactory;
-import android.app.ActionBar;
-import android.app.ListActivity;
+import net.seedboxer.seedroid.utils.Runners;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -48,89 +49,93 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
-public class DownloadsActivity extends ListActivity implements OnItemClickListener {
 
-	private ArrayAdapter<Item> adapter;
+/**
+ * @author Jorge Davison (jdavisonc)
+ *
+ */
+public class DownloadsFragment extends ListFragment implements OnItemClickListener {
+	
+	private ArrayAdapter<FileValue> adapter;
 	private ActionMode mActionMode;
-
+	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View root = super.onCreateView(inflater, container, savedInstanceState);
 
 		// Set adapter
-		adapter = new ArrayAdapter<Item>(this, R.layout.rowbuttonlayout, new ArrayList<Item>());
+		adapter = new ArrayAdapter<FileValue>(getActivity(), R.layout.downloads_row_view, new ArrayList<FileValue>());
 		setListAdapter(adapter);
-
+		
+		setHasOptionsMenu(true);
+		
+		return root;
+	}
+	
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
 		mActionMode = null;
 		getListView().setItemsCanFocus(false);
 		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		getListView().setOnItemClickListener(this);
-
-		getAndFillDownloadsList();
-		setHomeIcon();
+	}
+	
+	@Override
+	public void onViewStateRestored(Bundle savedInstanceState) {
+		super.onViewStateRestored(savedInstanceState);
+		process();
 	}
 
-	private void setHomeIcon() {
-		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-	}
-
-	private void getAndFillDownloadsList() {
-		startProgressBar();
-		new Thread(new Runnable() {
+	private void process() {
+		Runners.runOnThread(getActivity(), new Runnable() {
 			public void run() {
 				try {
-					// Calling Web Service
-					SeedBoxerWSClient wsclient = SeedBoxerWSFactory.getClient(DownloadsActivity.this);
-					final List<Item> items = wsclient.getItemsAvaibleForDownload();
+					SeedBoxerWSClient wsclient = SeedBoxerWSFactory.getClient(getActivity());
+					final List<FileValue> items = wsclient.getItemsAvaibleForDownload();
 
-					// Render Items
-					runOnUiThread(new Runnable() {
+					getActivity().runOnUiThread(new Runnable() {
 						public void run() {
 							renderItems(items);
 						}
 					});
 				} catch (Exception e) {
 					Log.e("seedroid", "Error communicating with SeedBoxer.");
-					LauncherUtils.showError("Error communicating with SeedBoxer.", DownloadsActivity.this);
-				} finally {
-					runOnUiThread(new Runnable() {
-						public void run() {
-							stopProgressBar();
-						}
-					});
+					LauncherUtils.showError("Error communicating with SeedBoxer.", getActivity());
 				}
 			}
-		}, "MagentoBackground").start();
+		});
 	}
-
-	private void startProgressBar() {
-		setProgressBarIndeterminateVisibility(true);
+	
+	/**
+	 * Method for add items to adapter and render it
+	 * @param items
+	 */
+	private void renderItems(List<FileValue> items) {
+		if (items != null) {
+			for (FileValue item : items) {
+				adapter.add(item);
+			}
+			adapter.notifyDataSetChanged();
+		}
 	}
-
-	private void stopProgressBar() {
-		setProgressBarIndeterminateVisibility(false);
-	}
-
+	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.downloads_menu, menu);
 
 		createFilteredMenu(menu);
-		return super.onCreateOptionsMenu(menu);
+		super.onCreateOptionsMenu(menu, inflater);
 	}
-
+	
 	/**
 	 * Get the SearchView and set the searchable configuration
 	 * @param menu
 	 */
 	private void createFilteredMenu(Menu menu) {
-		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
 		SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+		searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
 		searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
 		searchView.setOnQueryTextListener(new OnQueryTextListener() {
 
@@ -145,59 +150,24 @@ public class DownloadsActivity extends ListActivity implements OnItemClickListen
 			}
 		});
 	}
+	
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.menu_preferences:
-			startActivity(new Intent(this, Preferences.class));
-			return true;
-		case android.R.id.home:
-			Intent intent = new Intent(this, StatusActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-
-	/**
-	 * Method for add items to adapter and render it
-	 * @param items
-	 */
-	private void renderItems(List<Item> items) {
-		if (items != null) {
-			for (Item item : items) {
-				adapter.add(item);
-			}
-			adapter.notifyDataSetChanged();
-		}
-	}
-
-	protected void download(final List<Item> toDownload) {
-		setProgressBarIndeterminateVisibility(true);
-		new Thread(new Runnable() {
+	protected void download(final List<FileValue> toDownload) {
+		Runners.runOnThread(getActivity(), new Runnable() {
 			public void run() {
 				try {
-					SeedBoxerWSClient client = SeedBoxerWSFactory.getClient(DownloadsActivity.this);
+					SeedBoxerWSClient client = SeedBoxerWSFactory.getClient(getActivity());
 					if (client.putToDownload(toDownload)) {
-						LauncherUtils.showToast("Downloads are in the queue now!", DownloadsActivity.this);
+						LauncherUtils.showToast("Downloads are in the queue now!", getActivity());
 					} else {
-						LauncherUtils.showError("There was a problem when enqueuing downloads.", DownloadsActivity.this);
+						LauncherUtils.showError("There was a problem when enqueuing downloads.", getActivity());
 					}
 				} catch (Exception e) {
 					Log.e("seedroid", "Error communicating with SeedBoxer.");
-					LauncherUtils.showError("Error communicating with SeedBoxer.", DownloadsActivity.this);
-				} finally {
-					runOnUiThread(new Runnable() {
-						public void run() {
-							stopProgressBar();
-						}
-					});
+					LauncherUtils.showError("Error communicating with SeedBoxer.", getActivity());
 				}
 			}
-		}, "MagentoBackground").start();
+		});
 	}
 
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -212,7 +182,7 @@ public class DownloadsActivity extends ListActivity implements OnItemClickListen
 
 		if (hasCheckedElement) {
 			if (mActionMode == null) {
-				mActionMode = startActionMode(new ModeCallback());
+				mActionMode = getView().startActionMode(new ModeCallback());
 			}
 		} else {
 			if (mActionMode != null) {
@@ -225,7 +195,7 @@ public class DownloadsActivity extends ListActivity implements OnItemClickListen
 
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			// Create the menu from the xml file
-			MenuInflater inflater = getMenuInflater();
+			MenuInflater inflater = mode.getMenuInflater();
 			inflater.inflate(R.menu.rowselection, menu);
 			return true;
 		}
@@ -251,10 +221,10 @@ public class DownloadsActivity extends ListActivity implements OnItemClickListen
 			case R.id.menu_download:
 				SparseBooleanArray selected = getListView().getCheckedItemPositions();
 				if (selected != null && selected.size() > 0) {
-					List<Item> toDownload = new ArrayList<Item>();
+					List<FileValue> toDownload = new ArrayList<FileValue>();
 					for (int i = 0; i < selected.size(); i++) {
 						if (selected.valueAt(i)) {
-							Item it = (Item) getListView().getItemAtPosition(selected.keyAt(i));
+							FileValue it = (FileValue) getListView().getItemAtPosition(selected.keyAt(i));
 							toDownload.add(it);
 						}
 					}
@@ -266,6 +236,17 @@ public class DownloadsActivity extends ListActivity implements OnItemClickListen
 			}
 
 			return true;
+		}
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_refresh:
+			process();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 
