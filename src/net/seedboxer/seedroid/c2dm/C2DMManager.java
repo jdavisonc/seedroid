@@ -50,12 +50,9 @@ public class C2DMManager {
 			registerWithServer(context, registrationId);
 		} else {
 			String projectId = Prefs.get(context).getString(Prefs.PROJECT_ID, "");;
-			if (!projectId.isEmpty()) {
+			if (projectId != null && !projectId.isEmpty()) {
 				Log.i("GenericNotifier", "No existing registrationId. Registering...");
 				C2DMessaging.register(context, projectId);
-			} else {
-				Log.e("GenericNotifier", "There is not a project ID set.");
-				throw new IllegalArgumentException("There is not a project ID set.");
 			}
 		}
 	}

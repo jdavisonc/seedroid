@@ -23,4 +23,6 @@
     <color name="white">#FFFFFF</color>
     <color name="grey_dark">#302f2f</color>
     <color name="orange">#000000</color>
+    <color name="configure_light_background">#f2f2f2</color>
+    <color name="extension_list_item_color">#09c</color>
 </resources>

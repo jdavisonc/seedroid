@@ -18,8 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.seedroid;
+package net.seedboxer.seedroid.activities;
 
+import net.seedboxer.seedroid.R;
+import net.seedboxer.seedroid.R.id;
+import net.seedboxer.seedroid.R.layout;
 import net.seedboxer.seedroid.services.seedboxer.SeedBoxerWSClient;
 import net.seedboxer.seedroid.services.seedboxer.SeedBoxerWSFactory;
 import net.seedboxer.seedroid.tools.LauncherUtils;

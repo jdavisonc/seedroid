@@ -19,15 +19,81 @@
   You should have received a copy of the GNU General Public License
   along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:textSize="15dp"
+    android:gravity="center_vertical"
+    android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+    android:paddingLeft="8dip"
+    android:paddingRight="8dip"
+/> -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/net.seedboxer.seedroid"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-        
-        <ListView
-            android:id="@+id/in_queue_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"/>
+    android:background="@color/configure_light_background">
 
-</LinearLayout>
+    <com.mobeta.android.dslv.DragSortListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@android:color/transparent"
+        app:use_default_controller="false"
+        app:sort_enabled="true"
+        app:drag_start_mode="onDown"
+        app:remove_enabled="false"
+        app:float_alpha="0.8" />
+
+    <ScrollView android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+
+            <!--suppress AndroidLintUselessParent -->
+            <LinearLayout android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:padding="32dp"
+                tools:ignore="UselessParent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="28sp"
+                    android:textColor="#09c"
+                    android:fontFamily="sans-serif-thin"
+                    android:text="@string/welcome_title" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:maxWidth="400dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:lineSpacingMultiplier="1.2"
+                    android:layout_marginTop="24sp"
+                    android:layout_marginBottom="24sp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/welcome_description" />
+
+                <!-- <Button android:id="@+id/empty_add_extension_button"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:background="@drawable/ic_menu_preferences.png"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:text="@string/add_extension"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:textColor="#fff" /> -->
+            </LinearLayout>
+        </FrameLayout>
+    </ScrollView>
+</FrameLayout>

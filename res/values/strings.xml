@@ -57,4 +57,8 @@
     <string name="login_password_label">Password</string>
     <string name="login_ok_button">Login</string>
     <string name="apikey">ApiKey</string>
+    
+    
+    <string name="welcome_title">TODO</string>
+    <string name="welcome_description">TODO</string>
 </resources>

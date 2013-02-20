@@ -74,7 +74,7 @@
 	    
 	
 	    <TextView
-	        android:id="@id/name"
+	        android:id="@+id/name"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_toRightOf="@id/icon"
@@ -83,6 +83,7 @@
 	        android:layout_above="@id/secondLine"
 	        android:layout_alignWithParentIfMissing="true"
 	        android:gravity="top"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
 	        android:text="Total.Recall.2012.EXTENDED.DC.720p.BluRay.DTS.x264-PublicHD" />
 	
 	</RelativeLayout>

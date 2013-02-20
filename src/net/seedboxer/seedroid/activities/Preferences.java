@@ -18,8 +18,12 @@
  * You should have received a copy of the GNU General Public License
  * along with Seedroid.  If not, see <http ://www.gnu.org/licenses/>.
  ******************************************************************************/
-package net.seedboxer.seedroid;
+package net.seedboxer.seedroid.activities;
 
+import net.seedboxer.seedroid.R;
+import net.seedboxer.seedroid.R.id;
+import net.seedboxer.seedroid.R.layout;
+import net.seedboxer.seedroid.R.xml;
 import net.seedboxer.seedroid.c2dm.C2DMManager;
 import net.seedboxer.seedroid.services.seedboxer.SeedBoxerWSFactory;
 import net.seedboxer.seedroid.tools.LauncherUtils;
@@ -104,7 +108,7 @@ public class Preferences extends PreferenceActivity {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			// app icon in action bar clicked; go home
-			Intent intent = new Intent(this, StatusActivity.class);
+			Intent intent = new Intent(this, MainActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			return true;

@@ -20,7 +20,6 @@
  ******************************************************************************/
 package net.seedboxer.seedroid.activities;
 
-import net.seedboxer.seedroid.Preferences;
 import net.seedboxer.seedroid.R;
 import net.seedboxer.seedroid.activities.fragments.DownloadsFragment;
 import net.seedboxer.seedroid.activities.fragments.InQueueFragment;

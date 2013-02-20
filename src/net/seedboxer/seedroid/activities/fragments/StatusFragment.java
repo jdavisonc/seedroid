@@ -21,7 +21,6 @@
 package net.seedboxer.seedroid.activities.fragments;
 
 import net.seedboxer.seedroid.R;
-import net.seedboxer.seedroid.StatusActivity;
 import net.seedboxer.seedroid.services.seedboxer.SeedBoxerWSClient;
 import net.seedboxer.seedroid.services.seedboxer.SeedBoxerWSFactory;
 import net.seedboxer.seedroid.services.seedboxer.types.Download;
@@ -37,7 +36,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 

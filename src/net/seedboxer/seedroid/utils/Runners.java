@@ -21,6 +21,7 @@
 package net.seedboxer.seedroid.utils;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 
 /**
  * @author Jorge Davison (jdavisonc)
@@ -29,7 +30,7 @@ import android.app.Activity;
 public class Runners {
 
 	public static void runOnThread(final Activity activity, final Runnable runnable) {
-		startProgressBar(activity);
+		final ProgressDialog dialog = startProgressBar(activity);
 		new Thread(new Runnable() {
 			public void run() {
 				try {
@@ -37,7 +38,7 @@ public class Runners {
 				} finally {
 					activity.runOnUiThread(new Runnable() {
 						public void run() {
-							stopProgressBar(activity);
+							stopProgressBar(dialog);
 						}
 					});
 				}
@@ -45,12 +46,14 @@ public class Runners {
 		}, "MagentoBackground").start();
 	}
 
-	private static void startProgressBar(Activity activity) {
-		activity.setProgressBarIndeterminateVisibility(true);
+	private static ProgressDialog startProgressBar(Activity activity) {
+		//activity.setProgressBarIndeterminateVisibility(true);
+		return ProgressDialog.show(activity, "", "Loading...");
 	}
 
-	private static void stopProgressBar(Activity activity) {
-		activity.setProgressBarIndeterminateVisibility(false);
+	private static void stopProgressBar(ProgressDialog dialog) {
+		//activity.setProgressBarIndeterminateVisibility(false);
+		dialog.dismiss();
 	}
 	
 }

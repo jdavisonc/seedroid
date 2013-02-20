@@ -37,6 +37,10 @@ import android.widget.Toast;
 public class LauncherUtils {
 
 	public static void showError(final String error, final Activity activity) {
+		if (activity == null) {
+			return;
+		}
+		
 		activity.runOnUiThread(new Runnable() {
 			public void run() {
 				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -53,6 +57,10 @@ public class LauncherUtils {
 	}
 
 	public static void showToast(final String notification, final Activity activity) {
+		if (activity == null) {
+			return;
+		}
+		
 		final int duration = Toast.LENGTH_SHORT;
 		activity.runOnUiThread(new Runnable() {
 			public void run() {
