@@ -30,11 +30,11 @@ public class FileValue {
 
 	private Long queueId;
 
-	private boolean downloaded;
+	private Boolean downloaded;
         
     private int order;
     
-    private boolean selected;
+    private Boolean selected;
 
     public int getOrder() {
         return order;

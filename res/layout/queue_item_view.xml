@@ -12,7 +12,7 @@
         android:paddingLeft="16dp"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
-        android:color="#2333" />
+        android:color="@color/grey_white" />
     <!-- TODO: accessibility for dragging and removing -->
 
     <LinearLayout android:layout_width="match_parent"
@@ -32,13 +32,13 @@
             android:paddingRight="16dp"
             android:layout_gravity="center_vertical">
 
-            <!--suppress AndroidLintContentDescription -->
+            <!--suppress AndroidLintContentDescription
             <ImageView android:id="@android:id/icon1"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginRight="8dp"
                 android:scaleType="centerInside"
-                tools:ignore="ContentDescription" />
+                tools:ignore="ContentDescription" /> -->
 
             <TextView
                 android:id="@android:id/text1"
@@ -46,19 +46,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-condensed"
-                android:textStyle="bold"
-                android:textSize="22sp"
-                android:textColor="@color/extension_list_item_color"
+                android:textSize="18sp"
+                android:textColor="@color/white"
                 android:textAppearance="?android:textAppearanceMedium" />
 
-            <TextView
+            <!-- <TextView
                 android:id="@android:id/text2"
                 android:layout_below="@android:id/text1"
                 android:layout_alignEnd="@android:id/text1"
                 android:layout_alignStart="@android:id/text1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:textAppearanceSmall" />
+                android:textAppearance="?android:textAppearanceSmall" />  -->
 
         </RelativeLayout>
 

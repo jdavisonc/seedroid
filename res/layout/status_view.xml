@@ -68,6 +68,8 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:padding="2dp" 
+	            android:fontFamily="sans-serif-condensed"
+    			android:textSize="18sp"
 	            android:text="80%" />
 	    </LinearLayout>
 	    
@@ -83,6 +85,9 @@
 	        android:layout_above="@id/secondLine"
 	        android:layout_alignWithParentIfMissing="true"
 	        android:gravity="top"
+		    android:fontFamily="sans-serif-condensed"
+		    android:textSize="22sp"
+		    android:textColor="@color/white"
 	        android:textAppearance="?android:attr/textAppearanceMedium"
 	        android:text="Total.Recall.2012.EXTENDED.DC.720p.BluRay.DTS.x264-PublicHD" />
 	
@@ -105,6 +110,8 @@
 	        android:layout_alignParentTop="true"
 	        android:layout_alignWithParentIfMissing="true"
 	        android:layout_toRightOf="@id/icon"
+		    android:fontFamily="sans-serif-condensed"
+		    android:textSize="22sp"
 	        android:textAppearance="?android:attr/textAppearanceMedium"
 	        android:gravity="center_vertical|center_horizontal"
 	        android:text="Ups... nothing is downloading. 

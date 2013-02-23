@@ -73,6 +73,19 @@ public class DownloadsFragment extends ListFragment implements OnItemClickListen
 	}
 	
 	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+
+		if (isVisibleToUser == true) { 
+			refresh();
+		} else {
+	    	if (mActionMode != null) {
+	    		mActionMode.finish();
+	    	}
+		}
+	}
+	
+	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		mActionMode = null;
@@ -80,14 +93,8 @@ public class DownloadsFragment extends ListFragment implements OnItemClickListen
 		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		getListView().setOnItemClickListener(this);
 	}
-	
-	@Override
-	public void onViewStateRestored(Bundle savedInstanceState) {
-		super.onViewStateRestored(savedInstanceState);
-		process();
-	}
 
-	private void process() {
+	private void refresh() {
 		Runners.runOnThread(getActivity(), new Runnable() {
 			public void run() {
 				try {
@@ -123,7 +130,6 @@ public class DownloadsFragment extends ListFragment implements OnItemClickListen
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.downloads_menu, menu);
-
 		createFilteredMenu(menu);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
@@ -196,12 +202,11 @@ public class DownloadsFragment extends ListFragment implements OnItemClickListen
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			// Create the menu from the xml file
 			MenuInflater inflater = mode.getMenuInflater();
-			inflater.inflate(R.menu.rowselection, menu);
+			inflater.inflate(R.menu.downloads_item_menu, menu);
 			return true;
 		}
 
 		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-			// Here, you can checked selected items to adapt available actions
 			return false;
 		}
 
@@ -216,7 +221,6 @@ public class DownloadsFragment extends ListFragment implements OnItemClickListen
 		}
 
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-
 			switch (item.getItemId()) {
 			case R.id.menu_download:
 				SparseBooleanArray selected = getListView().getCheckedItemPositions();
@@ -234,7 +238,6 @@ public class DownloadsFragment extends ListFragment implements OnItemClickListen
 			default:
 				mode.finish();
 			}
-
 			return true;
 		}
 	}
@@ -243,7 +246,7 @@ public class DownloadsFragment extends ListFragment implements OnItemClickListen
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_refresh:
-			process();
+			refresh();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

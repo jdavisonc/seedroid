@@ -45,6 +45,20 @@ import android.widget.TextView;
  */
 public class StatusFragment extends Fragment {
 	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+	
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+
+		if (isVisibleToUser == true) { 
+			refresh();			
+		}
+	}
+	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.status_view, container, false);
@@ -52,13 +66,7 @@ public class StatusFragment extends Fragment {
         return root;
     }
     
-    @Override
-    public void onViewStateRestored(Bundle savedInstanceState) {
-    	super.onViewStateRestored(savedInstanceState);
-    	process();
-    }
-    
-	private void process() {
+	private void refresh() {
 		Runners.runOnThread(getActivity(), new Runnable() {
 			public void run() {
 				try {
@@ -137,7 +145,7 @@ public class StatusFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_refresh:
-			process();
+			refresh();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
@@ -38,6 +39,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -100,7 +102,7 @@ public class RestClient {
 				combinedParams += "?";
 				for(NameValuePair p : params)
 				{
-					String paramString = p.getName() + "=" + URLEncoder.encode(p.getValue(),"UTF-8");
+					String paramString = getParamString(p.getName(), p.getValue());
 					if(combinedParams.length() > 1)
 					{
 						combinedParams  +=  "&" + paramString;
@@ -134,13 +136,21 @@ public class RestClient {
 			}
 
 			if(!params.isEmpty()){
-				request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+				if (params.size() == 1) {
+					request.setEntity(new StringEntity(params.get(0).getValue(), HTTP.UTF_8));
+				} else {
+					request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+				}
 			}
 
 			executeRequest(request, url);
 			break;
 		}
 		}
+	}
+
+	public static String getParamString(String paramName, String paramValue) throws UnsupportedEncodingException {
+		return paramName + "=" + URLEncoder.encode(paramValue,"UTF-8");
 	}
 
 	private void executeRequest(HttpUriRequest request, String url) {

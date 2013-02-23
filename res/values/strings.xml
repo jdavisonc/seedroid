@@ -25,7 +25,6 @@
     <string name="main_no_items">No items to download</string>
     <string name="menu_save">Save</string>
     <string name="wait">Please wait…</string>
-    <string name="menu_preferences">Settings</string>
     <string name="retrieving">Retrieving data …</string>
     <string name="default_seedroid_server">http://server</string>
     <string name="default_seedroid_username"></string>
@@ -37,7 +36,15 @@
     <string name="menu_downloads">Downloads</string>
     <string name="menu_refresh">Refresh</string>
     <string name="menu_delete">Delete</string>
+    <string name="menu_update_queue">Update Queue</string>
+    <string name="menu_preferences">Settings</string>
+    <string name="menu_about">About</string>
     <string name="in_queue">In Queue</string>
+    
+    <!-- Tabs titles -->
+    <string name="tab_title_inprogres">In Progress</string>
+    <string name="tab_title_queue">Queue</string>
+    <string name="tab_title_downloads">Downloads</string>
     
     
     <!-- Preferences -->
@@ -61,4 +68,22 @@
     
     <string name="welcome_title">TODO</string>
     <string name="welcome_description">TODO</string>
+    
+    <!-- About -->
+    <string name="close">Close</string>
+    <string name="about">About</string>
+
+    <string name="app_name_and_version" translatable="false"><![CDATA[
+        <b>Seedroid</b>&nbsp;<font color="#888888">v%1$s</font>
+    ]]></string>
+    <string name="about_body"><![CDATA[
+        Created by Jorge Davison 
+        &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+        <a href="http://www.twitter.com/jdavisonc">@jdavisonc</a><br><br>
+        Many thanks to these open source tools:<br><br>
+        <b><a href="http://www.viewpagerindicator.com">View Pager Indicator</a></b><br>
+        <i>by Jake Wharton</i><br><br>
+        <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br>
+        <i>by Carl A. Bauer</i>
+    ]]></string>
 </resources>

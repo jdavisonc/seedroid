@@ -29,5 +29,9 @@
 	<style name="ActionBarIPS" parent="@android:style/Widget.Holo.ActionBar">
 	    <item name="android:indeterminateProgressStyle">@style/IndeterminateProgress</item>
 	</style>
+	
+	<style name="Pager">
+	    <item name="android:textColor">#E26F26</item>
+	</style>
 
 </resources>

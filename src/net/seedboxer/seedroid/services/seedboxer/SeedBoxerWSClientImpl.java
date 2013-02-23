@@ -39,6 +39,8 @@ import net.seedboxer.seedroid.utils.RequestMethod;
 import net.seedboxer.seedroid.utils.RestClient;
 import net.seedboxer.seedroid.utils.RestClientFactory;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -53,6 +55,7 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 	private static final String DOWNLOADS_PUT_WS = WS_PREFIX + "downloads/put";
 	private static final String DOWNLOADS_DELETE_WS = WS_PREFIX + "downloads/delete";
 	private static final String DOWNLOADS_QUEUE_WS = WS_PREFIX + "downloads/queue";
+	private static final String DOWNLOADS_UPDATE_QUEUE_WS = WS_PREFIX + "downloads/update";
 	private static final String STATUS_WS = WS_PREFIX + "status";
 	private static final String REGISTER_DEVICE_WS = WS_PREFIX + "registerDevice";
 	private static final String APIKEY_WS = WS_PREFIX + "apikey";
@@ -95,8 +98,7 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 		params.put("fileName", fileNames);
 
 		String response = executeRESTWS(DOWNLOADS_PUT_WS, params);
-		APIResponse apiResponse = gson.fromJson(response, APIResponse.class);
-		return apiResponse != null && apiResponse.getStatus() == ResponseStatus.SUCCESS ;
+		return verifyApiResponse(response);
 	}
 
 	public UserStatusAPIResponse getStatusOfDownloads() throws Exception {
@@ -109,8 +111,103 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 		}
 	}
 
+	public boolean registerDevice(String deviceId, String registrationId)
+			throws Exception {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("deviceId", deviceId);
+		params.put("registrationId", registrationId);
+		String response = executeRESTWS(REGISTER_DEVICE_WS, params);
+
+		return verifyApiResponse(response);
+	}
+
+	public boolean unregisterDevice(String deviceId, String registrationId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public List<FileValue> getQueue() throws Exception {
+		String response = executeRESTWS(DOWNLOADS_QUEUE_WS, Collections.<String, Object> emptyMap());
+
+		if (response == null) {
+			return null;
+		} else {
+			return parseFilesValue(response);
+		}
+	}
+	
+	public boolean updateQueue(List<FileValue> queue) throws Exception {
+		Map<String, Object> params = Collections.singletonMap("queueItems", (Object)gson.toJson(queue));
+		String response = executeRESTWSPost(DOWNLOADS_UPDATE_QUEUE_WS, params);
+		Log.e("seedroid", response);
+		
+		return verifyApiResponse(response);
+	}
+
+	public boolean removeFromQueue(long queueId) throws Exception {
+		String response = executeRESTWS(DOWNLOADS_DELETE_WS, Collections.singletonMap("downloadId", (Object)queueId));
+
+		return verifyApiResponse(response);
+	}
+	
+	public String getApikey(String username, String password) throws Exception {
+		String response = executeRESTWS(APIKEY_WS, Collections.<String, Object> emptyMap(), username, password);
+		
+		UserAPIKeyResponse apikey = gson.fromJson(response, UserAPIKeyResponse.class);
+		
+		if (apikey != null) {
+			return apikey.getApiKey();
+		} else {
+			return null;
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * Extra methods
+	 * 
+	 **/
+	
+	
+	/**
+	 * 
+	 * Makes a HTTP GET request to SeedBoxer API
+	 * 
+	 * @param type
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
 	private String executeRESTWS(String type, Map<String, Object> params) throws Exception {
 		return executeRESTWS(type, params, null, null);
+	}
+	
+	/**
+	 * 
+	 * Makes a HTTP POST request to SeedBoxer API
+	 * 
+	 * @param type
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	private String executeRESTWSPost(String type, Map<String, Object> params) throws Exception {
+		RestClient client = restClientFactory.getClient(server + type + "?" + RestClient.getParamString("apikey", apikey));
+
+		for (Map.Entry<String, Object> entry : params.entrySet()) {
+			addParam(client, entry);
+		}
+		client.AddHeader("Content-Type", "application/json");
+		client.AddHeader("Accept", "application/json");
+
+		try {
+			client.Execute(RequestMethod.POST);
+			return client.getResponse();
+		} catch (Exception e) {
+			throw new Exception("Error contacting web service", e);
+		}
 	}
 	
 	private String executeRESTWS(String type, Map<String, Object> params, String username, String password) throws Exception {
@@ -146,50 +243,10 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 		}
 	}
 
-	public boolean registerDevice(String deviceId, String registrationId)
-			throws Exception {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("deviceId", deviceId);
-		params.put("registrationId", registrationId);
-		String response = executeRESTWS(REGISTER_DEVICE_WS, params);
 
-		APIResponse apiResponse = gson.fromJson(response, APIResponse.class);
-		return apiResponse != null && apiResponse.getStatus() == ResponseStatus.SUCCESS ;
-	}
-
-	public boolean unregisterDevice(String deviceId, String registrationId)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public List<FileValue> getQueue() throws Exception {
-		String response = executeRESTWS(DOWNLOADS_QUEUE_WS, Collections.<String, Object> emptyMap());
-
-		if (response == null) {
-			return null;
-		} else {
-			return parseFilesValue(response);
-		}
-	}
-
-	public boolean removeFromQueue(long queueId) throws Exception {
-		String response = executeRESTWS(DOWNLOADS_DELETE_WS, Collections.singletonMap("downloadId", (Object)queueId));
-
+	private boolean verifyApiResponse(String response) {
 		APIResponse apiResponse = gson.fromJson(response, APIResponse.class);
 		return apiResponse != null && apiResponse.getStatus() == ResponseStatus.SUCCESS ;
 	}
 	
-	public String getApikey(String username, String password) throws Exception {
-		String response = executeRESTWS(APIKEY_WS, Collections.<String, Object> emptyMap(), username, password);
-		
-		UserAPIKeyResponse apikey = gson.fromJson(response, UserAPIKeyResponse.class);
-		
-		if (apikey != null) {
-			return apikey.getApiKey();
-		} else {
-			return null;
-		}
-	}
-
 }

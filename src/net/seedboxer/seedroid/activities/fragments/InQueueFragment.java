@@ -34,13 +34,15 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -55,9 +57,11 @@ import com.mobeta.android.dslv.DragSortListView;
  */
 public class InQueueFragment extends Fragment {
 	
-	private ArrayAdapter<FileValue> adapter;
+	private InQueueItemsAdapter adapter;
 	
 	private DragSortListView mListView;
+	
+	private ActionMode mActionMode;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,19 @@ public class InQueueFragment extends Fragment {
 		
 		// Set adapter
         adapter = new InQueueItemsAdapter(getActivity(), R.layout.in_queue_view, new ArrayList<FileValue>());
+	}
+	
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+
+		if (isVisibleToUser == true) { 
+			refresh();			
+		} else {
+	    	if (mActionMode != null) {
+	    		mActionMode.finish();
+	    	}
+		}
 	}
 	
     @Override
@@ -81,7 +98,7 @@ public class InQueueFragment extends Fragment {
         mListView.setFloatViewManager(dragSortController);
         mListView.setDropListener(new DragSortListView.DropListener() {
             public void drop(int from, int to) {
-                ((InQueueItemsAdapter) adapter).change(from, to);
+                adapter.change(from, to);
             }
         });
         final SwipeDismissListViewTouchListener swipeDismissTouchListener =
@@ -94,7 +111,7 @@ public class InQueueFragment extends Fragment {
 
                             public void onDismiss(ListView listView, int[] reverseSortedPositions) {
                             	for (int position : reverseSortedPositions) {
-                            		FileValue item = ((InQueueItemsAdapter) adapter).remove(position);
+                            		FileValue item = adapter.remove(position);
                             		delete(item);
                                 }
                             }
@@ -116,46 +133,6 @@ public class InQueueFragment extends Fragment {
         return rootView;
     }
     
-    @Override
-    public void onViewStateRestored(Bundle savedInstanceState) {
-    	super.onViewStateRestored(savedInstanceState);
-    	process();
-    }
-    
-	private void process() {
-		Runners.runOnThread(getActivity(), new Runnable() {
-			public void run() {
-				try {
-					SeedBoxerWSClient wsclient = SeedBoxerWSFactory.getClient(getActivity());
-					final List<FileValue> inQueueItems = wsclient.getQueue();
-
-					getActivity().runOnUiThread(new Runnable() {
-						public void run() {
-							renderList(inQueueItems);
-						}
-					});
-				} catch (Exception e) {
-					Log.e("seedroid", "Error communicating with SeedBoxer.");
-					LauncherUtils.showError("Error communicating with SeedBoxer.", getActivity());
-				}
-			}
-		});
-	}
-	
-	private void delete(final FileValue item) {
-		Runners.runOnThread(getActivity(), new Runnable() {
-			public void run() {
-				try {
-					SeedBoxerWSClient wsclient = SeedBoxerWSFactory.getClient(getActivity());
-					wsclient.removeFromQueue(item.getQueueId());
-				} catch (Exception e) {
-					Log.e("seedroid", "Error communicating with SeedBoxer.");
-					LauncherUtils.showError("Error communicating with SeedBoxer.", getActivity());
-				}
-			}
-		});
-	}
-	
 	private void renderList(List<FileValue> items) {
 		if (items != null) {
 			adapter.clear();
@@ -168,8 +145,11 @@ public class InQueueFragment extends Fragment {
 	
 	public class InQueueItemsAdapter extends ArrayAdapter<FileValue> {
 		
+		private final List<FileValue> items;
+		
 		public InQueueItemsAdapter(Context context, int textViewResourceId, List<FileValue> items) {
 			super(context, textViewResourceId, items);
+			this.items = items;
 		}
 
 		@Override
@@ -181,12 +161,10 @@ public class InQueueFragment extends Fragment {
             }
 
             TextView titleView = (TextView) convertView.findViewById(android.R.id.text1);
-            TextView descriptionView = (TextView) convertView.findViewById(android.R.id.text2);
-            ImageView iconView = (ImageView) convertView.findViewById(android.R.id.icon1);
+            //TextView descriptionView = (TextView) convertView.findViewById(android.R.id.text2);
+            //ImageView iconView = (ImageView) convertView.findViewById(android.R.id.icon1);
 
 			FileValue item = getItem(position);
-			
-			
 			titleView.setText(item.getName());
 
 			return convertView;
@@ -203,6 +181,10 @@ public class InQueueFragment extends Fragment {
 			remove(item);
             insert(item, to);
             notifyDataSetChanged();
+		}
+		
+		public List<FileValue> getItems() {
+			return items;
 		}
 	}
 	
@@ -225,11 +207,21 @@ public class InQueueFragment extends Fragment {
 
             return res;
         }
+        
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2,
+        		float distanceX, float distanceY) {
+        	return super.onScroll(e1, e2, distanceX, distanceY);
+        }
 
         @Override
         public View onCreateFloatView(int position) {
             mPos = position;
-
+        	
+            if (mActionMode == null) {
+				mActionMode = getView().startActionMode(new ModeCallback());
+			}
+        	
             return adapter.getView(position, null, mListView);
         }
 
@@ -285,11 +277,107 @@ public class InQueueFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_refresh:
-			process();
+			refresh();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+	
+	private final class ModeCallback implements ActionMode.Callback {
+
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			MenuInflater inflater = mode.getMenuInflater();
+			inflater.inflate(R.menu.in_queue_item_menu, menu);
+			return true;
+		}
+
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return false;
+		}
+
+		public void onDestroyActionMode(ActionMode mode) {
+			if (mode == mActionMode) {
+				mActionMode = null;
+			}
+		}
+
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			switch (item.getItemId()) {
+			case R.id.menu_update:
+				update(adapter.getItems());
+				mode.finish();
+			default:
+				mode.finish();
+			}
+			return true;
+		}
+	}
+	
+	//
+	// SeedBoxer communication
+	// 
+    
+	private void refresh() {
+		Runners.runOnThread(getActivity(), new Runnable() {
+			public void run() {
+				try {
+					SeedBoxerWSClient wsclient = SeedBoxerWSFactory.getClient(getActivity());
+					final List<FileValue> inQueueItems = wsclient.getQueue();
+
+					getActivity().runOnUiThread(new Runnable() {
+						public void run() {
+							renderList(inQueueItems);
+						}
+					});
+				} catch (Exception e) {
+					Log.e("seedroid", "Error communicating with SeedBoxer.");
+					LauncherUtils.showError("Error communicating with SeedBoxer.", getActivity());
+				}
+			}
+		});
+	}
+	
+	private void delete(final FileValue item) {
+		Runners.runOnThread(getActivity(), new Runnable() {
+			public void run() {
+				try {
+					SeedBoxerWSClient wsclient = SeedBoxerWSFactory.getClient(getActivity());
+					wsclient.removeFromQueue(item.getQueueId());
+				} catch (Exception e) {
+					Log.e("seedroid", "Error communicating with SeedBoxer.");
+					LauncherUtils.showError("Error communicating with SeedBoxer.", getActivity());
+				}
+			}
+		});
+	}
+	
+	private void update(List<FileValue> items) {
+		final List<FileValue> updatedItems = getUpdatedList(items);
+		
+		Runners.runOnThread(getActivity(), new Runnable() {
+			public void run() {
+				try {
+					SeedBoxerWSClient wsclient = SeedBoxerWSFactory.getClient(getActivity());
+					wsclient.updateQueue(updatedItems);
+				} catch (Exception e) {
+					Log.e("seedroid", "Error communicating with SeedBoxer.");
+					LauncherUtils.showError("Error communicating with SeedBoxer.", getActivity());
+				}
+			}
+		});
+	}
+
+	private List<FileValue> getUpdatedList(List<FileValue> items) {
+		final List<FileValue> updatedItems = new ArrayList<FileValue>();
+		int order = 0;
+		for(FileValue value : items) {
+			FileValue item = new FileValue();
+			item.setQueueId(value.getQueueId());
+			item.setOrder(order++);
+			updatedItems.add(item);
+		}
+		return updatedItems;
 	}
 
 }

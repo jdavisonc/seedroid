@@ -35,6 +35,8 @@ public interface SeedBoxerWSClient {
 	boolean putToDownload(List<FileValue> toDownload) throws Exception;
 
 	List<FileValue> getQueue() throws Exception;
+	
+	boolean updateQueue(List<FileValue> queue) throws Exception;
 
 	boolean removeFromQueue(long id) throws Exception;
 
