@@ -28,68 +28,91 @@
 	<RelativeLayout
 	    android:id="@+id/relative_layout"
 	    android:layout_width="fill_parent"
-	    android:layout_height="80dp"
-	    android:padding="6dip"
+	    android:layout_height="wrap_content"
+	    android:paddingTop="10dp"
+	    android:padding="6dp"
 	    android:layout_marginTop="10dp"
 	    android:visibility="gone">
 	    
-	    <ImageView
-	        android:id="@+id/icon"
-	        android:layout_width="48dp"
-	        android:layout_height="48dp"
-	        android:layout_alignParentTop="true"
-	        android:layout_alignParentBottom="false"
-	        android:layout_marginRight="6dip"
-	        android:src="@drawable/movie_icon"  
-	        android:contentDescription="TODO"/>
-
-	    
-       <LinearLayout
-	        android:id="@+id/secondLine"
+	    <RelativeLayout
+	        android:id="@+id/firstLine"
 	        android:layout_width="fill_parent"
-	        android:layout_height="26dip" 
-	        android:layout_toRightOf="@id/icon"
-	        android:layout_alignParentBottom="true"
+	        android:layout_height="wrap_content" 
+	        android:layout_alignParentTop="false"
 	        android:layout_alignParentRight="true"
 	        android:singleLine="true"
 	        android:ellipsize="marquee">
-	
+		    <ImageView
+		        android:id="@+id/icon"
+		        android:layout_width="54dp"
+		        android:layout_height="54dp"
+		        android:layout_alignParentTop="true"
+		        android:layout_alignParentBottom="false"
+		        android:layout_marginRight="6dip"
+		        android:src="@drawable/movie_icon"  
+		        android:contentDescription="TODO"/>
+		
+		    <TextView
+		        android:id="@+id/name"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentRight="true"
+		        android:layout_alignParentTop="true"
+		        android:layout_alignWithParentIfMissing="true"
+		        android:layout_toRightOf="@id/icon"
+		        android:fontFamily="sans-serif-condensed"
+		        android:gravity="top"
+		        android:text="Total.Recall.2012.EXTENDED.DC.720p.BluRay.DTS.x264-PublicHD"
+		        android:textAppearance="?android:attr/textAppearanceMedium"
+		        android:textColor="@color/white"
+		        android:textSize="22sp" />
+
+	    </RelativeLayout>
+	    
+	    <RelativeLayout
+	        android:id="@+id/secondLine"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/firstLine"
+	        android:ellipsize="marquee"
+	        android:paddingTop="10dp"
+	        android:singleLine="false" >
+	        
 	        <ProgressBar
 	            android:id="@+id/progressbar"
-	            style="?android:attr/progressBarStyleHorizontal"
-	            android:layout_weight="0.12"
-	            android:layout_width="0dp"
+	            style="@style/seedroid_ProgressBar"
+	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
-	            android:padding="5dp"
-	            android:layout_gravity="left"/>
-	
+	            android:paddingLeft="5dp"
+	            android:paddingRight="5dp"
+	            android:progress="80" />
+	        
+	        <TextView
+	            android:id="@+id/total"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_below="@+id/progressbar"
+	            android:layout_alignParentLeft="true"
+	            android:layout_alignParentBottom="true"
+	            android:fontFamily="sans-serif-condensed"
+    			android:textSize="18sp"
+    			android:paddingLeft="5dp"
+	            android:paddingRight="5dp"
+	            android:text="100/2000" />
+	        	
 	        <TextView
 	            android:id="@+id/percentage"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:padding="2dp" 
+	            android:layout_below="@+id/progressbar"
+	            android:layout_alignParentRight="true"
+	            android:layout_alignParentBottom="true"
 	            android:fontFamily="sans-serif-condensed"
     			android:textSize="18sp"
+    			android:paddingLeft="5dp"
+	            android:paddingRight="5dp"
 	            android:text="80%" />
-	    </LinearLayout>
-	    
-	    
-	
-	    <TextView
-	        android:id="@+id/name"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_toRightOf="@id/icon"
-	        android:layout_alignParentRight="true"
-	        android:layout_alignParentTop="true"
-	        android:layout_above="@id/secondLine"
-	        android:layout_alignWithParentIfMissing="true"
-	        android:gravity="top"
-		    android:fontFamily="sans-serif-condensed"
-		    android:textSize="22sp"
-		    android:textColor="@color/white"
-	        android:textAppearance="?android:attr/textAppearanceMedium"
-	        android:text="Total.Recall.2012.EXTENDED.DC.720p.BluRay.DTS.x264-PublicHD" />
+	    </RelativeLayout>
 	
 	</RelativeLayout>
 	

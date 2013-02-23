@@ -120,9 +120,8 @@ public class DownloadsFragment extends ListFragment implements OnItemClickListen
 	 */
 	private void renderItems(List<FileValue> items) {
 		if (items != null) {
-			for (FileValue item : items) {
-				adapter.add(item);
-			}
+			adapter.clear();
+			adapter.addAll(items);
 			adapter.notifyDataSetChanged();
 		}
 	}

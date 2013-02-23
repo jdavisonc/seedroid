@@ -25,6 +25,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,6 @@ import net.seedboxer.seedroid.services.seedboxer.types.UserStatusAPIResponse;
 import net.seedboxer.seedroid.utils.RequestMethod;
 import net.seedboxer.seedroid.utils.RestClient;
 import net.seedboxer.seedroid.utils.RestClientFactory;
-
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -86,7 +86,15 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 
 	private List<FileValue> parseFilesValue(String response) {
 		Type listType = new TypeToken<ArrayList<FileValue>>() { }.getType();		
-		return gson.fromJson(response, listType);
+		ArrayList<FileValue> list = gson.fromJson(response, listType);
+
+		Collections.sort(list, new Comparator<FileValue>() {
+			public int compare(FileValue lhs, FileValue rhs) {
+				return lhs.getOrder() - rhs.getOrder();
+			}
+		});
+		
+		return list;
 	}
 
 	public boolean putToDownload(List<FileValue> toDownload) throws Exception {

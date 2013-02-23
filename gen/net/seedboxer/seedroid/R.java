@@ -160,10 +160,12 @@ containing a value of this type.
         public static final int use_default_controller=0x7f010010;
     }
     public static final class color {
-        public static final int configure_light_background=0x7f050003;
-        public static final int extension_list_item_color=0x7f050004;
+        public static final int configure_light_background=0x7f050004;
+        public static final int extension_list_item_color=0x7f050005;
         public static final int grey_dark=0x7f050001;
-        public static final int orange=0x7f050002;
+        public static final int grey_white=0x7f050002;
+        public static final int orange=0x7f050003;
+        public static final int pressed_seedroid=0x7f050006;
         public static final int white=0x7f050000;
     }
     public static final class dimen {
@@ -176,107 +178,161 @@ containing a value of this type.
         public static final int min_expanded_height=0x7f060000;
     }
     public static final class drawable {
-        public static final int bittorrent=0x7f020000;
-        public static final int ic_menu_find_holo_dark=0x7f020001;
-        public static final int ic_menu_preferences=0x7f020002;
-        public static final int ic_menu_refresh=0x7f020003;
-        public static final int ic_menu_search_holo_dark=0x7f020004;
-        public static final int movie_icon=0x7f020005;
-        public static final int tvshow_icon=0x7f020006;
+        public static final int ab_bottom_solid_seedroid=0x7f020000;
+        public static final int ab_solid_seedroid=0x7f020001;
+        public static final int ab_stacked_solid_seedroid=0x7f020002;
+        public static final int ab_transparent_seedroid=0x7f020003;
+        public static final int bittorrent=0x7f020004;
+        public static final int ic_menu_find_holo_dark=0x7f020005;
+        public static final int ic_menu_preferences=0x7f020006;
+        public static final int ic_menu_refresh=0x7f020007;
+        public static final int ic_menu_search_holo_dark=0x7f020008;
+        public static final int list_focused_seedroid=0x7f020009;
+        public static final int menu_dropdown_panel_seedroid=0x7f02000a;
+        public static final int menu_hardkey_panel_seedroid=0x7f02000b;
+        public static final int movie_icon=0x7f02000c;
+        public static final int pressed_background_seedroid=0x7f02000d;
+        public static final int progress_bg_seedroid=0x7f02000e;
+        public static final int progress_horizontal_seedroid=0x7f02000f;
+        public static final int progress_primary_seedroid=0x7f020010;
+        public static final int progress_secondary_seedroid=0x7f020011;
+        public static final int selectable_background_seedroid=0x7f020012;
+        public static final int spinner_ab_default_seedroid=0x7f020013;
+        public static final int spinner_ab_disabled_seedroid=0x7f020014;
+        public static final int spinner_ab_focused_seedroid=0x7f020015;
+        public static final int spinner_ab_pressed_seedroid=0x7f020016;
+        public static final int spinner_background_ab_seedroid=0x7f020017;
+        public static final int tab_indicator_ab_seedroid=0x7f020018;
+        public static final int tab_selected_focused_seedroid=0x7f020019;
+        public static final int tab_selected_pressed_seedroid=0x7f02001a;
+        public static final int tab_selected_seedroid=0x7f02001b;
+        public static final int tab_unselected_focused_seedroid=0x7f02001c;
+        public static final int tab_unselected_pressed_seedroid=0x7f02001d;
+        public static final int tvshow_icon=0x7f02001e;
     }
     public static final class id {
-        public static final int apikey_message=0x7f07000f;
-        public static final int apikey_status=0x7f070010;
+        public static final int about_body=0x7f070009;
+        public static final int action_about=0x7f070026;
+        public static final int apikey_message=0x7f070011;
+        public static final int apikey_status=0x7f070012;
+        public static final int app_name_and_version=0x7f070008;
         public static final int clickRemove=0x7f070000;
-        public static final int drag_handle=0x7f070013;
+        public static final int drag_handle=0x7f070015;
+        public static final int firstLine=0x7f070017;
         public static final int flingLeft=0x7f070002;
         public static final int flingRight=0x7f070001;
-        public static final int get_apikey=0x7f070012;
-        public static final int get_apikey_fixed=0x7f070011;
-        public static final int icon=0x7f070015;
-        public static final int menu_delete=0x7f07001d;
+        public static final int get_apikey=0x7f070014;
+        public static final int get_apikey_fixed=0x7f070013;
+        public static final int icon=0x7f070018;
+        public static final int menu_delete=0x7f070023;
         public static final int menu_download=0x7f070020;
-        public static final int menu_preferences=0x7f07001f;
-        public static final int menu_refresh=0x7f07001e;
-        public static final int menu_search=0x7f07001c;
-        public static final int message=0x7f070008;
-        public static final int message_bottom=0x7f07000c;
+        public static final int menu_preferences=0x7f070025;
+        public static final int menu_refresh=0x7f070024;
+        public static final int menu_search=0x7f070021;
+        public static final int menu_update=0x7f070022;
+        public static final int message=0x7f07000a;
+        public static final int message_bottom=0x7f07000e;
         public static final int name=0x7f070019;
-        public static final int ok_button=0x7f07000d;
+        public static final int ok_button=0x7f07000f;
         public static final int onDown=0x7f070005;
         public static final int onLongPress=0x7f070007;
         public static final int onMove=0x7f070006;
-        public static final int pager=0x7f07000e;
-        public static final int password_edit=0x7f07000b;
-        public static final int percentage=0x7f070018;
-        public static final int progressbar=0x7f070017;
-        public static final int relative_layout=0x7f070014;
-        public static final int relative_layout_no_download=0x7f07001a;
-        public static final int secondLine=0x7f070016;
+        public static final int pager=0x7f070010;
+        public static final int password_edit=0x7f07000d;
+        public static final int percentage=0x7f07001d;
+        public static final int progressbar=0x7f07001b;
+        public static final int relative_layout=0x7f070016;
+        public static final int relative_layout_no_download=0x7f07001e;
+        public static final int secondLine=0x7f07001a;
         public static final int slideLeft=0x7f070004;
         public static final int slideRight=0x7f070003;
-        public static final int textView2=0x7f07001b;
-        public static final int username_edit=0x7f070009;
-        public static final int username_fixed=0x7f07000a;
+        public static final int textView2=0x7f07001f;
+        public static final int total=0x7f07001c;
+        public static final int username_edit=0x7f07000b;
+        public static final int username_fixed=0x7f07000c;
     }
     public static final class layout {
-        public static final int downloads_row_view=0x7f030000;
-        public static final int in_queue_view=0x7f030001;
-        public static final int login=0x7f030002;
-        public static final int main_activity_view=0x7f030003;
-        public static final int preferences_layout=0x7f030004;
-        public static final int queue_item_view=0x7f030005;
-        public static final int status_view=0x7f030006;
+        public static final int dialog_about=0x7f030000;
+        public static final int downloads_row_view=0x7f030001;
+        public static final int in_queue_view=0x7f030002;
+        public static final int login=0x7f030003;
+        public static final int main_activity_view=0x7f030004;
+        public static final int preferences_layout=0x7f030005;
+        public static final int queue_item_view=0x7f030006;
+        public static final int status_view=0x7f030007;
     }
     public static final class menu {
-        public static final int downloads_menu=0x7f0a0000;
-        public static final int in_queue_menu=0x7f0a0001;
-        public static final int main_menu=0x7f0a0002;
-        public static final int rowselection=0x7f0a0003;
+        public static final int downloads_item_menu=0x7f0a0000;
+        public static final int downloads_menu=0x7f0a0001;
+        public static final int in_queue_item_menu=0x7f0a0002;
+        public static final int in_queue_menu=0x7f0a0003;
+        public static final int main_menu=0x7f0a0004;
     }
     public static final class string {
-        public static final int apikey=0x7f080020;
+        public static final int about=0x7f080029;
+        public static final int about_body=0x7f08002b;
+        public static final int apikey=0x7f080025;
         public static final int app_name=0x7f080000;
-        public static final int default_seedroid_project_id=0x7f080009;
-        public static final int default_seedroid_server=0x7f080007;
-        public static final int default_seedroid_username=0x7f080008;
-        public static final int dialog_title_seedroid_project_id=0x7f08001c;
-        public static final int dialog_title_seedroid_server=0x7f08001a;
+        public static final int app_name_and_version=0x7f08002a;
+        /**  About 
+         */
+        public static final int close=0x7f080028;
+        public static final int default_seedroid_project_id=0x7f080008;
+        public static final int default_seedroid_server=0x7f080006;
+        public static final int default_seedroid_username=0x7f080007;
+        public static final int dialog_title_seedroid_project_id=0x7f080021;
+        public static final int dialog_title_seedroid_server=0x7f08001f;
         public static final int download=0x7f080001;
-        public static final int downloading=0x7f08000b;
-        public static final int get_apikey=0x7f080016;
-        public static final int in_queue=0x7f080011;
-        public static final int listForDownload=0x7f08000a;
-        public static final int login_ok_button=0x7f08001f;
-        public static final int login_password_label=0x7f08001e;
-        public static final int login_username_label=0x7f08001d;
+        public static final int downloading=0x7f08000a;
+        public static final int get_apikey=0x7f08001b;
+        public static final int in_queue=0x7f080013;
+        public static final int listForDownload=0x7f080009;
+        public static final int login_ok_button=0x7f080024;
+        public static final int login_password_label=0x7f080023;
+        public static final int login_username_label=0x7f080022;
         public static final int main_no_items=0x7f080002;
-        public static final int menu_delete=0x7f080010;
-        public static final int menu_download=0x7f08000c;
-        public static final int menu_downloads=0x7f08000e;
-        public static final int menu_preferences=0x7f080005;
-        public static final int menu_refresh=0x7f08000f;
+        public static final int menu_about=0x7f080012;
+        public static final int menu_delete=0x7f08000f;
+        public static final int menu_download=0x7f08000b;
+        public static final int menu_downloads=0x7f08000d;
+        public static final int menu_preferences=0x7f080011;
+        public static final int menu_refresh=0x7f08000e;
         public static final int menu_save=0x7f080003;
-        public static final int menu_search=0x7f08000d;
-        public static final int preferences_c2dm=0x7f080014;
-        public static final int register_c2dm=0x7f080015;
-        public static final int retrieving=0x7f080006;
-        public static final int server_preferences=0x7f080017;
-        public static final int summary_seedroid_project_id=0x7f08001b;
-        public static final int summary_seedroid_server=0x7f080019;
-        public static final int title_seedroid_project_id=0x7f080013;
+        public static final int menu_search=0x7f08000c;
+        public static final int menu_update_queue=0x7f080010;
+        public static final int preferences_c2dm=0x7f080019;
+        public static final int register_c2dm=0x7f08001a;
+        public static final int retrieving=0x7f080005;
+        public static final int server_preferences=0x7f08001c;
+        public static final int summary_seedroid_project_id=0x7f080020;
+        public static final int summary_seedroid_server=0x7f08001e;
+        public static final int tab_title_downloads=0x7f080016;
+        /**  Tabs titles 
+         */
+        public static final int tab_title_inprogres=0x7f080014;
+        public static final int tab_title_queue=0x7f080015;
+        public static final int title_seedroid_project_id=0x7f080018;
         /**  Preferences 
          */
-        public static final int title_seedroid_server=0x7f080012;
-        public static final int user_preferences=0x7f080018;
+        public static final int title_seedroid_server=0x7f080017;
+        public static final int user_preferences=0x7f08001d;
         public static final int wait=0x7f080004;
-        public static final int welcome_description=0x7f080022;
-        public static final int welcome_title=0x7f080021;
+        public static final int welcome_description=0x7f080027;
+        public static final int welcome_title=0x7f080026;
     }
     public static final class style {
-        public static final int ActionBarIPS=0x7f090002;
         public static final int IndeterminateProgress=0x7f090001;
-        public static final int seedroidTheme=0x7f090000;
+        public static final int Theme_seedroid=0x7f090000;
+        /**  this style is only referenced in a Light.DarkActionBar based theme 
+         */
+        public static final int Theme_seedroid_widget=0x7f090009;
+        public static final int seedroid_ActionBarTabStyle=0x7f090006;
+        public static final int seedroid_DropDownListView=0x7f090005;
+        public static final int seedroid_DropDownNav=0x7f090007;
+        public static final int seedroid_PopupMenu=0x7f090004;
+        public static final int seedroid_ProgressBar=0x7f090008;
+        public static final int seedroid_solid_ActionBar=0x7f090002;
+        public static final int seedroid_transparent_ActionBar=0x7f090003;
     }
     public static final class xml {
         public static final int preferences=0x7f040000;

@@ -122,6 +122,9 @@ public class StatusFragment extends Fragment {
 		TextView percentage = (TextView) getView().findViewById(R.id.percentage);
 		percentage.setText(round(progress, 1) + "%");
 		
+		TextView total = (TextView) getView().findViewById(R.id.total);
+		total.setText(item.getTransferred() + "/" + item.getSize() + " MB");
+		
 		View layout = getView().findViewById(R.id.relative_layout);
 		layout.setVisibility(LinearLayout.VISIBLE);
 		View layoutNoDownloads = getView().findViewById(R.id.relative_layout_no_download);
@@ -151,26 +154,5 @@ public class StatusFragment extends Fragment {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
-	/*private void deleteInQueueItem(final int position) {
-		runOnThread(new Runnable() {
-			public void run() {
-				try {
-					ListView inQueueList = (ListView) findViewById(R.id.in_queue_list);
-					final Download itemToRemove = (Download) inQueueList.getAdapter().getItem(position);
-
-					SeedBoxerWSClient wsclient = SeedBoxerWSFactory.getClient(StatusActivity.this);
-					if (wsclient.removeFromQueue(itemToRemove.getQueueId())) {
-						LauncherUtils.showToast("Item remove from queue.", StatusActivity.this);
-					} else {
-						LauncherUtils.showToast("Error removing item from queue.", StatusActivity.this);
-					}
-				} catch (Exception e) {
-					Log.e("seedroid", "Error communicating with SeedBoxer.");
-					LauncherUtils.showError("Error communicating with SeedBoxer.", StatusActivity.this);
-				}
-			}
-		});
-	}*/
 	
 }

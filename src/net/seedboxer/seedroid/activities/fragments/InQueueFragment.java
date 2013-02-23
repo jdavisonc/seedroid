@@ -136,9 +136,7 @@ public class InQueueFragment extends Fragment {
 	private void renderList(List<FileValue> items) {
 		if (items != null) {
 			adapter.clear();
-			for (FileValue item : items) {
-				adapter.add(item);
-			}
+			adapter.addAll(items);
 			adapter.notifyDataSetChanged();
 		}
 	}

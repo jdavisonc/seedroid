@@ -69,7 +69,6 @@ public class MainActivity extends FragmentActivity {
 
         // Specify that we will be displaying tabs in the action bar.
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        //actionBar.setDisplayShowTitleEnabled(true);
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
         
