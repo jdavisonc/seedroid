@@ -40,9 +40,9 @@ public interface SeedBoxerWSClient {
 
 	boolean removeFromQueue(long id) throws Exception;
 
-	boolean registerDevice(String deviceId, String registrationId) throws Exception;
+	boolean registerDevice(String registrationId) throws Exception;
 
-	boolean unregisterDevice(String deviceId, String registrationId) throws Exception;
+	boolean unregisterDevice(String registrationId) throws Exception;
 	
 	String getApikey(String username, String password) throws Exception;
 

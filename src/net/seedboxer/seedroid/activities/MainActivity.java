@@ -25,6 +25,7 @@ import net.seedboxer.seedroid.activities.adapters.TabsAdapter;
 import net.seedboxer.seedroid.activities.fragments.DownloadsFragment;
 import net.seedboxer.seedroid.activities.fragments.InQueueFragment;
 import net.seedboxer.seedroid.activities.fragments.StatusFragment;
+import net.seedboxer.seedroid.gcm.GCMManager;
 import net.seedboxer.seedroid.utils.HelpUtils;
 import android.app.ActionBar;
 import android.content.Intent;
@@ -35,6 +36,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Window;
+
+import com.google.android.gcm.GCMRegistrar;
 
 /**
  * @author Jorge Davison (jdavisonc)
@@ -80,6 +83,9 @@ public class MainActivity extends FragmentActivity {
         if (savedInstanceState != null) {
             actionBar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
         }
+        
+        GCMRegistrar.checkManifest(this);
+        GCMRegistrar.checkDevice(this);
     }
     
     @Override
@@ -111,5 +117,11 @@ public class MainActivity extends FragmentActivity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
+    @Override
+    protected void onDestroy() {
+    	GCMManager.clear(this);
+        super.onDestroy();
+    }
 
 }

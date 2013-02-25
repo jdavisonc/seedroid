@@ -119,17 +119,16 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 		}
 	}
 
-	public boolean registerDevice(String deviceId, String registrationId)
+	public boolean registerDevice(String registrationId)
 			throws Exception {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("deviceId", deviceId);
 		params.put("registrationId", registrationId);
 		String response = executeRESTWS(REGISTER_DEVICE_WS, params);
 
 		return verifyApiResponse(response);
 	}
 
-	public boolean unregisterDevice(String deviceId, String registrationId)
+	public boolean unregisterDevice(String registrationId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		return false;

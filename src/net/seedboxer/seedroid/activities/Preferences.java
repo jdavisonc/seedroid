@@ -24,7 +24,7 @@ import net.seedboxer.seedroid.R;
 import net.seedboxer.seedroid.R.id;
 import net.seedboxer.seedroid.R.layout;
 import net.seedboxer.seedroid.R.xml;
-import net.seedboxer.seedroid.c2dm.C2DMManager;
+import net.seedboxer.seedroid.gcm.GCMManager;
 import net.seedboxer.seedroid.services.seedboxer.SeedBoxerWSFactory;
 import net.seedboxer.seedroid.tools.LauncherUtils;
 import net.seedboxer.seedroid.tools.Prefs;
@@ -76,7 +76,7 @@ public class Preferences extends PreferenceActivity {
 
 	public void registerC2DMHandler() {
 		try {
-			C2DMManager.verifyRegistration(this);
+			GCMManager.verifyRegistration(this);
 		} catch (IllegalArgumentException e) {
 			LauncherUtils.showError("Error in registration to receive notifications: " + e.getMessage(), this);
 		}
