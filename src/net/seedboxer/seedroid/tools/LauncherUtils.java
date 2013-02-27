@@ -69,6 +69,11 @@ public class LauncherUtils {
 		});
 	}
 
+	public static void generateNotification(Context context, int resId, String message) {
+		String title = context.getResources().getString(resId);
+		generateNotification(context, title, message);
+	}
+	
 	public static void generateNotification(Context context, String title, String message) {
 		Notification.Builder builder = new Notification.Builder(context);
 		builder.setSmallIcon(R.drawable.bittorrent);

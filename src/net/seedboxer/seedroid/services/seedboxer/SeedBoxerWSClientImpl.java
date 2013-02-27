@@ -34,6 +34,7 @@ import java.util.regex.Pattern;
 import net.seedboxer.seedroid.services.seedboxer.types.APIResponse;
 import net.seedboxer.seedroid.services.seedboxer.types.APIResponse.ResponseStatus;
 import net.seedboxer.seedroid.services.seedboxer.types.FileValue;
+import net.seedboxer.seedroid.services.seedboxer.types.GCMProjectIdResponse;
 import net.seedboxer.seedroid.services.seedboxer.types.UserAPIKeyResponse;
 import net.seedboxer.seedroid.services.seedboxer.types.UserStatusAPIResponse;
 import net.seedboxer.seedroid.utils.RequestMethod;
@@ -56,9 +57,10 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 	private static final String DOWNLOADS_DELETE_WS = WS_PREFIX + "downloads/delete";
 	private static final String DOWNLOADS_QUEUE_WS = WS_PREFIX + "downloads/queue";
 	private static final String DOWNLOADS_UPDATE_QUEUE_WS = WS_PREFIX + "downloads/update";
-	private static final String STATUS_WS = WS_PREFIX + "status";
-	private static final String REGISTER_DEVICE_WS = WS_PREFIX + "registerDevice";
-	private static final String APIKEY_WS = WS_PREFIX + "apikey";
+	private static final String STATUS_WS = WS_PREFIX + "users/status";
+	private static final String APIKEY_WS = WS_PREFIX + "users/apikey";
+	private static final String GCM_REGISTER_DEVICE_WS = WS_PREFIX + "gcm/registerDevice";
+	private static final String GCM_PROJECT_ID_WS = WS_PREFIX + "gcm/projectId";
 
 	private final String apikey;
 	private String server;
@@ -123,7 +125,7 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 			throws Exception {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("registrationId", registrationId);
-		String response = executeRESTWS(REGISTER_DEVICE_WS, params);
+		String response = executeRESTWS(GCM_REGISTER_DEVICE_WS, params);
 
 		return verifyApiResponse(response);
 	}
@@ -165,6 +167,18 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 		
 		if (apikey != null) {
 			return apikey.getApiKey();
+		} else {
+			return null;
+		}
+	}
+	
+	public String getProjectId() throws Exception {
+		String response = executeRESTWS(GCM_PROJECT_ID_WS, Collections.<String, Object> emptyMap());
+		
+		GCMProjectIdResponse gcmResponse = gson.fromJson(response, GCMProjectIdResponse.class);
+		
+		if (response != null) {
+			return gcmResponse.getProjectId();
 		} else {
 			return null;
 		}

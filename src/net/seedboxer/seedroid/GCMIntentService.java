@@ -34,10 +34,11 @@ import com.google.android.gcm.GCMBaseIntentService;
  */
 public class GCMIntentService extends GCMBaseIntentService {
 
-    private static final String TAG = "GCMIntentService";
+    private static final String SUCCESS_RESPONSE = "OK";
+	private static final String TAG = "GCMIntentService";
 
     public GCMIntentService() {
-        super("senderemail@gmail.com");
+        super();
     }
 
     @Override
@@ -56,13 +57,13 @@ public class GCMIntentService extends GCMBaseIntentService {
     protected void onMessage(Context context, Intent intent) {     
 		Bundle extras = intent.getExtras();
 		if (extras != null) {
-			String payload = extras.getString("payload");
-			Log.d(TAG, "Payload: " + payload);
-			String[] values = payload.split(";");
-			if ("OK".equals(values[0])) {
-				LauncherUtils.generateNotification(context, "Upload completed", values[1]);
-			} else {
-				LauncherUtils.generateNotification(context, "Upload failed", values[1]);
+			String success = extras.getString("success");
+			String file = extras.getString("file");
+			Log.d(TAG, "Success: " + success + ", file: " + file);
+			if (success != null && SUCCESS_RESPONSE.equals(success)) {
+				LauncherUtils.generateNotification(context, R.string.push_success, file);
+			} else if (success != null) {
+				LauncherUtils.generateNotification(context, R.string.push_fail, file);
 			}
 		}
         

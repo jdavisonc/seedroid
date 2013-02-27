@@ -65,10 +65,6 @@
     <string name="login_ok_button">Login</string>
     <string name="apikey">ApiKey</string>
     
-    
-    <string name="welcome_title">TODO</string>
-    <string name="welcome_description">TODO</string>
-    
     <!-- About -->
     <string name="close">Close</string>
     <string name="about">About</string>
@@ -86,4 +82,8 @@
         <b><a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></b><br>
         <i>by Carl A. Bauer</i>
     ]]></string>
+    
+    <!-- Notifications -->
+    <string name="push_success">Upload completed</string>
+    <string name="push_fail">Upload failed</string>
 </resources>

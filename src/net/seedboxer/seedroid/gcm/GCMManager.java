@@ -50,7 +50,7 @@ public class GCMManager {
         final String regId = GCMRegistrar.getRegistrationId(context);
         if (regId == null || regId.equals("")) {
         	
-        	String projectId = Prefs.get(context).getString(Prefs.PROJECT_ID, "");;
+        	String projectId = Prefs.get(context).getString(Prefs.PROJECT_ID, "");
 			if (projectId != null && !projectId.isEmpty()) {
 	        	Log.i(TAG, "No existing registrationId. Registering...");
 	            GCMRegistrar.register(context, projectId);
@@ -129,5 +129,34 @@ public class GCMManager {
         mRegisterTask.execute(null, null, null);
 	}
 
+	public static void retrieveProjectIdAndRegister(final Context context) {
+		Log.i(TAG, "Retrieving GCM projectId...");
+        final AsyncTask<Void, Void, Void> mRegisterTask = new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+				try {
+					SeedBoxerWSClient client = SeedBoxerWSFactory.getClient(context);
+					String projectId = client.getProjectId();
+					if (projectId != null) {
+						Prefs.setString(context, Prefs.PROJECT_ID, projectId);
+						Log.i(TAG, "GCM projectId " + projectId);
+						verifyRegistration(context);
+					} else {
+						Log.i(TAG, "SeedBoxer server has not configure GCM notifications");
+					}
+				} catch (Exception e) {
+					Log.w(TAG, "Retrieving GCM projectId fails " + e.getMessage());
+				}
+				return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+            }
+
+        };
+        mRegisterTask.execute(null, null, null);
+	}
 
 }

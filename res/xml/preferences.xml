@@ -28,12 +28,6 @@
             android:key="seedroid_server"
             android:summary="@string/summary_seedroid_server"
             android:title="@string/title_seedroid_server" />
-        <EditTextPreference
-            android:defaultValue="@string/default_seedroid_project_id"
-            android:dialogTitle="@string/dialog_title_seedroid_project_id"
-            android:key="seedroid_project_id"
-            android:summary="@string/summary_seedroid_project_id"
-            android:title="@string/title_seedroid_project_id" />
     </PreferenceCategory>
     
     <PreferenceCategory android:title="@string/user_preferences">

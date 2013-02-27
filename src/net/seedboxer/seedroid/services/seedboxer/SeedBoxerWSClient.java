@@ -44,6 +44,8 @@ public interface SeedBoxerWSClient {
 
 	boolean unregisterDevice(String registrationId) throws Exception;
 	
+	String getProjectId() throws Exception;
+	
 	String getApikey(String username, String password) throws Exception;
 
 }
