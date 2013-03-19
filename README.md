@@ -18,7 +18,7 @@ Version 2.1.3
 * Remove register to accept GCM
 * New section about
 
-Changelog 2.1
+Version 2.1
 
 * Migration from C2DM to GCM.
 * In queue items list
