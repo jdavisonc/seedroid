@@ -22,6 +22,7 @@ package net.seedboxer.seedroid.utils;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.os.AsyncTask;
 
 /**
  * @author Jorge Davison (jdavisonc)
@@ -31,8 +32,10 @@ public class Runners {
 
 	public static void runOnThread(final Activity activity, final Runnable runnable) {
 		final ProgressDialog dialog = startProgressBar(activity);
-		new Thread(new Runnable() {
-			public void run() {
+        final AsyncTask<Void, Void, Void> mRegisterTask = new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... params) {
 				try {
 					runnable.run();
 				} finally {
@@ -42,8 +45,15 @@ public class Runners {
 						}
 					});
 				}
-			}
-		}, "MagentoBackground").start();
+				return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+            }
+
+        };
+        mRegisterTask.execute(null, null, null);
 	}
 
 	private static ProgressDialog startProgressBar(Activity activity) {

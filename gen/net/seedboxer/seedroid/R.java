@@ -269,14 +269,14 @@ containing a value of this type.
         public static final int main_menu=0x7f0a0004;
     }
     public static final class string {
-        public static final int about=0x7f080029;
-        public static final int about_body=0x7f08002b;
+        public static final int about=0x7f080027;
+        public static final int about_body=0x7f080029;
         public static final int apikey=0x7f080025;
         public static final int app_name=0x7f080000;
-        public static final int app_name_and_version=0x7f08002a;
+        public static final int app_name_and_version=0x7f080028;
         /**  About 
          */
-        public static final int close=0x7f080028;
+        public static final int close=0x7f080026;
         public static final int default_seedroid_project_id=0x7f080008;
         public static final int default_seedroid_server=0x7f080006;
         public static final int default_seedroid_username=0x7f080007;
@@ -301,6 +301,10 @@ containing a value of this type.
         public static final int menu_search=0x7f08000c;
         public static final int menu_update_queue=0x7f080010;
         public static final int preferences_c2dm=0x7f080019;
+        public static final int push_fail=0x7f08002b;
+        /**  Notifications 
+         */
+        public static final int push_success=0x7f08002a;
         public static final int register_c2dm=0x7f08001a;
         public static final int retrieving=0x7f080005;
         public static final int server_preferences=0x7f08001c;
@@ -317,8 +321,6 @@ containing a value of this type.
         public static final int title_seedroid_server=0x7f080017;
         public static final int user_preferences=0x7f08001d;
         public static final int wait=0x7f080004;
-        public static final int welcome_description=0x7f080027;
-        public static final int welcome_title=0x7f080026;
     }
     public static final class style {
         public static final int IndeterminateProgress=0x7f090001;

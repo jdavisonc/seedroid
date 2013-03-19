@@ -57,10 +57,10 @@ public class SeedBoxerWSClientImpl implements SeedBoxerWSClient {
 	private static final String DOWNLOADS_DELETE_WS = WS_PREFIX + "downloads/delete";
 	private static final String DOWNLOADS_QUEUE_WS = WS_PREFIX + "downloads/queue";
 	private static final String DOWNLOADS_UPDATE_QUEUE_WS = WS_PREFIX + "downloads/update";
-	private static final String STATUS_WS = WS_PREFIX + "users/status";
-	private static final String APIKEY_WS = WS_PREFIX + "users/apikey";
-	private static final String GCM_REGISTER_DEVICE_WS = WS_PREFIX + "gcm/registerDevice";
-	private static final String GCM_PROJECT_ID_WS = WS_PREFIX + "gcm/projectId";
+	private static final String STATUS_WS = WS_PREFIX + "user/status";
+	private static final String APIKEY_WS = WS_PREFIX + "user/apikey";
+	private static final String GCM_REGISTER_DEVICE_WS = WS_PREFIX + "notifications/gcm/registerDevice";
+	private static final String GCM_PROJECT_ID_WS = WS_PREFIX + "notifications/gcm/projectId";
 
 	private final String apikey;
 	private String server;

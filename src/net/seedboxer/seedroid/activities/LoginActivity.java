@@ -21,14 +21,13 @@
 package net.seedboxer.seedroid.activities;
 
 import net.seedboxer.seedroid.R;
-import net.seedboxer.seedroid.R.id;
-import net.seedboxer.seedroid.R.layout;
 import net.seedboxer.seedroid.services.seedboxer.SeedBoxerWSClient;
 import net.seedboxer.seedroid.services.seedboxer.SeedBoxerWSFactory;
 import net.seedboxer.seedroid.tools.LauncherUtils;
 import net.seedboxer.seedroid.tools.Prefs;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -71,8 +70,10 @@ public class LoginActivity extends Activity {
 	
 	private void runOnThread(final Runnable runnable) {
 		final ProgressDialog dialog = startProgressBar();
-		new Thread(new Runnable() {
-			public void run() {
+        final AsyncTask<Void, Void, Void> mRegisterTask = new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... params) {
 				try {
 					runnable.run();
 					runOnUiThread(new Runnable() {
@@ -87,8 +88,15 @@ public class LoginActivity extends Activity {
 						}
 					});
 				}
-			}
-		}, "MagentoBackground").start();
+				return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+            }
+
+        };
+        mRegisterTask.execute(null, null, null);
 	}
 
 	private ProgressDialog startProgressBar() {
