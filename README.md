@@ -9,6 +9,10 @@ Seedroid is a Android frontend (client) application of [SeedBoxer](http://seedbo
 
 [![Get Seedroid on Play Store](http://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=net.seedboxer.seedroid)
 
+## Screenshots
+
+![](hhttps://lh6.ggpht.com/lRKEpjN48RclHEGHJtxP3myVWfDwP_lGUqzu5V2WwRUtupqlw8g5trq-yfg2wcf3lkUo)
+![](https://lh3.ggpht.com/xvur9fMElFDMmNW0KrN9kLElEq19B4IWcg5tCPSJkN_9oAF82kwai6kF-sMWI8av2ZU)
 
 ## Changelog
 
