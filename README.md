@@ -37,7 +37,6 @@ Version 2.1
 
 
 ## Authors and Contributors
-SeedBoxer is the work of:
 *   [Jorge Davison (jdavisonc)](http://github.com/jdavisonc)
 
 ## Support or Contact
