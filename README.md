@@ -5,6 +5,10 @@ Seedroid
 
 Seedroid is a Android frontend (client) application of [SeedBoxer](http://seedboxer.net). With Seedroid you can manage your downloads, put some to download and rearrenge queue.
 
+## Install
+
+[http://developer.android.com/images/brand/en_generic_rgb_wo_45.png](https://play.google.com/store/apps/details?id=net.seedboxer.seedroid)
+
 ## Changelog
 
 Version 2.1.4
